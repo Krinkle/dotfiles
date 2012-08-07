@@ -1,0 +1,17 @@
+[user]
+	name = Timo Tijhof
+	email = krinklemail@gmail.com
+[color]
+	diff = auto
+[alias]
+	add = add -v
+	st = status
+	br = branch
+	co = checkout
+	di = diff
+	ds = diff --staged
+	log-nice = log --graph --decorate --abbrev-commit --pretty=oneline
+	log-pretty = log --graph --decorate --abbrev-commit --relative-date --pretty=oneline
+	pul = pull
+[core]
+	quotepath = false
