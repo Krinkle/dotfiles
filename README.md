@@ -16,7 +16,7 @@ Then depending on where it should go add the following to one or more of <sup>[[
 ## Set up
 
 ```bash
-$ echo 'source ~/.krinkle.dotfiles/index-login.bash' >> .bash_profile
-$ echo 'source ~/.krinkle.dotfiles/index-nonlogin.bash' >> .bashrc
-$ ln -s ~/.krinkle.dotfiles/.gitconfig ~/.gitconfig
+echo 'source ~/.krinkle.dotfiles/index-login.bash' > .bash_profile
+echo 'source ~/.krinkle.dotfiles/index-nonlogin.bash' > .bashrc
+ln -s ~/.krinkle.dotfiles/.gitconfig ~/.gitconfig;
 ```

@@ -71,7 +71,11 @@ P_CLR_NONE="\[\033[0m\]"
 # PS1
 #MacOSX Default: PS1='\h:\W \u\$'
 
-P_CLR_HOME="$P_CLR_L_GREEN"
+# On MacOSX $HOSTNAME is "FoobarMac.local" instead of "FoobarMac"
+# So use the PS1 magic "\h" instead, which is correct.
+P_HOST="\h"
+
+CLR_HOME="$CLR_L_GREEN"
 CLR_GITBR="$CLR_CYAN"
 
 CLR_GITST_CLS="$CLR_GREEN" # Clear state
@@ -82,9 +86,12 @@ CLR_GITST_UT="$CLR_L_GREY" # Untracked files
 case $HOSTNAME in
 	KrinkleMac.local.d)
 		CLR_GITBR="$CLR_GREEN"
-		P_CLR_HOME="$P_CLR_L_CYAN"
+		CLR_HOME="$CLR_L_CYAN"
 		;;
 	*)
+		if [ -f /etc/wmflabs-instancename ]; then
+			P_HOST="$(cat /etc/wmflabs-instancename)"
+		fi
 esac
 
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -95,9 +102,7 @@ fi
 
 
 if [ "$P_SUPPORT_COLOR" = yes ]; then
-    PS1="$CLR_L_GREY[\$(date +%H:%M\ %Z)] $P_CLR_HOME\u@\h$CLR_NONE:$P_CLR_YELLOW\w\$(get-git-info)$CLR_NONE\$ "
+    PS1="$CLR_L_GREY[\$(date +%H:%M\ %Z)] $CLR_HOME\u@$P_HOST$CLR_NONE:$CLR_YELLOW\w\$(get-git-info)$CLR_NONE\$ "
 else
     PS1="[\$(date +%H:%M\ %Z)] \u@\h:\w\$ "
 fi
-
-
