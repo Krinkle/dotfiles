@@ -84,7 +84,7 @@ CLR_GITST_USC="$CLR_RED" # Unstaged changes
 CLR_GITST_UT="$CLR_L_GREY" # Untracked files
 
 case $HOSTNAME in
-	KrinkleMac.local.d)
+	KrinkleMac.local)
 		CLR_GITBR="$CLR_GREEN"
 		CLR_HOME="$CLR_L_CYAN"
 		;;
