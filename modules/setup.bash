@@ -89,8 +89,8 @@ case $HOSTNAME in
 		CLR_HOME="$CLR_L_CYAN"
 		;;
 	*)
-		if [ -f /etc/wmflabs-instancename ]; then
-			P_HOST="$(cat /etc/wmflabs-instancename)"
+		if [ "$INSTANCENAME" != "" ]; then
+			P_HOST="$INSTANCENAME"
 		fi
 esac
 
