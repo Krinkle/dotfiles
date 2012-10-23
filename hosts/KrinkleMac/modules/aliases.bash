@@ -9,17 +9,12 @@ alias dotfiles-push-amend='cd ~/.krinkle.dotfiles && git commit -a --amend -C HE
 
 
 # Set up stuff for git clones from gerrit.wikimedia.org
-# - Call git-review without arguments so it installs the neccecary hooks
-#   and adds the 'gerrit' git-remote
-# - Removes the 'origin' remote
+# - Set up git-config user.email so that my commits are accepted by Gerrit.
+# - Call git-review -s to installs the neccecary hooks and adds the 'gerrit' git-remote
+# - Removes the 'origin' remote (without && since it will return in error if it was already removed)
 # - Updates the local 'master' branch to be a remote tracking branch to gerrit/master
 #   (just like git-clone would do if it was set up that way in the first place)
-# NB: This hard-resets the local master branch. Because git-review has no init command
-# the only way to trigger that is to do "git review" (shortcut for "git review submit")
-# when there are no changes, in which case it'll initialise and then return early with 
-# an error message, which is why we separate it with ";" instead of "&&" as it is the
-# only step where an error status code is to be expected.
-alias dogerritfixup='git fetch --all && git checkout master && git reset --hard origin/master && git review; git remote rm origin; git branch --set-upstream master gerrit/master'
+alias dogerritfixup='git config user.email ttijhof@wikimedia.org && git checkout master && git reset --hard HEAD && git review -s && git remote rm origin; git fetch --all && git branch --set-upstream master gerrit/master'
 
 # http://ariejan.net/2011/11/08/fixing-a-slow-starting-terminal-or-iterm2-on-mac-os-x
 # https://discussions.apple.com/thread/2178316?start=0&tstart=0

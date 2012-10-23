@@ -49,8 +49,11 @@ export PATH=/usr/local/bin:$PATH
 # $ brew install autoconf
 # $ brew install re2c
 
-## xdiff
+## xdiff (at least 1.5.1)
 # xdiff (through pecl) needs these:
 # $ brew install re2c
 # $ brew install libxdiff
+# At this moment 1.4.1 is latest stable, so use beta
+# See http://pecl.php.net/package/xdiff
 # $ sudo pecl install xdiff
+# $ sudo pecl upgrade xdiff-beta

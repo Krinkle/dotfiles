@@ -13,8 +13,11 @@ source ~/.krinkle.dotfiles/modules/git-completion.bash
 source ~/.krinkle.dotfiles/modules/aliases.bash
 source ~/.krinkle.dotfiles/modules/functions.bash
 
-case $HOSTNAME in
-	KrinkleMac.local)
+P_CANONICAL_HOST="$HOSTNAME"
+
+case $P_CANONICAL_HOST in
+	"KrinkleMac.local" | "KrinkleMac.fritz.box" | "krinklemac.fritz.box")
+		P_CANONICAL_HOST="KrinkleMac"
 		source ~/.krinkle.dotfiles/hosts/KrinkleMac/modules/setup.bash
 		source ~/.krinkle.dotfiles/hosts/KrinkleMac/modules/aliases.bash
 		;;

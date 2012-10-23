@@ -9,6 +9,7 @@ fi
 alias ll='ls -ahlF'
 alias l='ll'
 alias gi='git'
+
 # Size calculation
 alias dsize='du -hs'
 
