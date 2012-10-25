@@ -57,3 +57,16 @@ export PATH=/usr/local/bin:$PATH
 # See http://pecl.php.net/package/xdiff
 # $ sudo pecl install xdiff
 # $ sudo pecl upgrade xdiff-beta
+
+## Setting up tunnels in BrowserStack needs Java.
+## Somehow it stopped working with Java 6, so install Java 7.
+## But Java 7 doesn't go well with Google Chrome, so execute the following
+## to disable Java 7 and re-enable the Apple-provided Java 6.
+## I have no idea why it works with this, since why wouldn't it work before
+## installing Java 7 with "just" Java 6.
+## (which should be similar to installing 7, disabling it and re-enabling 6)
+## http://support.apple.com/kb/HT5559
+# $ sudo mkdir -p /Library/Internet\ Plug-Ins/disabled
+# $ sudo mv /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin /Library/Internet\ Plug-Ins/disabled
+# $ sudo ln -sf /System/Library/Java/Support/Deploy.bundle/Contents/Resources/JavaPlugin2_NPAPI.plugin /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin
+# $ sudo ln -sf /System/Library/Frameworks/JavaVM.framework/Commands/javaws /usr/bin/javaws

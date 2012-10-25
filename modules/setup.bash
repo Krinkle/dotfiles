@@ -83,7 +83,7 @@ CLR_GITST_SC="$CLR_YELLOW" # Staged changes
 CLR_GITST_USC="$CLR_RED" # Unstaged changes
 CLR_GITST_UT="$CLR_L_GREY" # Untracked files
 
-case $P_CANONICAL_HOST in
+case "$P_CANONICAL_HOST" in
 	KrinkleMac)
 		CLR_GITBR="$CLR_GREEN"
 		CLR_HOME="$CLR_L_CYAN"
