@@ -6,6 +6,18 @@
 [ -z "$PS1" ] && return
 
 #
+# Variables
+#
+
+P_CANONICAL_HOST="$HOSTNAME"
+
+case "$P_CANONICAL_HOST" in
+	"KrinkleMac.local" | "KrinkleMac.fritz.box" | "krinklemac.fritz.box")
+		P_CANONICAL_HOST="KrinkleMac"
+		;;
+esac
+
+#
 # Includes
 #
 source ~/.krinkle.dotfiles/modules/setup.bash
@@ -13,11 +25,8 @@ source ~/.krinkle.dotfiles/modules/git-completion.bash
 source ~/.krinkle.dotfiles/modules/aliases.bash
 source ~/.krinkle.dotfiles/modules/functions.bash
 
-P_CANONICAL_HOST="$HOSTNAME"
-
-case $P_CANONICAL_HOST in
-	"KrinkleMac.local" | "KrinkleMac.fritz.box" | "krinklemac.fritz.box")
-		P_CANONICAL_HOST="KrinkleMac"
+case "$P_CANONICAL_HOST" in
+	"KrinkleMac")
 		source ~/.krinkle.dotfiles/hosts/KrinkleMac/modules/setup.bash
 		source ~/.krinkle.dotfiles/hosts/KrinkleMac/modules/aliases.bash
 		;;

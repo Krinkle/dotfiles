@@ -2,17 +2,15 @@
 # Bash History
 #
 
-# don't put duplicate lines in the history. See bash(1) for more options
-# ... or force ignoredups and ignorespace
+# Don't put duplicate lines in the history. See bash(1) for more options
 HISTCONTROL=ignoredups:ignorespace
 
-# append to the history file, don't overwrite it
+# Append to the history file, don't overwrite it
 shopt -s histappend
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+# For setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
-
 
 #
 # Editor
@@ -76,7 +74,7 @@ P_CLR_NONE="\[\033[0m\]"
 P_HOST="\h"
 
 CLR_HOME="$CLR_L_GREEN"
-CLR_GITBR="$CLR_CYAN"
+CLR_GITBR="$CLR_GREEN"
 
 CLR_GITST_CLS="$CLR_GREEN" # Clear state
 CLR_GITST_SC="$CLR_YELLOW" # Staged changes
@@ -84,8 +82,8 @@ CLR_GITST_USC="$CLR_RED" # Unstaged changes
 CLR_GITST_UT="$CLR_L_GREY" # Untracked files
 
 case "$P_CANONICAL_HOST" in
-	KrinkleMac)
-		CLR_GITBR="$CLR_GREEN"
+	"KrinkleMac")
+		CLR_GITBR="$CLR_CYAN"
 		CLR_HOME="$CLR_L_CYAN"
 		;;
 	*)
@@ -101,8 +99,8 @@ else
 fi
 
 
-if [ "$P_SUPPORT_COLOR" = yes ]; then
+if [ "$P_SUPPORT_COLOR" != "" ]; then
     PS1="$CLR_L_GREY[\$(date +%H:%M\ %Z)] $CLR_HOME\u@$P_HOST$CLR_NONE:$CLR_YELLOW\w\$(get-git-info)$CLR_NONE\$ "
 else
-    PS1="[\$(date +%H:%M\ %Z)] \u@\h:\w\$ "
+    PS1="[\$(date +%H:%M\ %Z)] \u@$P_HOST:\w\$ "
 fi
