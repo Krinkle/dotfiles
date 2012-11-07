@@ -2,7 +2,7 @@
 	name = Timo Tijhof
 	email = krinklemail@gmail.com
 [color]
-	diff = auto
+	ui = auto
 [alias]
 	add = add -v
 	st = status

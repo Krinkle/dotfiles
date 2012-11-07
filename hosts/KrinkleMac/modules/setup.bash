@@ -75,3 +75,7 @@ export PATH=/usr/local/bin:$PATH
 ## (through TERM and /usr/bin/tput)
 ## Default TERM in Apple's Terminal.app: xterm-256color
 ## Changed to (in Preferences): rxvt
+
+## Travis CI
+## http://about.travis-ci.org/docs/user/getting-started/
+# $ sudo gem install travis-lint

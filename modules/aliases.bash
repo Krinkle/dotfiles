@@ -1,8 +1,10 @@
-# Init global settings for certain bin
 if [ "$TERM" != "dumb" ] && [ -x /usr/bin/dircolors ]; then
+	# Linux
     eval "`dircolors -b`"
-    # Self-aliases to use color by default
     alias ls='ls --color=auto'
+else
+	# Mac
+    alias ls='ls -G'
 fi
 
 # Shortcuts
