@@ -11,6 +11,9 @@ export PATH=/usr/local/git/bin:$PATH
 # Bins from me, npm -g or Homebrew
 export PATH=/usr/local/bin:$PATH
 
+# Local etc
+source /usr/local/etc/bash_completion
+
 
 #
 # Misc.
@@ -48,6 +51,10 @@ export PATH=/usr/local/bin:$PATH
 # PECL also needs autoconf
 # $ brew install autoconf
 # $ brew install re2c
+
+
+## Bash completion (e.g. for autocompleting ssh domains from known_hosts )
+# $ brew install bash-completion
 
 ## xdiff (at least 1.5.1)
 # xdiff (through pecl) needs these:
