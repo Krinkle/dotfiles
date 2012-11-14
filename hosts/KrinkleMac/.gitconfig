@@ -11,7 +11,7 @@
 	di = diff
 	ds = diff --staged
 	log-nice = log --graph --decorate --abbrev-commit --pretty=oneline
-	log-pretty = log --graph --decorate --abbrev-commit --relative-date --pretty=oneline
+	log-asi = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
 	pul = pull
 [core]
 	quotepath = false
