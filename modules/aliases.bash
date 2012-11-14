@@ -16,4 +16,5 @@ alias gi='git'
 alias dsize='du -hs'
 
 # Actions
-alias dotfiles-pull='cd ~/.krinkle.dotfiles && git fetch origin && git reset --hard origin/master && cd -'
+GITLOGASI="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative"
+alias dotfiles-pull="cd ~/.krinkle.dotfiles && git fetch origin && git reset --hard origin/master && $GITLOGASI -n5 && cd -"
