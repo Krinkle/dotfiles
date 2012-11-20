@@ -5,31 +5,16 @@
 # Bins from Apple Developer Tools (Xcode)
 export PATH=/Applications/Xcode.app/Contents/Developer/usr/bin:$PATH
 
-# Bins from git-osx-installer
-export PATH=/usr/local/git/bin:$PATH
-
 # Bins from me, npm -g or Homebrew
 export PATH=/usr/local/bin:$PATH
 
-# Local etc
+# Local etc (symlinked to data of `brew install bash-completion`)
 source /usr/local/etc/bash_completion
 
 
 #
-# Misc.
+# Install
 #
-
-## As of Lion, php5_module is no longer enabled by default
-## in Apache.
-# $ sudo vim 
-# --- #LoadModule php5_module libexec/apache2/libphp5.so
-# +++ LoadModule php5_module libexec/apache2/libphp5.so
-# $ sudo apachectl restart
-
-## mysql.sock location moved
-# $ sudo mkdir /var/mysql -p
-# $ sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock
-
 
 ## Set up PEAR, PECL
 ## http://akrabat.com/php/setting-up-php-mysql-on-os-x-10-7-lion/
@@ -40,21 +25,17 @@ source /usr/local/etc/bash_completion
 # $ sudo pecl channel-update pecl.php.net
 # $ sudo pear upgrade-all
 #
-# PHPUnit:
+# PECL also needs autoconf
+# $ brew install autoconf
+# $ brew install re2c
+
+## PHPUnit
 # $ sudo pear channel-discover pear.phpunit.de
 # $ sudo pear channel-discover components.ez.no
 # $ sudo pear channel-discover pear.symfony-project.com
 # $ sudo pear install phpunit/PHPUnit
 # $ sudo pear install phpunit/phpcpd
 # $ sudo pear install PHP_CodeSniffer
-#
-# PECL also needs autoconf
-# $ brew install autoconf
-# $ brew install re2c
-
-
-## Bash completion (e.g. for autocompleting ssh domains from known_hosts )
-# $ brew install bash-completion
 
 ## xdiff (at least 1.5.1)
 # xdiff (through pecl) needs these:
@@ -64,6 +45,32 @@ source /usr/local/etc/bash_completion
 # See http://pecl.php.net/package/xdiff
 # $ sudo pecl install xdiff
 # $ sudo pecl upgrade xdiff-beta
+
+## Bash completion (e.g. for autocompleting ssh domains from known_hosts )
+# $ brew install bash-completion
+
+## Travis CI
+## http://about.travis-ci.org/docs/user/getting-started/
+# $ sudo gem install travis-lint
+
+## Git (1.8.0+)
+# $ brew install git
+
+
+#
+# Misc.
+#
+
+## As of Lion, php5_module is no longer enabled by default
+## in Apache.
+# $ sudo vim
+# --- #LoadModule php5_module libexec/apache2/libphp5.so
+# +++ LoadModule php5_module libexec/apache2/libphp5.so
+# $ sudo apachectl restart
+
+## mysql.sock location moved
+# $ sudo mkdir /var/mysql -p
+# $ sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock
 
 ## Setting up tunnels in BrowserStack needs Java.
 ## Somehow it stopped working with Java 6, so install Java 7.
@@ -82,7 +89,3 @@ source /usr/local/etc/bash_completion
 ## (through TERM and /usr/bin/tput)
 ## Default TERM in Apple's Terminal.app: xterm-256color
 ## Changed to (in Preferences): rxvt
-
-## Travis CI
-## http://about.travis-ci.org/docs/user/getting-started/
-# $ sudo gem install travis-lint

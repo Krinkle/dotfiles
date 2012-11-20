@@ -1,6 +1,3 @@
-[user]
-	name = Timo Tijhof
-	email = krinklemail@gmail.com
 [color]
 	ui = auto
 [alias]
@@ -15,3 +12,5 @@
 	pul = pull
 [core]
 	quotepath = false
+[push]
+	default = matching

@@ -40,42 +40,6 @@ function get-git-info() {
 		return 1
 	fi
 
-	# if [[ -n "$(git status --porcelain 2> /dev/null)" ]]; then
-	# 	if git diff-index --cached --quiet HEAD --; then
-	# 		indicator="$indicator${CLR_GITST_USC}*" # Unstaged changes
-	# 	fi
-	# 	if git diff-index --quiet HEAD; then
-	# 		indicator="$indicator${CLR_GITST_SC}*" # Staged changes
-	# 	fi
-	# fi
-	# if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-	# 	indicator="$indicator${CLR_GITST_UT}?" # Untracked files
-	# fi
-
-	# IFS=$'\n'
-	# for line in `git status --porcelain 2> /dev/null`; do
-	# 	if [[ "$line" =~ ^[MADRCT]\ .* ]]; then
-	# 		(( st_staged++ ))
-	# 	fi
-	# 	if [[ "$line" =~ ^[MADRCT\ ][MADRCT]\ .* ]]; then
-	# 		(( st_unstaged++ ))
-	# 	fi
-	# 	if [[ "$line" =~ ^\?\?\ .* ]]; then
-	# 		(( st_untracked++ ))
-	# 	fi
-	# done
-	# unset IFS
-
-	# if (( st_staged )); then
-	# 	indicator="$indicator${CLR_GITST_SC}*" 
-	# fi
-	# if (( st_unstaged )); then
-	# 	indicator="$indicator${CLR_GITST_USC}*" 
-	# fi
-	# if (( st_untracked )); then
-	# 	indicator="$indicator${CLR_GITST_UT}?" 
-	# fi
-
 	if [[ -n "$(git diff-index --cached HEAD 2> /dev/null)" ]]; then
 		# ls-files has no way to list files that are staged, we have to use the
 		# significantly slower (for large repos)  diff-index command instead
@@ -91,4 +55,27 @@ function get-git-info() {
 
 	branch="`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`"
 	echo -en "${CLR_GITBR} ($branch$indicator${CLR_GITBR})"
+}
+
+#
+# Dotfiles
+#
+
+function dotfiles-pull() {
+
+	cd ~/.krinkle.dotfiles
+	git fetch origin
+	git log-asi master...origin/master
+	git diff master origin/master --stat && git diff master origin/master
+
+	read -p "Continue (y/n): > " choice
+	case "$choice" in
+		y|Y)
+			git reset --hard origin/master && source ~/.krinkle.dotfiles/index.bash
+			;;
+		* )
+			echo "Dotfiles update aborted."
+			return 1
+			;;
+	esac
 }

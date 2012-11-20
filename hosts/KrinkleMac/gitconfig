@@ -1,0 +1,5 @@
+[user]
+	name = Timo Tijhof
+	email = krinklemail@gmail.com
+[include]
+	path = ~/.krinkle.dotfiles/gitconfig

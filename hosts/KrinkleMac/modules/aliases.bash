@@ -23,4 +23,11 @@ alias dotruncateasl='sudo rm /private/var/log/asl/*.asl'
 
 # http://en.kuma-de.com/blog/2011-12-24/483
 # ...
-alias dormdsstore="find . -name '.DS_Store' | xargs rm"
+alias dormdsstore='find . -name ".DS_Store" | xargs rm'
+
+# mirror media repos
+# $ wget-magic-noindex "http://..."
+# $ wget-magic-filter ".jpg" "http://..."
+alias wget-magic-noindex='wget -m --no-parent --reject "index.html*"'
+alias wget-magic-filter='wget -m --no-parent -A'
+alias wget-magic-avi='wget-magic-filter "*.avi"'
