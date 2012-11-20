@@ -5,11 +5,11 @@
 ```bash
 $ git clone git://github.com/Krinkle/dotfiles.git ~/.krinkle.dotfiles
 $ cd ~/.krinkle.dotfiles
-$ ./make.sh
+$ setup.sh
 ```
 
 ### KrinkleMac
 ```bash
 $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/gitconfig ~/.gitconfig
-$ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/php.ini /etc/php.ini
+$ sudo ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/php.ini /etc/php.ini
 ```

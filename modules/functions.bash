@@ -62,8 +62,8 @@ function get-git-info() {
 #
 
 function dotfiles-pull() {
+	cd $HOME/.krinkle.dotfiles
 
-	cd ~/.krinkle.dotfiles
 	git fetch origin
 	git log-asi master...origin/master
 	git diff master origin/master --stat && git diff master origin/master
@@ -71,11 +71,14 @@ function dotfiles-pull() {
 	read -p "Continue (y/n): > " choice
 	case "$choice" in
 		y|Y)
-			git reset --hard origin/master && source ~/.krinkle.dotfiles/index.bash
+			git reset --hard origin/master && source $HOME/.krinkle.dotfiles/index.bash
 			;;
 		* )
 			echo "Dotfiles update aborted."
+			cd -
 			return 1
 			;;
 	esac
+
+	cd -
 }
