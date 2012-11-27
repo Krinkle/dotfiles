@@ -11,25 +11,55 @@
 #
 
 #
-# GIT
+# PS1
+# MacOSX Default: PS1='\h:\W \u\$'
 #
+function _dotfiles-ps1-setup() {
+	local host
+	local clr_home
+	local supportcolor
 
-# function parse_git_status() {
-# 	local char
-# 	local git_status="`git status -unormal 2>&1`"
-# 	if ! [[ "$git_status" =~ Not\ a\ git\ repo ]]; then
-# 		if [[ "$git_status" =~ nothing\ to\ commit ]]; then
-# 			char="${CLR_GITST_CLS}${CLR_GITBR}"
-# 		elif [[ "$git_status" =~ nothing\ added\ to\ commit\ but\ untracked\ files\ present ]]; then
-# 			char="${CLR_GITST_UT}!${CLR_GITBR}"
-# 		else
-# 			char="${CLR_GITST_USC}*${CLR_GITBR}"
-# 		fi
-# 		echo -en "$char"
-# 	fi
-# }
+	# On MacOSX $HOSTNAME is "FoobarMac.local" instead of "FoobarMac"
+	# So use the PS1 magic "\h" instead, which is correct.
+	host="\h"
 
-function get-git-info() {
+	clr_home="$CLR_L_GREEN"
+
+	CLR_GITST_CLS="$CLR_GREEN" # Clear state
+	CLR_GITST_SC="$CLR_YELLOW" # Staged changes
+	CLR_GITST_USC="$CLR_RED" # Unstaged changes
+	CLR_GITST_UT="$CLR_L_GREY" # Untracked files
+	CLR_GITST_BR="$CLR_GREEN"
+
+	case "$P_CANONICAL_HOST" in
+		"KrinkleMac")
+			CLR_GITST_BR="$CLR_CYAN"
+			clr_home="$CLR_L_CYAN"
+			;;
+		*)
+			if [ "$INSTANCENAME" != "" ]; then
+				host="$INSTANCENAME"
+			fi
+	esac
+
+	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+		supportcolor=yes
+	fi
+
+
+	if [ "$supportcolor" != "" ]; then
+	    PS1="$CLR_L_GREY[\$(date +%H:%M\ %Z)] $clr_home\u@$host$CLR_NONE:$CLR_YELLOW\w\$(_dotfiles-git-ps1)$CLR_NONE\$ "
+	else
+	    PS1="[\$(date +%H:%M\ %Z)] \u@$host:\w\$ "
+	fi
+
+
+}
+
+#
+# Git status
+#
+function _dotfiles-git-ps1() {
 	local st_staged=0
 	local st_unstaged=0
 	local st_untracked=0
@@ -54,21 +84,25 @@ function get-git-info() {
 	fi
 
 	branch="`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`"
-	echo -en "${CLR_GITBR} ($branch$indicator${CLR_GITBR})"
+	echo -en "${CLR_GITST_BR} ($branch$indicator${CLR_GITST_BR})"
 }
+
 
 #
 # Dotfiles
 #
-
 function dotfiles-pull() {
 	cd $HOME/.krinkle.dotfiles
 
 	git fetch origin
 	git log-asi master...origin/master
+
+	# Sanity check before potentially executing arbitrary
+	# bash commands.
+
 	git diff master origin/master --stat && git diff master origin/master
 
-	read -p "Continue (y/n): > " choice
+	read -p "OK to pull down? (y/n): > " choice
 	case "$choice" in
 		y|Y)
 			git reset --hard origin/master && source $HOME/.krinkle.dotfiles/index.bash

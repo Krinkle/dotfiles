@@ -66,41 +66,6 @@ P_CLR_L_GREY="\[\033[0;37m\]"
 P_CLR_WHITE="\[\033[1;37m\]"
 P_CLR_NONE="\[\033[0m\]"
 
-# PS1
-#MacOSX Default: PS1='\h:\W \u\$'
+# Call setup functions
 
-# On MacOSX $HOSTNAME is "FoobarMac.local" instead of "FoobarMac"
-# So use the PS1 magic "\h" instead, which is correct.
-P_HOST="\h"
-
-CLR_HOME="$CLR_L_GREEN"
-CLR_GITBR="$CLR_GREEN"
-
-CLR_GITST_CLS="$CLR_GREEN" # Clear state
-CLR_GITST_SC="$CLR_YELLOW" # Staged changes
-CLR_GITST_USC="$CLR_RED" # Unstaged changes
-CLR_GITST_UT="$CLR_L_GREY" # Untracked files
-
-case "$P_CANONICAL_HOST" in
-	"KrinkleMac")
-		CLR_GITBR="$CLR_CYAN"
-		CLR_HOME="$CLR_L_CYAN"
-		;;
-	*)
-		if [ "$INSTANCENAME" != "" ]; then
-			P_HOST="$INSTANCENAME"
-		fi
-esac
-
-if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	P_SUPPORT_COLOR=yes
-else
-	P_SUPPORT_COLOR=
-fi
-
-
-if [ "$P_SUPPORT_COLOR" != "" ]; then
-    PS1="$CLR_L_GREY[\$(date +%H:%M\ %Z)] $CLR_HOME\u@$P_HOST$CLR_NONE:$CLR_YELLOW\w\$(get-git-info)$CLR_NONE\$ "
-else
-    PS1="[\$(date +%H:%M\ %Z)] \u@$P_HOST:\w\$ "
-fi
+_dotfiles-ps1-setup

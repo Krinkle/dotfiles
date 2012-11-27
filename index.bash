@@ -20,13 +20,13 @@ esac
 #
 # Includes
 #
-source ~/.krinkle.dotfiles/modules/setup.bash
 source ~/.krinkle.dotfiles/modules/aliases.bash
 source ~/.krinkle.dotfiles/modules/functions.bash
+source ~/.krinkle.dotfiles/modules/setup.bash
 
 case "$P_CANONICAL_HOST" in
 	"KrinkleMac")
-		source ~/.krinkle.dotfiles/hosts/KrinkleMac/modules/setup.bash
 		source ~/.krinkle.dotfiles/hosts/KrinkleMac/modules/aliases.bash
+		source ~/.krinkle.dotfiles/hosts/KrinkleMac/modules/setup.bash
 		;;
 esac
