@@ -5,7 +5,11 @@
 # Bins from Apple Developer Tools (Xcode)
 export PATH=/Applications/Xcode.app/Contents/Developer/usr/bin:$PATH
 
+# Bins from Sublime Text 2
+export PATH="/Applications/Sublime Text 2.app/Contents/SharedSupport/bin:$PATH"
+
 # Bins from me, npm -g or Homebrew
+export PATH=/usr/local/sbin:$PATH
 export PATH=/usr/local/bin:$PATH
 
 # Local etc (symlinked to data of `brew install bash-completion`)
@@ -89,3 +93,11 @@ source /usr/local/etc/bash_completion
 ## (through TERM and /usr/bin/tput)
 ## Default TERM in Apple's Terminal.app: xterm-256color
 ## Changed to (in Preferences): rxvt
+
+## Basic local DNS service for wildcard *.foo.dev domains
+## (since /etc/hosts doesn't support wildard domains)
+# $ brew uninstall dnsmasq
+## After editing dnsmasq.conf, reload deamon:
+# $ sudo launchctl unload -w /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
+# $ sudo launchctl load -w /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
+# $ dscacheutil -flushcache
