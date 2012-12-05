@@ -58,6 +58,8 @@ function _dotfiles-ps1-setup() {
 
 #
 # Git status
+# Based on the "official" git-completion.bash
+# But more simplified and with colors.
 #
 function _dotfiles-git-ps1() {
 	local st_staged=0
@@ -73,14 +75,13 @@ function _dotfiles-git-ps1() {
 	if [[ -n "$(git diff-index --cached HEAD 2> /dev/null)" ]]; then
 		# ls-files has no way to list files that are staged, we have to use the
 		# significantly slower (for large repos)  diff-index command instead
-		indicator="$indicator${CLR_GITST_SC}*" # Staged changes
+		indicator="$indicator${CLR_GITST_SC}+" # Staged changes
 	fi
 	if [[ -n "$(git ls-files --modified 2> /dev/null)" ]]; then
 		indicator="$indicator${CLR_GITST_USC}*" # Unstaged changes
 	fi
-
 	if [[ -n "$(git ls-files --others --exclude-standard 2> /dev/null)" ]]; then
-		indicator="$indicator${CLR_GITST_UT}?" # Untracked files
+		indicator="$indicator${CLR_GITST_UT}%" # Untracked files
 	fi
 
 	branch="`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`"
