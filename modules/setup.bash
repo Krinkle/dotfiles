@@ -21,10 +21,6 @@ export EDITOR=vim
 # Terminal
 #
 
-# Fix svn merge errors about "svnserver: warning: cannot set locale"
-# Source: http://armenianeagle.com/2008/03/18/svn-warning-cannot-set-lc_ctype-locale-solution/
-export LC_ALL=C
-
 # Terminal color codes
 # Source: http://www.pixelbeat.org/docs/terminal_colours/
 # Source: http://www.developerzen.com/2011/01/10/show-the-current-git-branch-in-your-command-prompt/

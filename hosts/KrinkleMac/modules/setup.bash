@@ -12,6 +12,19 @@ export PATH="/Applications/Sublime Text 2.app/Contents/SharedSupport/bin:$PATH"
 export PATH=/usr/local/sbin:$PATH
 export PATH=/usr/local/bin:$PATH
 
+# Bins from gem from ruby from Homebrew
+# http://stackoverflow.com/a/14138490/319266
+export PATH=$(cd $(which gem)/..; pwd):$PATH
+
+# Fix svn merge errors about "svnserver: warning: cannot set locale"
+# Source: http://armenianeagle.com/2008/03/18/svn-warning-cannot-set-lc_ctype-locale-solution/
+#export LC_ALL=C
+
+# Fix gem/ruby errors about "unable to convert U+3002 from UTF-8 to US-ASCII for lib/shortener.rb, skipping"
+export LC_CTYPE=en_US.UTF-8
+export LANG=en_US.UTF-8
+unset LC_ALL
+
 # Local etc (symlinked to data of `brew install bash-completion`)
 source /usr/local/etc/bash_completion
 

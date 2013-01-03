@@ -21,13 +21,14 @@ alias dogerritfixup='git config user.email ttijhof@wikimedia.org && git checkout
 # http://osxdaily.com/2010/05/06/speed-up-a-slow-terminal-by-clearing-log-files/
 alias dotruncateasl='sudo rm /private/var/log/asl/*.asl'
 
-# http://en.kuma-de.com/blog/2011-12-24/483
-# ...
-alias dormdsstore='find . -name ".DS_Store" | xargs rm'
+# https://snipt.net/Yannick/delete-recursively-a-file-ds_store-thumbsdb-desktopini-etc/
+alias dormdsstore='find . -name ".DS_Store" -type f -exec rm {} \;'
+
+alias doapachereset='cd /var/log/apache2 && sudo rm *_log && sudo apachectl restart && clear && l && cd -'
 
 # mirror media repos
 # $ wget-magic-noindex "http://..."
-# $ wget-magic-filter ".jpg" "http://..."
+# $ wget-magic-filter ".png" "http://..."
 alias wget-magic-noindex='wget -m --no-parent --reject "index.html*"'
 alias wget-magic-filter='wget -m --no-parent -A'
-alias wget-magic-avi='wget-magic-filter "*.avi"'
+alias wget-magic-mkv='wget-magic-filter "*.mkv"'
