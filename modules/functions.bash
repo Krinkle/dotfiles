@@ -16,14 +16,18 @@
 #
 function _dotfiles-ps1-setup() {
 	local host
-	local clr_home
+	local clr_host
 	local supportcolor
 
 	# On MacOSX $HOSTNAME is "FoobarMac.local" instead of "FoobarMac"
 	# So use the PS1 magic "\h" instead, which is correct.
 	host="\h"
 
-	clr_home="$CLR_L_GREEN"
+	clr_host="$CLR_GREEN"
+
+	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+		supportcolor=yes
+	fi
 
 	CLR_GITST_CLS="$CLR_GREEN" # Clear state
 	CLR_GITST_SC="$CLR_YELLOW" # Staged changes
@@ -33,8 +37,7 @@ function _dotfiles-ps1-setup() {
 
 	case "$P_CANONICAL_HOST" in
 		"KrinkleMac")
-			CLR_GITST_BR="$CLR_CYAN"
-			clr_home="$CLR_L_CYAN"
+			clr_host="$CLR_PURPLE"
 			;;
 		*)
 			if [ "$INSTANCENAME" != "" ]; then
@@ -42,13 +45,8 @@ function _dotfiles-ps1-setup() {
 			fi
 	esac
 
-	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-		supportcolor=yes
-	fi
-
-
 	if [ "$supportcolor" != "" ]; then
-	    PS1="$CLR_L_GREY[\$(date +%H:%M\ %Z)] $clr_home\u@$host$CLR_NONE:$CLR_YELLOW\w\$(_dotfiles-git-ps1)$CLR_NONE\$ "
+	    PS1="$CLR_L_GREY[\$(date +%H:%M\ %Z)] $CLR_L_CYAN\u$CLR_L_GREY at $clr_host$host$CLR_L_GREY in $CLR_YELLOW\w\$(_dotfiles-git-ps1)$CLR_NONE\n\$ "
 	else
 	    PS1="[\$(date +%H:%M\ %Z)] \u@$host:\w\$ "
 	fi
