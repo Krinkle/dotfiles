@@ -2,23 +2,19 @@
 # Terminal
 #
 
-# Bins from Apple Developer Tools (Xcode)
+# Bins: Command Line Tools for Xcode
 export PATH=/Applications/Xcode.app/Contents/Developer/usr/bin:$PATH
 
-# Bins from Sublime Text 2
+# Bins: Sublime Text 2
 export PATH="/Applications/Sublime Text 2.app/Contents/SharedSupport/bin:$PATH"
 
-# Bins from me, npm -g or Homebrew
+# Bins: Homebrew, npm, and others
 export PATH=/usr/local/sbin:$PATH
 export PATH=/usr/local/bin:$PATH
 
-# Bins from gem from ruby from Homebrew
+# Bins: Ruby Gems (via Homebrew)
 # http://stackoverflow.com/a/14138490/319266
 export PATH=$(cd $(which gem)/..; pwd):$PATH
-
-# Fix svn merge errors about "svnserver: warning: cannot set locale"
-# Source: http://armenianeagle.com/2008/03/18/svn-warning-cannot-set-lc_ctype-locale-solution/
-#export LC_ALL=C
 
 # Fix gem/ruby errors about "unable to convert U+3002 from UTF-8 to US-ASCII for lib/shortener.rb, skipping"
 export LC_CTYPE=en_US.UTF-8
@@ -33,6 +29,17 @@ source /usr/local/etc/bash_completion
 # Install
 #
 
+## Set up Homebrew
+## http://mxcl.github.com/homebrew/
+## Then:
+# $ brew install git // 1.8+
+# $ brew install node // 0.8+, also: npm
+# $ brew install ruby // 1.9+, also: gem, rake etc.
+# $ brew install bash-completion
+# $ npm install -g jshint
+# $ npm install -g grunt-cli
+# $ gem install jsduck
+
 ## Set up PEAR, PECL
 ## http://akrabat.com/php/setting-up-php-mysql-on-os-x-10-7-lion/
 # $ cd /usr/lib/php
@@ -45,8 +52,7 @@ source /usr/local/etc/bash_completion
 # PECL also needs autoconf
 # $ brew install autoconf
 # $ brew install re2c
-
-## PHPUnit
+## Then:
 # $ sudo pear channel-discover pear.phpunit.de
 # $ sudo pear channel-discover components.ez.no
 # $ sudo pear channel-discover pear.symfony-project.com
@@ -54,7 +60,7 @@ source /usr/local/etc/bash_completion
 # $ sudo pear install phpunit/phpcpd
 # $ sudo pear install PHP_CodeSniffer
 
-## xdiff (at least 1.5.1)
+## xdiff // 1.5.1+
 # xdiff (through pecl) needs these:
 # $ brew install re2c
 # $ brew install libxdiff
@@ -63,15 +69,9 @@ source /usr/local/etc/bash_completion
 # $ sudo pecl install xdiff
 # $ sudo pecl upgrade xdiff-beta
 
-## Bash completion (e.g. for autocompleting ssh domains from known_hosts )
-# $ brew install bash-completion
-
 ## Travis CI
 ## http://about.travis-ci.org/docs/user/getting-started/
 # $ sudo gem install travis-lint
-
-## Git (1.8.0+)
-# $ brew install git
 
 
 #
