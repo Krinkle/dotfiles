@@ -2,11 +2,11 @@
 # Terminal
 #
 
-# Bins: Sublime Text 2
-export PATH="/Applications/Sublime Text 2.app/Contents/SharedSupport/bin:$PATH"
-
-# Bins: Homebrew, npm, and others
+# Bins: Homebrew and manually installed programs
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+
+# Bins: Homebrew's npm packages (e.g. jshint)
+export PATH=/usr/local/share/npm/bin:$PATH
 
 # Bins: Homebrew's gem packages (e.g. jsduck)
 # http://stackoverflow.com/a/14138490/319266
@@ -14,6 +14,9 @@ export PATH=$(cd $(which gem)/..; pwd):$PATH
 
 # Bins: Homebrew's pear/pecl packages (e.g. phpunit)
 export PATH=$(cd $(which php)/..; pwd):$PATH
+
+# Bins: Sublime Text 2
+#export PATH="/Applications/Sublime Text 2.app/Contents/SharedSupport/bin:$PATH"
 
 # Fix gem/ruby errors about "unable to convert U+3002 from UTF-8 to US-ASCII for lib/shortener.rb, skipping"
 export LC_CTYPE=en_US.UTF-8
@@ -41,8 +44,7 @@ source /usr/local/etc/bash_completion
 # $ brew install node // nodejs 0.8 or higher, inludes npm
 # $ brew install ruby // Ruby 1.9 or higher, includes gem, rake etc.
 # $ brew install bash-completion // for git, ssh, etc.
-# $ brew tap josegonzalez/homebrew-php
-# $ brew install php54
+# $ brew tap homebrew/dupes && brew tap josegonzalez/homebrew-php && brew install php54
 # $ mkdir /usr/local/etc/php/5.4/conf.d
 # $ npm install -g jshint
 # $ npm install -g grunt-cli
@@ -52,6 +54,24 @@ source /usr/local/etc/bash_completion
 # $ sudo pear channel-discover pear.symfony.com
 # $ sudo pear upgrade-all
 # $ sudo pear install --alldeps phpunit/phpunit
+
+
+#
+# Dotfiles
+#
+
+# $ cp ~/.krinkle.dotfiles/hosts/KrinkleMac/templates/gitconfig ~/.gitconfig
+# $ sudo ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/apache-krinkle.dev.conf /etc/apache2/other/krinkle.conf
+# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/php-krinkle.ini /usr/local/etc/php/5.4/conf.d/krinkle.ini
+# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/dnsmasq.conf /usr/local/etc/dnsmasq.conf
+
+# $ sudo mkdir /var/log/php && sudo chmod 777 /var/log/php
+# $ sudo mkdir /var/log/mediawiki && sudo chmod 777 /var/log/mediawiki
+
+# $ mkdir ~/Developer
+# $ git clone mediawiki/core.git ~/Developer/mediawiki/core
+# $ git clone mediawiki/extensions.git ~/Developer/mediawiki/extensions
+
 
 #
 # Misc.
@@ -63,7 +83,6 @@ source /usr/local/etc/bash_completion
 ## https://github.com/buymeasoda/soda-theme/
 ## "color_scheme": "Packages/Color Scheme - Default/LAZY.tmTheme",
 ## "theme": "Soda Light.sublime-theme",
-
 
 ## Apache
 ## Enable:
@@ -93,6 +112,7 @@ source /usr/local/etc/bash_completion
 ## Editing or alias /usr/local/etc/dnsmasq.conf
 ## $ sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
 
+
 #
 # No longer used, kept for future reference:
 #
@@ -100,7 +120,7 @@ source /usr/local/etc/bash_completion
 ## MySQL
 ## mysql.sock location moved
 # $ sudo mkdir /var/mysql -p
-# $ sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock
+# $ sudo ln -s , /var/mysql/mysql.sock
 
 ## Setting up tunnels in BrowserStack needs Java.
 ## Somehow it stopped working with Java 6, so install Java 7.
