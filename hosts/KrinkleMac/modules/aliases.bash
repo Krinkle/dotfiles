@@ -19,12 +19,12 @@ alias dogerritfixup='git config user.email ttijhof@wikimedia.org && git checkout
 # http://ariejan.net/2011/11/08/fixing-a-slow-starting-terminal-or-iterm2-on-mac-os-x
 # https://discussions.apple.com/thread/2178316?start=0&tstart=0
 # http://osxdaily.com/2010/05/06/speed-up-a-slow-terminal-by-clearing-log-files/
-alias dotruncateasl='sudo rm /private/var/log/asl/*.asl'
+alias dotruncateasl='sudo rm /var/log/asl/*.asl'
 
 # https://snipt.net/Yannick/delete-recursively-a-file-ds_store-thumbsdb-desktopini-etc/
 alias dormdsstore='find . -name ".DS_Store" -type f -exec rm {} \;'
 
-alias doapachereset='cd /var/log/apache2 && sudo rm *_log && sudo apachectl restart && clear && l && cd -'
+alias doapachereset='cd /usr/local/opt/httpd/var/apache2/log && rm -f *_log && sudo apachectl restart && l'
 
 # mirror media repos
 # $ wget-magic-noindex "http://..."

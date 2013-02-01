@@ -10,13 +10,15 @@ export PATH=/usr/local/share/npm/bin:$PATH
 
 # Bins: Homebrew's gem packages (e.g. jsduck)
 # http://stackoverflow.com/a/14138490/319266
-export PATH=$(cd $(which gem)/..; pwd):$PATH
+if [ -x /usr/local/bin/gem ]; then
+	export PATH=$(cd /usr/local/bin/gem/..; pwd):$PATH
+fi
 
 # Bins: Homebrew's pear/pecl packages (e.g. phpunit)
-export PATH=$(cd $(which php)/..; pwd):$PATH
-
-# Bins: Sublime Text 2
-#export PATH="/Applications/Sublime Text 2.app/Contents/SharedSupport/bin:$PATH"
+# Only if installed in local, else it would destroy PATH by putting /usr/bin in front
+if [ -x /usr/local/bin/pear ]; then
+	export PATH=$(cd /usr/local/bin/pear/..; pwd):$PATH
+fi
 
 # Fix gem/ruby errors about "unable to convert U+3002 from UTF-8 to US-ASCII for lib/shortener.rb, skipping"
 export LC_CTYPE=en_US.UTF-8
@@ -39,13 +41,16 @@ source /usr/local/etc/bash_completion
 ## http://mxcl.github.com/homebrew/
 
 ## Packages:
-# $ brew install ack
-# $ brew install git // Git 1.8 or higher
-# $ brew install node // nodejs 0.8 or higher, inludes npm
-# $ brew install ruby // Ruby 1.9 or higher, includes gem, rake etc.
-# $ brew install bash-completion // for git, ssh, etc.
-# $ brew tap homebrew/dupes && brew tap josegonzalez/homebrew-php && brew install php54
+# $ brew install git
+# $ brew install node ruby // Includes npm, gem, rake
+# $ brew install ack bash-completion
+# $ brew tap homebrew/dupes && brew tap josegonzalez/homebrew-php
+# $ brew install httpd mysql php54 phpmyadmin
+# $ mkdir /usr/local/opt/httpd/var/apache2/log
+# $ mkdir /usr/local/opt/httpd/var/apache2/run
+# $ mkdir -p /usr/local/var/mysql # MySQL working directory
 # $ mkdir /usr/local/etc/php/5.4/conf.d
+# $ brew install zlib gettext # Needed for httpd/php54/libphp5.so
 # $ npm install -g jshint
 # $ npm install -g grunt-cli
 # $ gem install jsduck
@@ -55,22 +60,38 @@ source /usr/local/etc/bash_completion
 # $ sudo pear upgrade-all
 # $ sudo pear install --alldeps phpunit/phpunit
 
+#
+# Web server
+#
+
+## MediaWiki
+# $ mkdir ~/Developer
+# $ git clone mediawiki/core.git ~/Developer/mediawiki/core
+# $ git clone mediawiki/extensions.git ~/Developer/mediawiki/extensions
+# $ sudo mkdir -p /var/log/mediawiki && sudo chmod 777 /var/log/mediawiki
+
+## DNSmasq: Local DNS service (as /etc/hosts doesn't support wildards)
+# $ brew install dnsmasq
+## Follow instructions by brew-install, especially: edit /usr/local/etc/dnsmasq.conf
+## $ sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
+
+## PHP
+# $ sudo mkdir -p /var/log/php && sudo chmod 777 /var/log/php
+# $ sudo mkdir -p /tmp/php54 && sudo chmod 777 /tmp/php54
+
+## Apache conf loader
+# $ mkdir /usr/local/opt/httpd/etc/apache2/other
+# $ echo 'Include etc/apache2/other/*.conf' >> /usr/local/opt/httpd/etc/apache2/httpd.conf
+
 
 #
 # Dotfiles
 #
 
 # $ cp ~/.krinkle.dotfiles/hosts/KrinkleMac/templates/gitconfig ~/.gitconfig
-# $ sudo ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/apache-krinkle.dev.conf /etc/apache2/other/krinkle.conf
-# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/php-krinkle.ini /usr/local/etc/php/5.4/conf.d/krinkle.ini
 # $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/dnsmasq.conf /usr/local/etc/dnsmasq.conf
-
-# $ sudo mkdir /var/log/php && sudo chmod 777 /var/log/php
-# $ sudo mkdir /var/log/mediawiki && sudo chmod 777 /var/log/mediawiki
-
-# $ mkdir ~/Developer
-# $ git clone mediawiki/core.git ~/Developer/mediawiki/core
-# $ git clone mediawiki/extensions.git ~/Developer/mediawiki/extensions
+# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/php.ini /usr/local/etc/php/5.4/conf.d/krinkle.ini
+# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/httpd.conf /usr/local/opt/httpd/etc/apache2/other/krinkle.conf
 
 
 #
@@ -84,43 +105,16 @@ source /usr/local/etc/bash_completion
 ## "color_scheme": "Packages/Color Scheme - Default/LAZY.tmTheme",
 ## "theme": "Soda Light.sublime-theme",
 
-## Apache
-## Enable:
-## For now I prefer just using the Apache install that
-## ships with Mac OS X. To enable it (if not already)
-## go to System Preferences > Network > [x] Web Sharing.
-## Configuration:
-# $ sudo vim /etc/apache2/httpd.conf
-## Include /etc/apache2/other/*.conf unconditionally
-# --- <IfDefine ...>
-# ---     Include /etc/apache2/other/*.conf
-# +++ Include /etc/apache2/other/*.conf
-# --- </IfDefine>
-# $ sudo apachectl restart
-
 ## Terminal
 ## Ubuntu sometimes thinks the Mac Terminal doesn't support colors
 ## (base on through $TERM and /usr/bin/tput)
 ## Default $TERM in Apple's Terminal.app: xterm-256color
 ## Change this to (in Terminal.app Preferences): rxvt
 
-## DNSmasq
-## Local DNS service for wildcard domains.
-## (since /etc/hosts doesn't support wildard domains)
-# $ brew install dnsmasq
-## Follow instructions by brew-install, especially:
-## Editing or alias /usr/local/etc/dnsmasq.conf
-## $ sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
-
 
 #
 # No longer used, kept for future reference:
 #
-
-## MySQL
-## mysql.sock location moved
-# $ sudo mkdir /var/mysql -p
-# $ sudo ln -s , /var/mysql/mysql.sock
 
 ## Setting up tunnels in BrowserStack needs Java.
 ## Somehow it stopped working with Java 6, so install Java 7.
