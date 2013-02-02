@@ -93,6 +93,15 @@ source /usr/local/etc/bash_completion
 # $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/php.ini /usr/local/etc/php/5.4/conf.d/krinkle.ini
 # $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/httpd.conf /usr/local/opt/httpd/etc/apache2/other/krinkle.conf
 
+# $ mkdir ~/Development
+# $ git clone mediawiki/core.git ~/Development/mediawiki/core
+# $ chmod 777 ~/Development/mediawiki/core/cache
+# $ git clone mediawiki/extensions.git ~/Development/mediawiki/extensions
+
+# $ sudo mkdir /var/log/mediawiki && sudo chmod 777 /var/log/mediawiki
+# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/mw-CommonSettings.php ~/Development/mediawiki/CommonSettings.php
+# $ cp ~/.krinkle.dotfiles/hosts/KrinkleMac/templates/mw-LocalSettings.php ~/Development/mediawiki/core/LocalSettings.php
+
 
 #
 # Misc.

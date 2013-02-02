@@ -5,7 +5,7 @@ alias dogitcommit='git commit -F ~/Documents/COMMIT.txt'
 alias gogogerrit='git review -R'
 alias grabfromgerrit='git review -d'
 alias dotfiles-push='cd ~/.krinkle.dotfiles && git commit -a -m "sync dotfiles" && git push -f && cd -'
-alias dotfiles-push-amend='cd ~/.krinkle.dotfiles && git commit -a --amend -C HEAD --reset-author && git push -f && cd -'
+alias dotfiles-push-amend='cd ~/.krinkle.dotfiles && git commit -a --amend -c HEAD --reset-author && git push -f && cd -'
 
 
 # Set up stuff for git clones from gerrit.wikimedia.org
