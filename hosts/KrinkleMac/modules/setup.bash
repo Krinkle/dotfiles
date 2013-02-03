@@ -77,7 +77,7 @@ source /usr/local/etc/bash_completion
 
 ## PHP
 # $ sudo mkdir -p /var/log/php && sudo chmod 777 /var/log/php
-# $ sudo mkdir -p /tmp/php54 && sudo chmod 777 /tmp/php54
+# $ sudo mkdir -p /var/php && sudo chmod 777 /var/php
 
 ## Apache conf loader
 # $ mkdir /usr/local/opt/httpd/etc/apache2/other
