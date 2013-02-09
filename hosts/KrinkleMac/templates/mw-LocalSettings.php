@@ -23,7 +23,7 @@ $kfExtensions = array(
 );
 
 ## Include symlinked settings from Krinkle Dotfiles
-require_once( __DIR__ . '/../CommonSettings.php' );
+require_once( __DIR__ . '/CommonSettings.php' );
 
 ## Local environment
 $wgDiff3 = '/usr/bin/diff3';

@@ -36,7 +36,10 @@ $wgDiff3 = '/usr/bin/diff3';
 if ( defined( 'MW_DB' ) ) {
 	$wgDBname = MW_DB;
 	$kgServerTLD = 'krinkle.dev';
-} elseif ( isset( $_SERVER['HTTP_HOST'] ) ) {
+} elseif ( getenv( 'MW_DB' ) !== false ) {
+	$wgDBname = getenv( 'MW_DB' );
+	$kgServerTLD = 'krinkle.dev';
+}elseif ( isset( $_SERVER['HTTP_HOST'] ) ) {
 	$m = null;
 	preg_match(
 		'/(.+?).(wikipedia).(krinkle.dev|krinkle.no-ip.org)/',

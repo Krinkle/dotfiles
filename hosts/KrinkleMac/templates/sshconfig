@@ -1,0 +1,23 @@
+## Keys
+
+#IdentityFile ~/.ssh/id_rsa_example
+
+## WMFLabs
+## https://labsconsole.wikimedia.org/wiki/Help:Access#Using_ProxyCommand_ssh_option
+
+Host bastion1.pmtpa.wmflabs
+Hostname bastion.wmflabs.org
+ProxyCommand none
+
+Host bastion1.eqiad.wmflabs
+Hostname bastion2.wmflabs.org
+ProxyCommand none
+
+Host *.pmtpa.wmflabs
+ProxyCommand ssh -a -W %h:%p bastion1.pmtpa.wmflabs
+
+Host *.eqiad.wmflabs
+ProxyCommand ssh -a -W %h:%p bastion1.eqiad.wmflabs
+
+Host *.wmflabs
+User krinkle

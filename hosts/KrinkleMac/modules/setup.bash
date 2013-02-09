@@ -25,105 +25,133 @@ export LC_CTYPE=en_US.UTF-8
 export LANG=en_US.UTF-8
 unset LC_ALL
 
+export MW_INSTALL_PATH='/Users/krinkle/Development/mediawiki/core'
+export MW_DB='betawiki'
+
 # Local etc (symlinked to data of `brew install bash-completion`)
 source /usr/local/etc/bash_completion
 
 
 #
-# Install
+# Installation (Terminal / Environment)
 #
 
-## Set up "Command Line Toos for Xcode" (without Xcode)
+## Set up "Command Line Tools for Xcode" (without Xcode)
 ## This provides 'make' among other things, required by Homebrew.
-## https://developer.apple.com/downloads
+## http://connect.apple.com
 
 ## Set up Homebrew
 ## http://mxcl.github.com/homebrew/
-
-## Packages:
-# $ brew install git
-# $ brew install node ruby // Includes npm, gem, rake
-# $ brew install ack bash-completion
+# $ brew doctor
 # $ brew tap homebrew/dupes && brew tap josegonzalez/homebrew-php
-# $ brew install httpd mysql php54 phpmyadmin
+
+## Git
+# $ brew install git
+# $ cp ~/.krinkle.dotfiles/hosts/KrinkleMac/templates/gitconfig ~/.gitconfig
+
+## SSH Key
+## https://help.github.com/articles/generating-ssh-keys
+# cp ~/.krinkle.dotfiles/hosts/KrinkleMac/templates/sshconfig ~/.ssh/config
+## Add key to GitHub and WMF Labs LDAP
+# cd ~/.krinkle.dotfiles; git remote rm origin; git remote add origin git@...; git pull origin master -u
+
+## Apache
+# $ brew install httpd
+### https://github.com/Homebrew/homebrew-dupes/issues/119
 # $ mkdir /usr/local/opt/httpd/var/apache2/log
 # $ mkdir /usr/local/opt/httpd/var/apache2/run
-# $ mkdir -p /usr/local/var/mysql # MySQL working directory
+## Disable built-in httpd from Mountain Lion
+# $ sudo /usr/sbin/apachectl stop
+# $ sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist
+# $ sudo launchctl remove org.apache.httpd.plist
+## Add httpd from Homebrew to launchctl (https://github.com/Homebrew/homebrew-dupes/issues/140)
+# $ edit /user/local/opt/httpd/homebrew.mxcl.httpd.plist `https://github.com/Homebrew/homebrew-dupes/blob/master/httpd.rb#startup_plist`
+# $ sudo chown root /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
+# $ sudo chmod 644 /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
+# $ sudo launchctl load -w /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
+# $ sudo /usr/local/sbin/apachectl restart
+
+## PHP
+# $ brew install php54
 # $ mkdir /usr/local/etc/php/5.4/conf.d
-# $ brew install zlib gettext # Needed for httpd/php54/libphp5.so
+# $ sudo mkdir -p /var/log/php && sudo chmod 777 /var/log/php
+# $ sudo mkdir -p /var/php && sudo chmod 777 /var/php
+# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/php.ini /usr/local/etc/php/5.4/conf.d/krinkle.ini
+
+## Apache
+## (continued, after PHP)
+# $ mkdir /usr/local/opt/httpd/etc/apache2/other
+# $ echo 'Include etc/apache2/other/*.conf' >> /usr/local/opt/httpd/etc/apache2/httpd.conf
+# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/httpd.conf /usr/local/opt/httpd/etc/apache2/other/krinkle.conf
+
+## MySQL
+# $ brew install mysql
+# Caveat: mysql_install_db and load
+# Ignore rest of caveat, mysql_install_db command gives command
+# for mysql_secure_installation wizard. Use that instead. 
+
+## phpMyAdmin
+# $ brew install phpmyadmin
+
+## Misc
+# $ brew install node ruby // Includes npm, gem, rake
+# $ brew install ack bash-completion
 # $ npm install -g jshint
 # $ npm install -g grunt-cli
 # $ gem install jsduck
-## Set up PHPUnit
+
+## PHPUnit
 # $ sudo pear channel-discover pear.phpunit.de
 # $ sudo pear channel-discover pear.symfony.com
 # $ sudo pear upgrade-all
 # $ sudo pear install --alldeps phpunit/phpunit
 
-#
-# Web server
-#
-
 ## MediaWiki
-# $ mkdir ~/Developer
-# $ git clone mediawiki/core.git ~/Developer/mediawiki/core
-# $ git clone mediawiki/extensions.git ~/Developer/mediawiki/extensions
-# $ sudo mkdir -p /var/log/mediawiki && sudo chmod 777 /var/log/mediawiki
+## Install
+# $ mkdir ~/Development
+# $ git clone ssh://krinkle@gerrit.wikimedia.org:29418/mediawiki/core.git ~/Development/mediawiki/core
+# $ chmod 777 ~/Development/mediawiki/core/cache
+# $ git clone ssh://krinkle@gerrit.wikimedia.org:29418/mediawiki/extensions.git ~/Development/mediawiki/extensions
+## Configure
+# $ sudo mkdir /var/log/mediawiki && sudo chmod 777 /var/log/mediawiki
+# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/mw-CommonSettings.php ~/Development/mediawiki/core/CommonSettings.php
+# $ edit ~/Development/mediawiki/core/.git/info/exclude # Add CommonSettings.php
+# $ cp ~/.krinkle.dotfiles/hosts/KrinkleMac/templates/mw-LocalSettings.php ~/Development/mediawiki/core/LocalSettings.php
 
 ## DNSmasq: Local DNS service (as /etc/hosts doesn't support wildards)
 # $ brew install dnsmasq
-## Follow instructions by brew-install, especially: edit /usr/local/etc/dnsmasq.conf
-## $ sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
-
-## PHP
-# $ sudo mkdir -p /var/log/php && sudo chmod 777 /var/log/php
-# $ sudo mkdir -p /var/php && sudo chmod 777 /var/php
-
-## Apache conf loader
-# $ mkdir /usr/local/opt/httpd/etc/apache2/other
-# $ echo 'Include etc/apache2/other/*.conf' >> /usr/local/opt/httpd/etc/apache2/httpd.conf
-
-
-#
-# Dotfiles
-#
-
-# $ cp ~/.krinkle.dotfiles/hosts/KrinkleMac/templates/gitconfig ~/.gitconfig
+## Follow instructions by brew-install. Be sure to symlink conf file before loading
 # $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/dnsmasq.conf /usr/local/etc/dnsmasq.conf
-# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/php.ini /usr/local/etc/php/5.4/conf.d/krinkle.ini
-# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/httpd.conf /usr/local/opt/httpd/etc/apache2/other/krinkle.conf
+# Network Preferences -> DNS: [127.0.0.1, 8.8.8.8, 8.8.8.4] # Local DNSmasq, then Google DNS
 
-# $ mkdir ~/Development
-# $ git clone mediawiki/core.git ~/Development/mediawiki/core
-# $ chmod 777 ~/Development/mediawiki/core/cache
-# $ git clone mediawiki/extensions.git ~/Development/mediawiki/extensions
-
-# $ sudo mkdir /var/log/mediawiki && sudo chmod 777 /var/log/mediawiki
-# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/mw-CommonSettings.php ~/Development/mediawiki/CommonSettings.php
-# $ cp ~/.krinkle.dotfiles/hosts/KrinkleMac/templates/mw-LocalSettings.php ~/Development/mediawiki/core/LocalSettings.php
 
 
 #
-# Misc.
+# Installation (GUI)
 #
 
 ## Sublime Text 2
 ## http://www.sublimetext.com/2
 ## http://wbond.net/sublime_packages/package_control
-## https://github.com/buymeasoda/soda-theme/
-## "color_scheme": "Packages/Color Scheme - Default/LAZY.tmTheme",
-## "theme": "Soda Light.sublime-theme",
+## Install Package:
+## - SublimeLinter,
+## - DocBlockr
+## - Soda Theme
+## Preferences:
+##  "color_scheme": "Packages/Color Scheme - Default/LAZY.tmTheme",
+##  "theme": "Soda Light.sublime-theme",
+
+
+#
+# Archive
+# (No longer used, kept for future reference)
+#
 
 ## Terminal
 ## Ubuntu sometimes thinks the Mac Terminal doesn't support colors
 ## (base on through $TERM and /usr/bin/tput)
 ## Default $TERM in Apple's Terminal.app: xterm-256color
 ## Change this to (in Terminal.app Preferences): rxvt
-
-
-#
-# No longer used, kept for future reference:
-#
 
 ## Setting up tunnels in BrowserStack needs Java.
 ## Somehow it stopped working with Java 6, so install Java 7.

@@ -12,7 +12,9 @@
 P_CANONICAL_HOST="$HOSTNAME"
 
 case "$P_CANONICAL_HOST" in
-	"KrinkleMac.local" | "KrinkleMacLoaner.local" | "KrinkleMac.fritz.box" | "krinklemac.fritz.box" | "krink_10252.nstrein")
+	"KrinkleMac.local" | "KrinkleMac.fritz.box" | "krinklemac.fritz.box" |\
+	"KrinkleMacLoaner.local" |\
+	"GrizzMac.local")
 		P_CANONICAL_HOST="KrinkleMac"
 		;;
 esac
