@@ -1,16 +1,15 @@
 # Actions
-alias docheckcommitmsg='cat ~/Documents/COMMIT.txt'
-alias dosvncommit='svn commit -F ~/Documents/COMMIT.txt'
-alias dogitcommit='git commit -F ~/Documents/COMMIT.txt'
+alias docheckcommitmsg='cat ~/Development/tmp/COMMIT.txt'
+alias dosvncommit='svn commit -F ~/Development/tmp/COMMIT.txt'
+alias dogitcommit='git commit -F ~/Development/tmp/COMMIT.txt'
 alias gogogerrit='git review -R'
 alias grabfromgerrit='git review -d'
 alias dotfiles-push='cd ~/.krinkle.dotfiles && git commit -a -m "sync dotfiles" && git push -f && cd -'
 alias dotfiles-push-amend='cd ~/.krinkle.dotfiles && git commit -a --amend -c HEAD --reset-author && git push -f && cd -'
 
-
 # Set up stuff for git clones from gerrit.wikimedia.org
 # - Set up git-config user.email so that my commits are accepted by Gerrit.
-# - Call git-review -s to installs the neccecary hooks and adds the 'gerrit' git-remote
+# - Call git-review -s to installs the necessary hooks and adds the 'gerrit' git-remote
 # - Removes the 'origin' remote (without && since it will return in error if it was already removed)
 # - Updates the local 'master' branch to be a remote tracking branch to gerrit/master
 #   (just like git-clone would do if it was set up that way in the first place)

@@ -12,6 +12,8 @@ alias ll='ls -ahlF'
 alias l='ll'
 alias gi='git'
 
+alias ..='cd ..'
+
 alias jsonhint='jshint --extra-ext .json'
 
 # Size calculation

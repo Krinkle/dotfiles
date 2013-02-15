@@ -138,9 +138,15 @@ source /usr/local/etc/bash_completion
 ## - DocBlockr
 ## - Soda Theme
 ## Preferences:
-##  "color_scheme": "Packages/Color Scheme - Default/LAZY.tmTheme",
-##  "theme": "Soda Light.sublime-theme",
+##  "color_scheme": "Packages/Color Scheme - Default/LAZY.tmTheme"
+##  "theme": "Soda Light.sublime-theme"
+##  "rulers": [ 80, 100 ]
+##  "dictionary": "Packages/Language - English/en_GB.dic"
+##  "spell_check": true
 
+## LimeChat
+## http://limechat.net/mac/
+## https://github.com/Krinkle/limechat-theme-colloquy
 
 #
 # Archive
