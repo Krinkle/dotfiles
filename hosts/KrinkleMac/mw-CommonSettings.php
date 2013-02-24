@@ -224,7 +224,7 @@ unset( $wgGroupPermissions['developer'] );
 
 ## Testing
 $wgEnableJavaScriptTest = true;
-$wgJavaScriptTestConfig['qunit']['testswarm-injectjs'] = 'http://' . $kgServerTLD . '/jquery/testswarm/js/inject.js';
+$wgJavaScriptTestConfig['qunit']['testswarm-injectjs'] = '//' . $kgServerTLD . '/jquery/testswarm/js/inject.js';
 $wgLegacyJavaScriptGlobals = false;
 
 ## Rights

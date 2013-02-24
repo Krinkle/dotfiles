@@ -52,7 +52,8 @@ source /usr/local/etc/bash_completion
 ## SSH Key
 ## https://help.github.com/articles/generating-ssh-keys
 # cp ~/.krinkle.dotfiles/hosts/KrinkleMac/templates/sshconfig ~/.ssh/config
-## Add key to GitHub and WMF Labs LDAP
+## Generate different keys (for GitHub, Wikimedia Labs LDAP, Toolserver etc.)
+## and submit them to those organisations.
 # cd ~/.krinkle.dotfiles; git remote rm origin; git remote add origin git@...; git pull origin master -u
 
 ## Apache
@@ -125,7 +126,6 @@ source /usr/local/etc/bash_completion
 # Network Preferences -> DNS: [127.0.0.1, 8.8.8.8, 8.8.8.4] # Local DNSmasq, then Google DNS
 
 
-
 #
 # Installation (GUI)
 #
@@ -138,19 +138,16 @@ source /usr/local/etc/bash_completion
 ## - DocBlockr
 ## - Soda Theme
 ## Preferences:
-##  "color_scheme": "Packages/Color Scheme - Default/LAZY.tmTheme"
-##  "theme": "Soda Light.sublime-theme"
-##  "rulers": [ 80, 100 ]
-##  "dictionary": "Packages/Language - English/en_GB.dic"
-##  "spell_check": true
+# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/SublimePreferences.json ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User/Preferences.sublime-settings 
 
 ## LimeChat
 ## http://limechat.net/mac/
 ## https://github.com/Krinkle/limechat-theme-colloquy
 
+
+
 #
 # Archive
-# (No longer used, kept for future reference)
 #
 
 ## Terminal
