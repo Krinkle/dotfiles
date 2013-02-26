@@ -144,17 +144,16 @@ source /usr/local/etc/bash_completion
 ## http://limechat.net/mac/
 ## https://github.com/Krinkle/limechat-theme-colloquy
 
+## Terminal
+## When connecting over SSH, Linux sometimes thinks the Mac Terminal doesn't
+## support colors (base on through $TERM and /usr/bin/tput)
+## Default $TERM in Apple's Terminal.app: xterm-256color
+## Change this (in Terminal.app's Preferences) to: rxvt
 
 
 #
 # Archive
 #
-
-## Terminal
-## Ubuntu sometimes thinks the Mac Terminal doesn't support colors
-## (base on through $TERM and /usr/bin/tput)
-## Default $TERM in Apple's Terminal.app: xterm-256color
-## Change this to (in Terminal.app Preferences): rxvt
 
 ## Setting up tunnels in BrowserStack needs Java.
 ## Somehow it stopped working with Java 6, so install Java 7.
