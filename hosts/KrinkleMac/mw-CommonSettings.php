@@ -4,6 +4,8 @@
 $wgMetaNamespace = 'Project';
 $wgLanguageCode = 'en';
 $wgSitename = false;
+$kgMainServer = false;
+$kgCluster = false;
 
 ## Database settings
 $wgDBtype           = 'mysql';
@@ -35,37 +37,32 @@ $wgDiff3 = '/usr/bin/diff3';
 
 if ( defined( 'MW_DB' ) ) {
 	$wgDBname = MW_DB;
-	$kgServerTLD = 'krinkle.dev';
+	$kgCluster = 'dev';
 } elseif ( getenv( 'MW_DB' ) !== false ) {
 	$wgDBname = getenv( 'MW_DB' );
-	$kgServerTLD = 'krinkle.dev';
+	$kgCluster = 'dev';
 }elseif ( isset( $_SERVER['HTTP_HOST'] ) ) {
 	$m = null;
 	preg_match(
-		'/(.+?).(wikipedia).(krinkle.dev|krinkle.no-ip.org)/',
+		'/(.+?).(wikipedia).(krinkle.dev|krinkledev.local)/',
 		$_SERVER['HTTP_HOST'],
 		$m
 	);
 	if ( isset( $m[1] ) ) {
 		$wgDBname = $m[1] . 'wiki';
-		$kgServerTLD = $m[3];
-	}
-}
+		$kgCluster = $m[3];
 
-
-##
-## Server paths
-##
-
-$wgScriptExtension  = '.php';
-$wgArticlePath = '/wiki/$1';
-$wgScriptPath = '/w';
-$wgExtensionAssetsPath = '/extensions';
-$EP = dirname( $IP ) . '/extensions';
-
-if ( isset( $kfExtensions ) ) {
-	foreach ( $kfExtensions as $path ) {
-		require_once( str_replace( '$EP', $EP, $path ) );
+	// No-IP Free doesn't have wildcard, initiate as alpha.wiki.
+	} elseif ( $_SERVER['HTTP_HOST'] === 'krinkle-wiki.no-ip.org' ) {
+		preg_match(
+			'/p\/([^\/]+)?\/w/',
+			$_SERVER['REQUEST_URI'],
+			$m
+		);
+		if ( isset( $m[1] ) ) {
+			$wgDBname = $m[1];
+			$kgCluster = 'no-ip';
+		}
 	}
 }
 
@@ -90,11 +87,11 @@ if ( true ) {
 	#$wgMemCachedDebug = false;
 
 	# Log files
-	$mwLogDir = '/var/log/mediawiki';
+	#$mwLogDir = '/var/log/mediawiki';
 
-	$wgDBerrorLog = "$mwLogDir/dberror.log";
-	$wgRateLimitLog = "$mwLogDir/ratelimit.log";
-	$wgDebugLogFile = "$mwLogDir/debug.log";
+	#$wgDBerrorLog = "$mwLogDir/dberror.log";
+	#$wgRateLimitLog = "$mwLogDir/ratelimit.log";
+	#$wgDebugLogFile = "$mwLogDir/debug.log";
 	#$wgDebugLogGroups['x'] = "$mwLogDir/debug-x.log";
 
 	# ResourceLoader
@@ -109,7 +106,7 @@ if ( true ) {
 ## Profiler
 ##
 
-if ( true ) {
+if ( false ) {
 
 	$wgProfiler['class'] = 'Profiler';
 
@@ -140,29 +137,7 @@ $wgConf->settings = array(
 	'wgSitename' => array(
 		'default' => '$lang.$Project',
 		'alphawiki' => 'Wikipedia 2.0alpha',
-	),
-	'wgResourceLoaderSources' => array(
-		'+alphawiki' => array(
-			'betawiki' => array(
-				'loadScript' => '//beta.wikipedia.$tld/w/load.php',
-				'apiScript' => '//beta.wikipedia.$tld/w/api.php',
-			),
-		),
-		'+betawiki' => array(
-			'alphawiki' => array(
-				'loadScript' => '//alpha.wikipedia.$tld/w/load.php',
-				'apiScript' => '//alpha.wikipedia.$tld/w/api.php',
-			),
-		),
-	),
-	'wgGadgetRepositories' => array(
-		'+alphawiki' => array(
-			array(
-				'class' => 'ForeignAPIGadgetRepo',
-				'source' => 'betawiki',
-			),
-		),
-	),
+	)
 );
 
 if ( !in_array( $wgDBname, $wgConf->getLocalDatabases() ) ) {
@@ -202,16 +177,41 @@ HTML;
 
 list( $project, $lang ) = $wgConf->siteFromDB( $wgDBname );
 
-$wgServer = "//$lang.$project.$kgServerTLD";
-
 $dbSuffix = 'wiki';
 $globals = $wgConf->getAll( $wgDBname, $dbSuffix, array(
 	'lang'    => $lang,
 	'project'    => $project,
 	'Project'    => ucfirst( $project ),
-	'tld'     => $kgServerTLD
 ));
 extract( $globals );
+
+
+##
+## Server paths
+##
+
+$wgScriptExtension  = '.php';
+$wgExtensionAssetsPath = '/extensions';
+$EP = dirname( $IP ) . '/extensions';
+
+switch ( $kgCluster ) {
+	case 'no-ip':
+		$wgArticlePath = "/p/$wgDBname/wiki/$1";
+		$wgScriptPath = "/p/$wgDBname/w";
+		break;
+	case 'dev':
+	case 'krinkle.dev':
+	default:
+		$wgArticlePath = '/wiki/$1';
+		$wgScriptPath = '/w';
+}
+
+
+if ( isset( $kfExtensions ) ) {
+	foreach ( $kfExtensions as $path ) {
+		require_once( str_replace( '$EP', $EP, $path ) );
+	}
+}
 
 
 ##
@@ -224,7 +224,7 @@ unset( $wgGroupPermissions['developer'] );
 
 ## Testing
 $wgEnableJavaScriptTest = true;
-$wgJavaScriptTestConfig['qunit']['testswarm-injectjs'] = '//' . $kgServerTLD . '/jquery/testswarm/js/inject.js';
+$wgJavaScriptTestConfig['qunit']['testswarm-injectjs'] = $kgMainServer . '/jquery/testswarm/js/inject.js';
 $wgLegacyJavaScriptGlobals = false;
 
 ## Rights
