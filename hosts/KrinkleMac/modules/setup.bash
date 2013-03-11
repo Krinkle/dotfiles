@@ -96,7 +96,7 @@ source /usr/local/etc/bash_completion
 
 ## Misc
 # $ brew install node ruby // Includes npm, gem, rake
-# $ brew install ack bash-completion
+# $ brew install phantomjs ack bash-completion
 # $ npm install -g jshint
 # $ npm install -g grunt-cli
 # $ gem install jsduck
