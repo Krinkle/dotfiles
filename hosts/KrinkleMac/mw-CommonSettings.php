@@ -55,7 +55,7 @@ if ( defined( 'MW_DB' ) ) {
 	// No-IP Free doesn't have wildcard, initiate as alpha.wiki.
 	} elseif ( $_SERVER['HTTP_HOST'] === 'krinkle-wiki.no-ip.org' ) {
 		preg_match(
-			'/p\/([^\/]+)?\/w/',
+			'#([^/]+)#',
 			$_SERVER['REQUEST_URI'],
 			$m
 		);
@@ -196,8 +196,8 @@ $EP = dirname( $IP ) . '/extensions';
 
 switch ( $kgCluster ) {
 	case 'no-ip':
-		$wgArticlePath = "/p/$wgDBname/wiki/$1";
-		$wgScriptPath = "/p/$wgDBname/w";
+		$wgArticlePath = "/$wgDBname/wiki/$1";
+		$wgScriptPath = "/$wgDBname/w";
 		break;
 	case 'dev':
 	case 'krinkle.dev':
