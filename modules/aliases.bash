@@ -1,7 +1,7 @@
 if [ "$TERM" != "dumb" ] && [ -x /usr/bin/dircolors ]; then
 	# Linux
-    eval "`dircolors -b`"
-    alias ls='ls --color=auto'
+	eval "`dircolors -b`"
+	alias ls='ls --color=auto'
 else
 	# Mac
     alias ls='ls -G'

@@ -10,15 +10,10 @@ export PATH=/usr/local/share/npm/bin:$PATH
 
 # Bins: Homebrew's gem packages (e.g. jsduck)
 # http://stackoverflow.com/a/14138490/319266
-if [ -x /usr/local/bin/gem ]; then
-	export PATH=$(cd /usr/local/bin/gem/..; pwd):$PATH
-fi
+export PATH=$(brew --prefix ruby)/bin:$PATH
 
 # Bins: Homebrew's pear/pecl packages (e.g. phpunit)
-# Only if installed in local, else it would destroy PATH by putting /usr/bin in front
-if [ -x /usr/local/bin/pear ]; then
-	export PATH=$(cd /usr/local/bin/pear/..; pwd):$PATH
-fi
+export PATH=$(brew --prefix php54)/bin:$PATH
 
 # Fix gem/ruby errors about "unable to convert U+3002 from UTF-8 to US-ASCII for lib/shortener.rb, skipping"
 export LC_CTYPE=en_US.UTF-8
@@ -89,7 +84,7 @@ source /usr/local/etc/bash_completion
 # $ brew install mysql
 # Caveat: mysql_install_db and load
 # Ignore rest of caveat, mysql_install_db command gives command
-# for mysql_secure_installation wizard. Use that instead. 
+# for mysql_secure_installation wizard. Use that instead.
 
 ## phpMyAdmin
 # $ brew install phpmyadmin
