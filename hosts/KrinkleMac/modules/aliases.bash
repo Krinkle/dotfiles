@@ -13,7 +13,7 @@ alias dotfiles-push-amend='cd ~/.krinkle.dotfiles && git commit -a --amend -c HE
 # - Removes the 'origin' remote (without && since it will return in error if it was already removed)
 # - Updates the local 'master' branch to be a remote tracking branch to gerrit/master
 #   (just like git-clone would do if it was set up that way in the first place)
-alias dogerritfixup='git config user.email ttijhof@wikimedia.org && git checkout master && git review -s && git remote rm origin 2> /dev/null; git remote update && git branch --set-upstream-to gerrit/master master'
+alias dogerritfixup='git review -s && git remote rm origin 2> /dev/null; git remote update && git branch --set-upstream-to gerrit/master master'
 
 # http://ariejan.net/2011/11/08/fixing-a-slow-starting-terminal-or-iterm2-on-mac-os-x
 # https://discussions.apple.com/thread/2178316?start=0&tstart=0

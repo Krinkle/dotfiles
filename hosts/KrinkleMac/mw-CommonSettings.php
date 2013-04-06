@@ -220,12 +220,19 @@ if ( isset( $kfExtensions ) ) {
 
 unset( $wgGroupPermissions['developer'] );
 
-# Core
-
 ## Testing
 $wgEnableJavaScriptTest = true;
 $wgJavaScriptTestConfig['qunit']['testswarm-injectjs'] = $kgMainServer . '/jquery/testswarm/js/inject.js';
 $wgLegacyJavaScriptGlobals = false;
+
+## Resource origins
+
+$wgAllowUserJs = false;
+$wgAllowUserCss = false;
+$wgAllowUserCssPrefs = true;
+$wgUseSiteJs = true;
+$wgUseSiteCss = true;
+
 
 ## Rights
 $wgGroupPermissions['*']['edit'] = true;
