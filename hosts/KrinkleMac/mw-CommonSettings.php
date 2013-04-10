@@ -50,7 +50,8 @@ if ( defined( 'MW_DB' ) ) {
 	);
 	if ( isset( $m[1] ) ) {
 		$wgDBname = $m[1] . 'wiki';
-		$kgCluster = $m[3];
+		$kgCluster = 'dev';
+		$kgMainServer = 'http://' . $m[3];
 
 	// No-IP Free doesn't have wildcard, initiate as alpha.wiki.
 	} elseif ( $_SERVER['HTTP_HOST'] === 'krinkle-wiki.no-ip.org' ) {
@@ -61,6 +62,7 @@ if ( defined( 'MW_DB' ) ) {
 		);
 		if ( isset( $m[1] ) ) {
 			$wgDBname = $m[1];
+			$kgMainServer = 'http://krinkle.no-ip.org';
 			$kgCluster = 'no-ip';
 		}
 	}
@@ -200,7 +202,6 @@ switch ( $kgCluster ) {
 		$wgScriptPath = "/$wgDBname/w";
 		break;
 	case 'dev':
-	case 'krinkle.dev':
 	default:
 		$wgArticlePath = '/wiki/$1';
 		$wgScriptPath = '/w';
