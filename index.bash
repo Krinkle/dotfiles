@@ -1,34 +1,34 @@
 #
-# Setup check
-#
-
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
-
-#
 # Variables
 #
+export KDF_BASE_DIR=~/.krinkle.dotfiles
+#export KDF_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export KDF_CANONICAL_HOST="$HOSTNAME"
+export KDF_HOST_INIT=""
 
-P_CANONICAL_HOST="$HOSTNAME"
-
-case "$P_CANONICAL_HOST" in
+case "$KDF_CANONICAL_HOST" in
 	"KrinkleMac.local" | "KrinkleMac.fritz.box" | "krinklemac.fritz.box" |\
 	"KrinkleMacLoaner.local" |\
 	"GrizzMac.local")
-		P_CANONICAL_HOST="KrinkleMac"
+		export KDF_CANONICAL_HOST="KrinkleMac"
+		export KDF_HOST_INIT="$KDF_BASE_DIR/hosts/KrinkleMac/init.bash"
 		;;
 esac
 
 #
 # Includes
 #
-source ~/.krinkle.dotfiles/modules/aliases.bash
-source ~/.krinkle.dotfiles/modules/functions.bash
-source ~/.krinkle.dotfiles/modules/setup.bash
 
-case "$P_CANONICAL_HOST" in
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+source $KDF_BASE_DIR/modules/aliases.sh
+source $KDF_BASE_DIR/modules/functions.sh
+source $KDF_BASE_DIR/modules/setup.sh
+
+case "$KDF_CANONICAL_HOST" in
 	"KrinkleMac")
-		source ~/.krinkle.dotfiles/hosts/KrinkleMac/modules/aliases.bash
-		source ~/.krinkle.dotfiles/hosts/KrinkleMac/modules/setup.bash
+		source $KDF_BASE_DIR/hosts/KrinkleMac/modules/aliases.sh
+		source $KDF_BASE_DIR/hosts/KrinkleMac/modules/setup.sh
 		;;
 esac

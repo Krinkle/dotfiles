@@ -1,20 +1,15 @@
-if [ "$TERM" != "dumb" ] && [ -x /usr/bin/dircolors ]; then
-	# Linux
-	eval "`dircolors -b`"
+if [ "$(uname)" == "Linux" -o "$(uname)" == "SunOS" ]
+then
+	# Ubuntu (Linux), Solaris (SunOS)
 	alias ls='ls --color=auto'
 else
-	# Mac
+	# Mac (Darwin)
     alias ls='ls -G'
 fi
 
-# Shortcuts
 alias ll='ls -ahlF'
 alias l='ll'
 alias gi='git'
-
 alias ..='cd ..'
-
 alias jsonhint='jshint --extra-ext .json'
-
-# Size calculation
 alias dsize='du -hs'

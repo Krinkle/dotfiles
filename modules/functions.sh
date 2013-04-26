@@ -1,19 +1,13 @@
-# Inspiration:
-# - http://www.opinionatedprogrammer.com/2011/01/colorful-bash-prompt-reflecting-git-status/
-# - https://github.com/sorin-ionescu/prezto/blob/master/helper.zsh
-# - https://github.com/sorin-ionescu/prezto/blob/master/plugins/git/functions/git-info
-# - http://stackoverflow.com/questions/11122410/fastest-way-to-get-git-status-in-bash
+function _dotfiles-prompt-choice() {
+	read -p "$1 (y/n): > " choice
+	case "$choice" in
+		y|Y)
+			echo true
+			;;
+	esac
+}
 
-#
-# CHEAT SHEAT:
-# -z: string is null, that is, has zero length
-# -n: string is not null
-#
-
-#
-# PS1
-# MacOSX Default: PS1='\h:\W \u\$'
-#
+# MacOSX default PS1: '\h:\W \u\$'
 function _dotfiles-ps1-setup() {
 	local host
 	local clr_host
@@ -32,12 +26,12 @@ function _dotfiles-ps1-setup() {
 	CLR_GITST_CLS="$CLR_GREEN" # Clear state
 	CLR_GITST_SC="$CLR_YELLOW" # Staged changes
 	CLR_GITST_USC="$CLR_RED" # Unstaged changes
-	CLR_GITST_UT="$CLR_L_GREY" # Untracked files
+	CLR_GITST_UT="$CLR_WHITE" # Untracked files
 	CLR_GITST_BR="$CLR_GREEN"
 
-	case "$P_CANONICAL_HOST" in
+	case "$KDF_CANONICAL_HOST" in
 		"KrinkleMac")
-			clr_host="$CLR_PURPLE"
+			clr_host="$CLR_MAGENTA"
 			;;
 		*)
 			if [ "$INSTANCENAME" != "" ]; then
@@ -46,12 +40,10 @@ function _dotfiles-ps1-setup() {
 	esac
 
 	if [ "$supportcolor" != "" ]; then
-	    PS1="$CLR_L_GREY[\$(date +%H:%M\ %Z)] $CLR_L_CYAN\u$CLR_L_GREY at $clr_host$host$CLR_L_GREY in $CLR_YELLOW\w\$(_dotfiles-git-ps1)$CLR_NONE\n\$ "
+	    PS1="$CLR_WHITE[\$(date +%H:%M\ %Z)] $CLR_CYAN\u$CLR_WHITE at $clr_host$host$CLR_WHITE in $CLR_YELLOW\w\$(_dotfiles-git-ps1)$CLR_NONE\n\$ "
 	else
 	    PS1="[\$(date +%H:%M\ %Z)] \u@$host:\w\$ "
 	fi
-
-
 }
 
 #
@@ -87,9 +79,6 @@ function _dotfiles-git-ps1() {
 }
 
 
-#
-# Dotfiles
-#
 function dotfiles-pull() {
 	cd $HOME/.krinkle.dotfiles
 
@@ -101,17 +90,14 @@ function dotfiles-pull() {
 	git log-asi HEAD...origin/master || git log HEAD...origin/master --decorate --abbrev-commit --pretty=oneline --color=auto
 	git diff origin/master --stat --color=auto && git diff origin/master --color=auto
 
-	read -p "OK to pull down? (y/n): > " choice
-	case "$choice" in
-		y|Y)
-			git reset --hard origin/master && source $HOME/.krinkle.dotfiles/index.bash
-			;;
-		* )
-			echo "Dotfiles update aborted."
-			cd -
-			return 1
-			;;
-	esac
-
-	cd -
+	ret=$(_dotfiles-prompt-choice "OK to pull down?")
+	if [[ -n ret ]]
+	then
+		git reset --hard origin/master && source $HOME/.krinkle.dotfiles/index.bash
+		cd -
+	else
+		echo "Dotfiles update aborted."
+		cd -
+		return 1
+	fi
 }

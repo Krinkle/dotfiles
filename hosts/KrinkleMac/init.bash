@@ -1,48 +1,52 @@
-#
-# Terminal
-#
+#!/usr/bin/env bash
 
-# Bins: Homebrew and manually installed programs
-export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+source $KDF_BASE_DIR/modules/functions.sh
 
-# Bins: Homebrew's npm packages (e.g. jshint)
-export PATH=/usr/local/share/npm/bin:$PATH
+function _dotfiles-host-init() {
 
-# Bins: Homebrew's gem packages (e.g. jsduck)
-# http://stackoverflow.com/a/14138490/319266
-export PATH=$(brew --prefix ruby)/bin:$PATH
+	# Homwbrew
+	echo "... checking Homebrew"
+	if [ -z "$(which brew)" ]
+	then
+		echo "$CLR_RED>> ERROR$CLR_NONE: Install Homebrew first"
+		open http://mxcl.github.io/homebrew/
+		exit 1
+	fi
 
-# Bins: Homebrew's pear/pecl packages (e.g. phpunit)
-export PATH=$(brew --prefix php54)/bin:$PATH
+	echo "... updating Homebrew"
+	brew update
+	echo "... exec 'brew doctor'"
+	brew doctor
+	if [[ $? != 0 ]]
+	then
+		ret=$(_dotfiles-prompt-choice "Check out those warnings. Continue?")
+		if [[ -z ret ]]
+		then
+			exit 1
+		fi
+	fi
 
-# Fix gem/ruby errors about "unable to convert U+3002 from UTF-8 to US-ASCII for lib/shortener.rb, skipping"
-export LC_CTYPE=en_US.UTF-8
-export LANG=en_US.UTF-8
-unset LC_ALL
+	echo "... ensuring presence of packages"
+	brew tap homebrew/dupes
+	brew tap josegonzalez/homebrew-php
+	formulas="git php54 mysql phpmyadmin node ruby phantomjs ack bash-completion wget"
+	for f in $formulas; do
+		brew upgrade $f || brew install $f
+		if [[ $? != 0 ]]
+		then
+			echo "$(tput setaf 1)>> ERROR$(tput sgr0): Problems installing package '$f'"
+			exit 1
+		fi
+	done
+	# cp ~/.krinkle.dotfiles/hosts/KrinkleMac/templates/gitconfig ~/.gitconfig
+}
 
-export MW_INSTALL_PATH='/Users/krinkle/Development/mediawiki/core'
-export MW_DB='betawiki'
-
-# Local etc (symlinked to data of `brew install bash-completion`)
-source /usr/local/etc/bash_completion
-
+_dotfiles-host-init
 
 #
 # Installation (Terminal / Environment)
 #
-
-## Set up "Command Line Tools for Xcode" (without Xcode)
-## This provides 'make' among other things, required by Homebrew.
-## http://connect.apple.com
-
-## Set up Homebrew
-## http://mxcl.github.com/homebrew/
-# $ brew doctor
-# $ brew tap homebrew/dupes && brew tap josegonzalez/homebrew-php
-
-## Git
-# $ brew install git
-# $ cp ~/.krinkle.dotfiles/hosts/KrinkleMac/templates/gitconfig ~/.gitconfig
+#
 
 ## SSH Key
 ## https://help.github.com/articles/generating-ssh-keys
@@ -52,7 +56,7 @@ source /usr/local/etc/bash_completion
 # cd ~/.krinkle.dotfiles; git remote rm origin; git remote add origin git@...; git pull origin master -u
 
 ## Apache
-# $ brew install httpd
+# $ brew install httpd # Be careful, /etc/ is not preserved through upgrades
 ### https://github.com/Homebrew/homebrew-dupes/issues/119
 # $ mkdir /usr/local/opt/httpd/var/apache2/log
 # $ mkdir /usr/local/opt/httpd/var/apache2/run
@@ -68,7 +72,6 @@ source /usr/local/etc/bash_completion
 # $ sudo /usr/local/sbin/apachectl restart
 
 ## PHP
-# $ brew install php54
 # $ mkdir /usr/local/etc/php/5.4/conf.d
 # $ sudo mkdir -p /var/log/php && sudo chmod 777 /var/log/php
 # $ sudo mkdir -p /var/php && sudo chmod 777 /var/php
@@ -81,17 +84,11 @@ source /usr/local/etc/bash_completion
 # $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/httpd.conf /usr/local/opt/httpd/etc/apache2/other/krinkle.conf
 
 ## MySQL
-# $ brew install mysql
 # Caveat: mysql_install_db and load
 # Ignore rest of caveat, mysql_install_db command gives command
 # for mysql_secure_installation wizard. Use that instead.
 
-## phpMyAdmin
-# $ brew install phpmyadmin
-
 ## Misc
-# $ brew install node ruby // Includes npm, gem, rake
-# $ brew install phantomjs ack bash-completion wget
 # $ npm install -g jshint
 # $ npm install -g grunt-cli
 # $ gem install jsduck
@@ -133,7 +130,7 @@ source /usr/local/etc/bash_completion
 ## - DocBlockr
 ## - Soda Theme
 ## Preferences:
-# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/SublimePreferences.json ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User/Preferences.sublime-settings 
+# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/SublimePreferences.json ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User/Preferences.sublime-settings
 
 ## LimeChat
 ## http://limechat.net/mac/
@@ -162,3 +159,4 @@ source /usr/local/etc/bash_completion
 # $ sudo mv /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin /Library/Internet\ Plug-Ins/disabled
 # $ sudo ln -sf /System/Library/Java/Support/Deploy.bundle/Contents/Resources/JavaPlugin2_NPAPI.plugin /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin
 # $ sudo ln -sf /System/Library/Frameworks/JavaVM.framework/Commands/javaws /usr/bin/javaws
+
