@@ -89,14 +89,15 @@ if ( true ) {
 	#$wgMemCachedDebug = false;
 
 	# Log files
-	#$mwLogDir = '/var/log/mediawiki';
+	$mwLogDir = '/var/log/mediawiki';
 
-	#$wgDBerrorLog = "$mwLogDir/dberror.log";
+	$wgDBerrorLog = "$mwLogDir/dberror.log";
 	#$wgRateLimitLog = "$mwLogDir/ratelimit.log";
-	#$wgDebugLogFile = "$mwLogDir/debug.log";
+	$wgDebugLogFile = "$mwLogDir/debug.log";
 	#$wgDebugLogGroups['x'] = "$mwLogDir/debug-x.log";
 
 	# ResourceLoader
+	$wgDebugRawPage = true; // wmbug.com/47960
 	$wgResourceLoaderMaxage['versioned']['server'] = 1;
 	$wgResourceLoaderMaxage['versioned']['client'] = 1;
 	$wgResourceLoaderMaxage['unversioned']['server'] = 1;

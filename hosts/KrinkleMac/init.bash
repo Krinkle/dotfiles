@@ -70,6 +70,7 @@ _dotfiles-host-init
 # $ sudo chmod 644 /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
 # $ sudo launchctl load -w /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
 # $ sudo /usr/local/sbin/apachectl restart
+# $ sudo ln -s /usr/local/opt/httpd/var/apache2/log /var/log/httpd
 
 ## PHP
 # $ mkdir /usr/local/etc/php/5.4/conf.d
