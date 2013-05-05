@@ -20,40 +20,64 @@ function _dotfiles-host-init() {
 	if [[ $? != 0 ]]
 	then
 		ret=$(_dotfiles-prompt-choice "Check out those warnings. Continue?")
-		if [[ -z ret ]]
+		if [[ -z $ret ]]
 		then
-			exit 1
+			exit 2
 		fi
 	fi
 
-	echo "... ensuring presence of packages"
+	echo "... ensuring presence of Homebrew packages"
 	brew tap homebrew/dupes
+	brew tap homebrew/versions
 	brew tap josegonzalez/homebrew-php
-	formulas="git php54 mysql phpmyadmin node ruby phantomjs ack bash-completion wget"
+	formulas="git php54 mysql phpmyadmin node08 ruby phantomjs ack bash-completion wget colordiff dnsmasq"
 	for f in $formulas; do
 		brew upgrade $f || brew install $f
 		if [[ $? != 0 ]]
 		then
-			echo "$(tput setaf 1)>> ERROR$(tput sgr0): Problems installing package '$f'"
+			echo "$CLR_RED>> ERROR$CLR_NONE: Problems installing package '$f'"
 			exit 1
 		fi
 	done
-	# cp ~/.krinkle.dotfiles/hosts/KrinkleMac/templates/gitconfig ~/.gitconfig
+
+	echo "... ensuring presence of NPM packages"
+	npm install -g jshint grunt-cli
+
+	echo "... ensuring presence of RubyGems packages"
+	gem install jsduck
+
+	echo "... updating PEAR"
+	sudo pear channel-discover pear.phpunit.de
+	sudo pear channel-discover pear.symfony.com
+	sudo pear upgrade-all
+	echo "... ensuring presence of PEAR packages"
+	sudo pear install --alldeps phpunit/phpunit
+
+	# Post-install: php
+	mkdir -p /usr/local/etc/php/5.4/conf.d
+	sudo mkdir -p /var/log/php && sudo chmod 777 /var/log/php
+	sudo mkdir -p /var/lib/php5 && sudo chmod 777 /var/lib/php5
+	test -f /usr/local/etc/php/5.4/conf.d/krinkle.ini || ln -s $KDF_BASE_DIR/hosts/KrinkleMac/php.ini /usr/local/etc/php/5.4/conf.d/krinkle.ini
+
+	# Post-install dnsmaq
+	test -f /usr/local/etc/dnsmasq.conf || ln -s $KDF_BASE_DIR/hosts/KrinkleMac/dnsmasq.conf /usr/local/etc/dnsmasq.conf
+
+	# Post-install git
+	test -f ~/.gitconfig || cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/gitconfig ~/.gitconfig
 }
 
 _dotfiles-host-init
 
 #
-# Installation (Terminal / Environment)
-#
+# Manual steps for Terminal workspace
 #
 
 ## SSH Key
 ## https://help.github.com/articles/generating-ssh-keys
-# cp ~/.krinkle.dotfiles/hosts/KrinkleMac/templates/sshconfig ~/.ssh/config
+# cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/sshconfig ~/.ssh/config
 ## Generate different keys (for GitHub, Wikimedia Labs LDAP, Toolserver etc.)
 ## and submit them to those organisations.
-# cd ~/.krinkle.dotfiles; git remote rm origin; git remote add origin git@...; git pull origin master -u
+# cd $KDF_BASE_DIR; git remote rm origin; git remote add origin git@...; git pull origin master -u
 
 ## Apache
 # $ brew install httpd # Be careful, /etc/ is not preserved through upgrades
@@ -71,34 +95,19 @@ _dotfiles-host-init
 # $ sudo launchctl load -w /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
 # $ sudo /usr/local/sbin/apachectl restart
 # $ sudo ln -s /usr/local/opt/httpd/var/apache2/log /var/log/httpd
-
-## PHP
-# $ mkdir /usr/local/etc/php/5.4/conf.d
-# $ sudo mkdir -p /var/log/php && sudo chmod 777 /var/log/php
-# $ sudo mkdir -p /var/php && sudo chmod 777 /var/php
-# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/php.ini /usr/local/etc/php/5.4/conf.d/krinkle.ini
-
-## Apache
-## (continued, after PHP)
+#
 # $ mkdir /usr/local/opt/httpd/etc/apache2/other
 # $ echo 'Include etc/apache2/other/*.conf' >> /usr/local/opt/httpd/etc/apache2/httpd.conf
-# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/httpd.conf /usr/local/opt/httpd/etc/apache2/other/krinkle.conf
+# $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/httpd.conf /usr/local/opt/httpd/etc/apache2/other/krinkle.conf
 
 ## MySQL
 # Caveat: mysql_install_db and load
 # Ignore rest of caveat, mysql_install_db command gives command
 # for mysql_secure_installation wizard. Use that instead.
 
-## Misc
-# $ npm install -g jshint
-# $ npm install -g grunt-cli
-# $ gem install jsduck
-
-## PHPUnit
-# $ sudo pear channel-discover pear.phpunit.de
-# $ sudo pear channel-discover pear.symfony.com
-# $ sudo pear upgrade-all
-# $ sudo pear install --alldeps phpunit/phpunit
+## DNSmasq
+# Local DNS service (as /etc/hosts doesn't support wildards)
+# Mac OS X System Preferences > Network > DNS: [127.0.0.1, 8.8.8.8, 8.8.8.4] # Prepend local DNSmasq
 
 ## MediaWiki
 ## Install
@@ -108,19 +117,13 @@ _dotfiles-host-init
 # $ git clone ssh://krinkle@gerrit.wikimedia.org:29418/mediawiki/extensions.git ~/Development/mediawiki/extensions
 ## Configure
 # $ sudo mkdir /var/log/mediawiki && sudo chmod 777 /var/log/mediawiki
-# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/mw-CommonSettings.php ~/Development/mediawiki/core/CommonSettings.php
+# $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/mw-CommonSettings.php ~/Development/mediawiki/core/CommonSettings.php
 # $ edit ~/Development/mediawiki/core/.git/info/exclude # Add CommonSettings.php
-# $ cp ~/.krinkle.dotfiles/hosts/KrinkleMac/templates/mw-LocalSettings.php ~/Development/mediawiki/core/LocalSettings.php
-
-## DNSmasq: Local DNS service (as /etc/hosts doesn't support wildards)
-# $ brew install dnsmasq
-## Follow instructions by brew-install. Be sure to symlink conf file before loading
-# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/dnsmasq.conf /usr/local/etc/dnsmasq.conf
-# Network Preferences -> DNS: [127.0.0.1, 8.8.8.8, 8.8.8.4] # Local DNSmasq, then Google DNS
+# $ cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/mw-LocalSettings.php ~/Development/mediawiki/core/LocalSettings.php
 
 
 #
-# Installation (GUI)
+# Manual steps for GUI
 #
 
 ## Sublime Text 2
@@ -131,7 +134,7 @@ _dotfiles-host-init
 ## - DocBlockr
 ## - Soda Theme
 ## Preferences:
-# $ ln -s ~/.krinkle.dotfiles/hosts/KrinkleMac/SublimePreferences.json ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User/Preferences.sublime-settings
+# $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/SublimePreferences.json ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User/Preferences.sublime-settings
 
 ## LimeChat
 ## http://limechat.net/mac/

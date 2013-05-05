@@ -52,32 +52,36 @@ function _dotfiles-init() {
 _dotfiles-init
 
 source $(dirname $0)/index.bash
+source $KDF_BASE_DIR/modules/functions.sh
+source $KDF_BASE_DIR/modules/setup.sh
 
 # Host specific installation
 if [[ "$KDF_HOST_INIT" != "" ]]
 then
 	echo
-	echo "$(tput smul)$(tput bold)Provisioning $KDF_CANONICAL_HOST$(tput sgr0)"
+	echo "${CLR_LINE}${CLR_BOLD}Provisioning $KDF_CANONICAL_HOST$CLR_NONE"
 	echo
-	echo "$(tput setaf 5)>>$(tput sgr0) Recognised host as $KDF_CANONICAL_HOST"
-	read -p "$(tput setaf 5)>>$(tput sgr0) Run host specific privison? (y/n): > " choice
-	case "$choice" in
-		y|Y)
-			$KDF_HOST_INIT
-			if [[ "$?" == "0" ]]
-			then
-				echo
-				echo "$(tput setaf 2)>>$(tput sgr0) Host specific provision ready"
-			else
-				echo "$(tput setaf 1)>> ERROR$(tput sgr0): Host specific provision failed"
-				exit 1
-			fi
-			;;
-		* )
-			echo "$(tput setaf 3)>>$(tput sgr0) Host specific provision aborted"
+	echo "$CLR_MAGENTA>>$CLR_NONE Recognised host as $KDF_CANONICAL_HOST"
+	ret=$(_dotfiles-prompt-choice "$CLR_MAGENTA>>$CLR_NONE Run host specific privison?")
+	if [[ -n $ret ]]
+	then
+		$KDF_HOST_INIT
+		code="$?"
+		if [[ "$code" == "0" ]]
+		then
+			echo
+			echo "$CLR_GREEN>>$CLR_NONE Host specific provision ready"
+		elif [[ "$code" == "2" ]]
+		then
+			echo "$CLR_YELLOW>>$CLR_NONE Host specific provision aborted"
 			exit 1
-			;;
-	esac
+		else
+			echo "$CLR_RED>> ERROR$CLR_NONE: Host specific provision failed"
+			exit 1
+		fi
+	else
+		echo "$CLR_CYAN>>$CLR_NONE Host specific provision skipped"
+	fi
 fi
 
 echo
