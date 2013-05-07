@@ -2,7 +2,7 @@
 
 source $KDF_BASE_DIR/modules/functions.sh
 
-function _dotfiles-host-init() {
+function _dotfiles-host-init {
 
 	# Homwbrew
 	echo "... checking Homebrew"
@@ -53,17 +53,43 @@ function _dotfiles-host-init() {
 	echo "... ensuring presence of PEAR packages"
 	sudo pear install --alldeps phpunit/phpunit
 
-	# Post-install: php
+	echo "... Post-install for package: php"
 	mkdir -p /usr/local/etc/php/5.4/conf.d
 	sudo mkdir -p /var/log/php && sudo chmod 777 /var/log/php
 	sudo mkdir -p /var/lib/php5 && sudo chmod 777 /var/lib/php5
-	test -f /usr/local/etc/php/5.4/conf.d/krinkle.ini || ln -s $KDF_BASE_DIR/hosts/KrinkleMac/php.ini /usr/local/etc/php/5.4/conf.d/krinkle.ini
+	test -f /usr/local/etc/php/5.4/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/KrinkleMac/php.ini /usr/local/etc/php/5.4/conf.d/krinkle.ini )
 
-	# Post-install dnsmaq
-	test -f /usr/local/etc/dnsmasq.conf || ln -s $KDF_BASE_DIR/hosts/KrinkleMac/dnsmasq.conf /usr/local/etc/dnsmasq.conf
+	echo "... Post-install for package: dnsmaq"
+	test -f /usr/local/etc/dnsmasq.conf || ( echo "linking dnsmasq.conf" && ln -s $KDF_BASE_DIR/hosts/KrinkleMac/dnsmasq.conf /usr/local/etc/dnsmasq.conf )
 
-	# Post-install git
-	test -f ~/.gitconfig || cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/gitconfig ~/.gitconfig
+	echo "... Post-install for package: git"
+	# Only change if not a symlink, or a symlink to the wrong place
+	tmpPath=~/.gitconfig
+	tmpDest=$KDF_BASE_DIR/hosts/KrinkleMac/templates/gitconfig
+	if [[ ! -L $tmpPath || "$(readlink $tmpPath)" != $tmpDest ]]
+	then
+		test ! -f $tmpPath || rm $tmpPath
+		echo "linking .gitconfig"
+		ln -s $tmpDest $tmpPath
+	fi
+
+	echo "... checking Sublime Text 2"
+	if [ -z "$(which subl)" ]
+	then
+		echo "$CLR_RED>> ERROR$CLR_NONE: Install Sublime Text 2"
+		open http://www.sublimetext.com/2
+		exit 1
+	fi
+
+	echo "... Post-install for application: Sublime Text 2"
+	tmpPath=~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User/Preferences.sublime-settings
+	tmpDest=$KDF_BASE_DIR/hosts/KrinkleMac/SublimePreferences.json
+	if [[ ! -L "$tmpPath" || $(readlink "$tmpPath") != $tmpDest ]]
+	then
+		test ! -f "$tmpPath" || rm "$tmpPath"
+		echo "linking SublimePreferences.json"
+		ln -s "$tmpDest" "$tmpPath"
+	fi
 }
 
 _dotfiles-host-init
@@ -134,7 +160,6 @@ _dotfiles-host-init
 ## - DocBlockr
 ## - Soda Theme
 ## Preferences:
-# $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/SublimePreferences.json ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User/Preferences.sublime-settings
 
 ## LimeChat
 ## http://limechat.net/mac/
