@@ -35,26 +35,38 @@ $wgDiff3 = '/usr/bin/diff3';
 ## Wiki ID
 ##
 
+function kfGetMainServer() {
+	global $kgCluster;
+	switch ( $kgCluster ) {
+		case 'no-ip':
+			return 'http://krinkle.no-ip.org';
+		case 'dev':
+			return 'http://krinkle.dev';
+		default:
+			return false;
+	}
+}
+
 if ( defined( 'MW_DB' ) ) {
 	$wgDBname = MW_DB;
 	$kgCluster = 'dev';
 } elseif ( getenv( 'MW_DB' ) !== false ) {
 	$wgDBname = getenv( 'MW_DB' );
 	$kgCluster = 'dev';
-}elseif ( isset( $_SERVER['HTTP_HOST'] ) ) {
+} elseif ( isset( $_SERVER['HTTP_HOST'] ) ) {
+	$kgCluster = 'dev';
 	$m = null;
 	preg_match(
-		'/(.+?).(wikipedia).(krinkle.dev|krinkledev.local)/',
+		'/(.+?)\.(wikipedia)\.krinkle\.dev/',
 		$_SERVER['HTTP_HOST'],
 		$m
 	);
 	if ( isset( $m[1] ) ) {
 		$wgDBname = $m[1] . 'wiki';
-		$kgCluster = 'dev';
-		$kgMainServer = 'http://' . $m[3];
 
-	// No-IP Free doesn't have wildcard, initiate as alpha.wiki.
-	} elseif ( $_SERVER['HTTP_HOST'] === 'krinkle-wiki.no-ip.org' ) {
+	// No-IP Free doesn't have wildcard and uses subdirectories instead
+	} elseif ( $_SERVER['HTTP_HOST'] === 'krinkle-wiki.no-ip.org' || $_SERVER['HTTP_HOST'] === 'wiki.krinkle.dev' ) {
+		$kgCluster = 'no-ip';
 		preg_match(
 			'#([^/]+)#',
 			$_SERVER['REQUEST_URI'],
@@ -62,11 +74,11 @@ if ( defined( 'MW_DB' ) ) {
 		);
 		if ( isset( $m[1] ) ) {
 			$wgDBname = $m[1];
-			$kgMainServer = 'http://krinkle.no-ip.org';
-			$kgCluster = 'no-ip';
 		}
 	}
 }
+
+$kgMainServer = kfGetMainServer();
 
 ##
 ## Debug
@@ -147,6 +159,7 @@ if ( !in_array( $wgDBname, $wgConf->getLocalDatabases() ) ) {
 	if ( php_sapi_name() === 'cli' ) {
 		echo "Error: Specify a wiki database.\n";
 	} else {
+		$mainServerHtml = htmlspecialchars( $kgMainServer );
 		echo <<<HTML
 <!DOCTYPE html>
 <html lang=en>
@@ -165,11 +178,7 @@ em { font-style: normal; color: #777; }
 </style>
 <h1>Domain not configured</h1>
 <p>This domain points to the Krinkle Dev server, but is not configured in Apache.<br><em>That’s all we know.</em></p>
-<script>
-	var a = document.createElement('a');
-	a.href = '//' + location.host.split('.').slice(-2).join('.');
-	a.innerHTML = '&raquo; Go to root domain';
-	document.write('<p style="text-align: right;">' + a.outerHTML + '</p>');
+<p style="text-align: right;"><a href="{$mainServerHtml}">&raquo; Go to root domain</a></p>
 </script>
 </html>
 HTML;

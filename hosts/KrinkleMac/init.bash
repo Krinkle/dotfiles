@@ -90,6 +90,17 @@ function _dotfiles-host-init {
 		echo "linking SublimePreferences.json"
 		ln -s "$tmpDest" "$tmpPath"
 	fi
+
+	#echo "... checking dev directory tree"
+	# ~/Development
+	# ~/Development/Krinkle
+	# ~/Development/mediawiki/core
+	# ~/Development/mediawiki/extensions
+	# ~/Development/wikimedia
+	# ~/Development/wikimedia/integration/j, jjb, jjb-config, zuul, zuul-config, docroots
+	# ~/Development/wikimedia/operations/ mw-config, apache-config, puppet
+	# ~/Development/jquery/jquery, qunit, testswarm, qunit-*, *qunitjs.com
+	# ~/Development/countervandalism
 }
 
 _dotfiles-host-init
