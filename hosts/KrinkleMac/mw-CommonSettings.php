@@ -23,6 +23,9 @@ $wgMemCachedServers = array();
 $wgCacheDirectory = $IP . '/cache';
 $wgUseLocalMessageCache = true;
 
+## Output
+$wgWellFormedXml = false;
+
 ## Media
 $wgEnableUploads  = false;
 $wgUseInstantCommons  = true;
@@ -234,13 +237,11 @@ $wgJavaScriptTestConfig['qunit']['testswarm-injectjs'] = $kgMainServer . '/jquer
 $wgLegacyJavaScriptGlobals = false;
 
 ## Resource origins
-
 $wgAllowUserJs = false;
 $wgAllowUserCss = false;
 $wgAllowUserCssPrefs = true;
 $wgUseSiteJs = true;
 $wgUseSiteCss = true;
-
 
 ## Rights
 $wgGroupPermissions['*']['edit'] = true;
@@ -254,6 +255,7 @@ $wgVectorUseIconWatch = true;
 
 ## VisualEditor
 $wgVisualEditorParsoidURL = 'http://localhost:8000/';
+$wgVisualEditorEnableExperimentalCode = true;
 
 define( 'NS_VISUALEDITOR', 2500 );
 define( 'NS_VISUALEDITOR_TALK', 2501 );
