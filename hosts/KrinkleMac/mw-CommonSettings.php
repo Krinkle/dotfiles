@@ -82,33 +82,30 @@ $kgMainServer = kfGetMainServer();
 
 ##
 ## Debug
+## http://www.mediawiki.org/wiki/Manual:How_to_debug
 ##
 
 if ( true ) {
 	error_reporting( -1 );
 
-	# Tools
+	// Tools
 	$wgDebugToolbar = false;
 
-	# Types
+	// Types
 	$wgShowExceptionDetails = true;
-
 	#$wgDebugRedirects = false;
-
 	#$wgShowSQLErrors = true;
 	#$wgDebugDumpSql  = true;
-
 	#$wgMemCachedDebug = false;
 
-	# Log files
+	// Log files
 	$mwLogDir = '/var/log/mediawiki';
-
 	$wgDBerrorLog = "$mwLogDir/dberror.log";
 	#$wgRateLimitLog = "$mwLogDir/ratelimit.log";
 	$wgDebugLogFile = "$mwLogDir/debug.log";
-	#$wgDebugLogGroups['x'] = "$mwLogDir/debug-x.log";
+	#$wgDebugLogGroups['somegroup'] = "$mwLogDir/debug-somegroup.log";
 
-	# ResourceLoader
+	// ResourceLoader
 	$wgDebugRawPage = true; // wmbug.com/47960
 	$wgResourceLoaderMaxage['versioned']['server'] = 1;
 	$wgResourceLoaderMaxage['versioned']['client'] = 1;
