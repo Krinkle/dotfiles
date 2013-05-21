@@ -11,6 +11,9 @@
 	pul = pull
 	so = show
 	st = status
+	gerrit-config-co = ! git fetch gerrit refs/meta/config:refs/remotes/gerrit/meta/config && git checkout meta/config
+	gerrit-config-push = push gerrit meta/config:refs/meta/config
+	gerrit-config-review = push gerrit meta/config:refs/for/refs/meta/config
 [core]
 	quotepath = false
 [push]
