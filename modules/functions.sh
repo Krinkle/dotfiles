@@ -85,13 +85,11 @@ function dotfiles-pull() {
 	git fetch origin
 
 	# Sanity check before potentially executing arbitrary bash commands
-	# (with fallbacks and inline color config since gitconfig may not loaded or
-	# compatible with the local git version).
-	git log-asi HEAD...origin/master || git log HEAD...origin/master --decorate --abbrev-commit --pretty=oneline --color=auto
-	git diff origin/master --stat --color=auto && git diff origin/master --color=auto
+	git log HEAD^...origin/master --decorate --abbrev-commit --pretty=oneline --color=auto
+	git diff HEAD...origin/master --stat --color=auto && git diff HEAD...origin/master --color=auto
 
 	ret=$(_dotfiles-prompt-choice "OK to pull down?")
-	if [[ -n ret ]]
+	if [[ -n $ret ]]
 	then
 		git reset --hard origin/master && source $HOME/.krinkle.dotfiles/index.bash
 		cd -

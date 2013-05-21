@@ -7,8 +7,8 @@ export KDF_CANONICAL_HOST="$HOSTNAME"
 export KDF_HOST_INIT=""
 
 case "$KDF_CANONICAL_HOST" in
-	"KrinkleMac.local" | "KrinkleMac.fritz.box" | "krinklemac.fritz.box" |\
-	"KrinkleMacLoaner.local" |\
+	"KrinkleMac.local" |\
+	"krinklemac" | "krinklemac.home" | "krinklemac.fritz.box" |\
 	"GrizzMac.local")
 		export KDF_CANONICAL_HOST="KrinkleMac"
 		export KDF_HOST_INIT="$KDF_BASE_DIR/hosts/KrinkleMac/init.bash"
