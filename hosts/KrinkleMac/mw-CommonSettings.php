@@ -220,7 +220,7 @@ switch ( $kgCluster ) {
 
 if ( isset( $kfExtensions ) ) {
 	foreach ( $kfExtensions as $path ) {
-		require_once( str_replace( '$EP', $EP, $path ) );
+		require_once str_replace( '$EP', $EP, $path );
 	}
 }
 

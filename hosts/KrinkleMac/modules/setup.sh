@@ -30,3 +30,5 @@ export MW_DB="betawiki"
 # Local etc (symlinked to data of `brew install bash-completion`)
 source /usr/local/etc/bash_completion
 
+# Enable Bash 4 features if available
+shopt -s globstar 2> /dev/null
