@@ -17,6 +17,9 @@ alias dormdsstore='find . -name ".DS_Store" -type f -exec rm {} \;'
 # Web server
 alias doapachereset='cd /var/log/httpd && rm -f *_log && sudo apachectl restart && l'
 
+# Parsoid
+alias doparsoid='cd ~/Development/mediawiki/extensions/Parsoid && git remote update && git checkout gerrit/master && cd js && npm install && node api/server.js'
+
 # Mirror media repositories
 # $ wget-magic-noindex "http://..."
 # $ wget-magic-filter ".png" "http://..."
