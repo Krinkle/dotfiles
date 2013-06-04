@@ -159,6 +159,9 @@ _dotfiles-host-init
 # $ cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/mw-LocalSettings.php ~/Development/mediawiki/core/LocalSettings.php
 
 
+## Mac OS X
+# $ sudo defaults read /Library/Preferences/com.apple.TimeMachine SkipSystemFiles
+
 #
 # Manual steps for GUI
 #
