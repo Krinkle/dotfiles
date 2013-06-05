@@ -126,10 +126,10 @@ _dotfiles-host-init
 # $ sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist
 # $ sudo launchctl remove org.apache.httpd.plist
 ## Add httpd from Homebrew to launchctl (https://github.com/Homebrew/homebrew-dupes/issues/140)
-# $ edit /user/local/opt/httpd/homebrew.mxcl.httpd.plist `https://github.com/Homebrew/homebrew-dupes/blob/master/httpd.rb#startup_plist`
-# $ sudo chown root /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
-# $ sudo chmod 644 /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
-# $ sudo launchctl load -w /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
+# $ edit /usr/local/opt/httpd/homebrew.dupes.httpd.plist `https://github.com/Homebrew/homebrew-dupes/blob/master/httpd.rb#startup_plist`
+# $ sudo chown root /usr/local/opt/httpd/homebrew.dupes.httpd.plist
+# $ sudo chmod 644 /usr/local/opt/httpd/homebrew.dupes.httpd.plist
+# $ sudo launchctl load -w /usr/local/opt/httpd/homebrew.dupes.httpd.plist
 # $ sudo /usr/local/sbin/apachectl restart
 # $ sudo ln -s /usr/local/opt/httpd/var/apache2/log /var/log/httpd
 #
