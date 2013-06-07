@@ -90,7 +90,7 @@ function _dotfiles-git-ps1() {
 
 
 function dotfiles-pull() {
-	cd $HOME/.krinkle.dotfiles
+	cd $KDF_BASE_DIR
 
 	git fetch origin
 
@@ -100,7 +100,7 @@ function dotfiles-pull() {
 
 	ret=$(_dotfiles-prompt-choice "OK to pull down?")
 	if [[ -n $ret ]]; then
-		git reset --hard origin/master && source $HOME/.krinkle.dotfiles/index.bash
+		git reset --hard origin/master && source $KDF_BASE_DIR/index.bash
 		cd -
 	else
 		echo "Dotfiles update aborted."

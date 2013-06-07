@@ -4,14 +4,12 @@
 
 ### Read only
 ```bash
-$ git clone git://github.com/Krinkle/dotfiles.git ~/.krinkle.dotfiles
-$ ~/.krinkle.dotfiles/init.sh
+git clone git://github.com/Krinkle/dotfiles.git ~/.krinkle.dotfiles && ~/.krinkle.dotfiles/bin/init
 ```
 
 ### Read+Write access
 ```bash
-$ git clone git@github.com:Krinkle/dotfiles.git ~/.krinkle.dotfiles
-$ ~/.krinkle.dotfiles/init.sh
+git clone git@github.com:Krinkle/dotfiles.git ~/.krinkle.dotfiles && ~/.krinkle.dotfiles/bin/init
 ```
 
 ## Thanks

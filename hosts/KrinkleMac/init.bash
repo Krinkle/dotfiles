@@ -115,6 +115,8 @@ function _dotfiles-host-init {
 
 _dotfiles-host-init
 
+source $KDF_BASE_DIR/index.bash
+
 #
 # Manual steps for Terminal workspace
 #
