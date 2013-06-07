@@ -1,4 +1,4 @@
-if [ "$(uname)" == "Linux" -o "$(uname)" == "SunOS" ]
+if [ "$UNAME" == "Linux" -o "$UNAME" == "SunOS" ]
 then
 	# Ubuntu (Linux), Solaris (SunOS)
 	alias ls='ls --color=auto'
@@ -17,5 +17,4 @@ alias -- -='cd -'
 
 alias jsonhint='jshint --extra-ext .json'
 alias dsize='du -hs'
-# Thanks @cowboy (github.com/cowboy/dotfiles)
 alias wanip='dig +short myip.opendns.com @resolver1.opendns.com'

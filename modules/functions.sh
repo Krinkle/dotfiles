@@ -7,42 +7,46 @@ function _dotfiles-prompt-choice() {
 	esac
 }
 
+function _dotfiles-ps1-exit_code() {
+	[[ $1 != 0 ]] && echo "$CLR_RED$1$CLR_NONE "
+}
+
 # MacOSX default PS1: '\h:\W \u\$'
 function _dotfiles-ps1-setup() {
-	local host
-	local clr_host
+	local ec="$?"
+	local host="\h"
+	local clr_user="$CLR_CYAN"
+	local clr_host="$CLR_CYAN"
+	local prompt="\$"
 	local supportcolor
 
-	# On MacOSX $HOSTNAME is "FoobarMac.local" instead of "FoobarMac"
-	# So use the PS1 magic "\h" instead, which is correct.
-	host="\h"
 
-	clr_host="$CLR_GREEN"
-
-	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-		supportcolor=yes
+	# Fix up Wikimedia Labs hostnames
+	if [ "$INSTANCENAME" != "" ]; then
+		host="$INSTANCENAME"
 	fi
 
-	CLR_GITST_CLS="$CLR_GREEN" # Clear state
-	CLR_GITST_SC="$CLR_YELLOW" # Staged changes
-	CLR_GITST_USC="$CLR_RED" # Unstaged changes
-	CLR_GITST_UT="$CLR_WHITE" # Untracked files
-	CLR_GITST_BR="$CLR_GREEN"
+	if [ "$KDF_CANONICAL_HOST" = "KrinkleMac" ]; then
+		clr_host="$CLR_MAGENTA"
+	fi
 
-	case "$KDF_CANONICAL_HOST" in
-		"KrinkleMac")
-			clr_host="$CLR_MAGENTA"
-			;;
-		*)
-			if [ "$INSTANCENAME" != "" ]; then
-				host="$INSTANCENAME"
-			fi
-	esac
+	if echo $KDF_CANONICAL_HOST | grep -q -E '\.wikimedia\.org|\.wmnet'; then
+		clr_host="$CLR_GREEN"
+	fi
 
-	if [ "$supportcolor" != "" ]; then
-	    PS1="$CLR_WHITE[\$(date +%H:%M\ %Z)] $CLR_CYAN\u$CLR_WHITE at $clr_host$host$CLR_WHITE in $CLR_YELLOW\w\$(_dotfiles-git-ps1)$CLR_NONE\n\$ "
+	if [ "$LOGNAME" = "root" ]; then
+		clr_user="$CLR_RED"
+		prompt="#"
+	fi
+
+	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+		supportcolor=1
+	fi
+
+	if [[ -n $supportcolor ]]; then
+	    PS1="$CLR_WHITE[\$(date +%H:%M\ %Z)] $clr_user\u$CLR_WHITE at $clr_host$host$CLR_WHITE in $CLR_YELLOW\w\$(_dotfiles-git-ps1)$CLR_NONE\n$(_dotfiles-ps1-exit_code $ec)$prompt "
 	else
-	    PS1="[\$(date +%H:%M\ %Z)] \u@$host:\w\$ "
+	    PS1="[\$(date +%H:%M\ %Z)] \u@$host:\w$prompt "
 	fi
 }
 
@@ -57,6 +61,12 @@ function _dotfiles-git-ps1() {
 	local st_untracked=0
 	local indicator
 	local branch
+
+	CLR_GITST_CLS="$CLR_GREEN" # Clear state
+	CLR_GITST_SC="$CLR_YELLOW" # Staged changes
+	CLR_GITST_USC="$CLR_RED" # Unstaged changes
+	CLR_GITST_UT="$CLR_WHITE" # Untracked files
+	CLR_GITST_BR="$CLR_GREEN"
 
 	if [[ -z "$(git rev-parse --is-inside-work-tree 2> /dev/null)" ]]; then
 		return 1
@@ -89,8 +99,7 @@ function dotfiles-pull() {
 	git diff HEAD...origin/master --stat --color=auto && git diff HEAD...origin/master --color=auto
 
 	ret=$(_dotfiles-prompt-choice "OK to pull down?")
-	if [[ -n $ret ]]
-	then
+	if [[ -n $ret ]]; then
 		git reset --hard origin/master && source $HOME/.krinkle.dotfiles/index.bash
 		cd -
 	else
