@@ -2,20 +2,19 @@
 # Bash history
 #
 
-# Don't put duplicate lines in the history
-HISTCONTROL=ignoredups:ignorespace
-
 # Append to the history file, don't overwrite it
 shopt -s histappend
 
-HISTSIZE=1000
-HISTFILESIZE=2000
+# Don't put duplicate lines in the history
+export HISTCONTROL="ignorespace:erasedups"
+
+# Large history
+export HISTSIZE=10000
+export HISTFILESIZE=20000
 
 #
-# Terminal
+# Colors
 #
-
-export EDITOR=vim
 
 if [ -x /usr/bin/dircolors ]
 then
@@ -35,8 +34,25 @@ CLR_MAGENTA=`tput setaf 5`
 CLR_CYAN=`tput setaf 6`
 CLR_WHITE=`tput setaf 7`
 
+#
+# Misc
+#
+
+export EDITOR=vim
+
 # Sort dotfiles before a in ls and sort (http://superuser.com/a/448294/164493)
 export LC_COLLATE="C"
+
+export GREP_OPTIONS='--color=auto'
+
+# Fix gem/ruby errors about "unable to convert U+3002 from UTF-8 to US-ASCII for lib/shortener.rb, skipping"
+export LC_CTYPE="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+unset LC_ALL
+
+# Enable Bash 4 features if available
+shopt -s globstar 2> /dev/null
+
 
 #
 # Setup functions

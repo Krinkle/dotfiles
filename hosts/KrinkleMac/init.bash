@@ -91,6 +91,16 @@ function _dotfiles-host-init {
 		ln -s "$tmpDest" "$tmpPath"
 	fi
 
+	tmpPath=~/.config
+	tmpDest=$KDF_BASE_DIR/hosts/KrinkleMac/config
+	if [[ ! -L $tmpPath || "$(readlink $tmpPath)" != $tmpDest ]]
+	then
+		test ! -f $tmpPath || rm $tmpPath
+		echo "linking .config"
+		ln -s $tmpDest $tmpPath
+	fi
+
+
 	#echo "... checking dev directory tree"
 	# ~/Development
 	# ~/Development/Krinkle
