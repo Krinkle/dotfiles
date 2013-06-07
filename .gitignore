@@ -2,3 +2,6 @@
 ## Mac OS X
 .DS_Store
 *.sublime-workspace
+
+# git-review
+hosts/KrinkleMac/config/git-review/latest-version
