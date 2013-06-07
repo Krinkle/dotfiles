@@ -6,7 +6,7 @@ function _dotfiles-init() {
 	local backup_tmp=`mktemp -d -t dotfiles`
 	local backup_dest="$HOME/.dotfiles.backup"
 
-	local file_links="jshintrc"
+	local file_links="ackrc jshintrc"
 	local file_templates="bashrc bash_profile gitconfig"
 
 	echo "$(tput smul)$(tput bold)Home directory$(tput sgr0)"
