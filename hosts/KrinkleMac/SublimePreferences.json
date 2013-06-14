@@ -1,34 +1,31 @@
 {
-	"theme": "Soda Dark.sublime-theme",
 	"color_scheme": "Packages/Color Scheme - Default/Monokai Bright.tmTheme",
-	"font_size": 12.0,
-
-	"spell_check": false,
 	"dictionary": "Packages/Language - English/en_GB.dic",
-
 	"ensure_newline_at_eof_on_save": true,
-
-	"folder_exclude_patterns": [
+	"folder_exclude_patterns":
+	[
 		".svn",
 		".hg",
 		".git",
 		"CVS"
 	],
-
+	"font_size": 12.0,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
 	"jsdocs_align_tags": "no",
 	"jsdocs_deep_indent": false,
 	"jsdocs_extend_double_slash": true,
 	"jsdocs_indentation_spaces": 1,
 	"jsdocs_return_description": false,
 	"jsdocs_return_tag": "@return",
-
-	"rulers": [
+	"rulers":
+	[
 		62,
 		80,
 		100
 	],
-
-	"ignored_packages": [
-		"Vintage"
-	]
+	"spell_check": false,
+	"theme": "Soda Dark.sublime-theme"
 }
