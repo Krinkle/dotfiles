@@ -3,5 +3,7 @@
 .DS_Store
 *.sublime-workspace
 
-# git-review
+# git-review (pip)
 hosts/KrinkleMac/config/git-review/latest-version
+# bower (npm)
+hosts/KrinkleMac/config/configstore/update-notifier-bower.yml

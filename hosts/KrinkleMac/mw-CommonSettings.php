@@ -32,6 +32,7 @@ $wgUseInstantCommons  = true;
 
 ## Local environment
 $wgDiff3 = '/usr/bin/diff3';
+$mwLogDir = '/var/log/mediawiki';
 
 
 ##
@@ -102,7 +103,6 @@ if ( true ) {
 	#$wgMemCachedDebug = false;
 
 	// Log files
-	$mwLogDir = '/var/log/mediawiki';
 	$wgDBerrorLog = "$mwLogDir/dberror.log";
 	#$wgRateLimitLog = "$mwLogDir/ratelimit.log";
 	$wgDebugLogFile = "$mwLogDir/debug.log";
@@ -231,17 +231,48 @@ if ( isset( $kfExtensions ) ) {
 
 unset( $wgGroupPermissions['developer'] );
 
+
+## AbuseFilter
+$wgGroupPermissions['sysop']['abusefilter-modify'] = true;
+$wgGroupPermissions['*']['abusefilter-log-detail'] = true;
+$wgGroupPermissions['*']['abusefilter-view'] = true;
+$wgGroupPermissions['*']['abusefilter-log'] = true;
+$wgGroupPermissions['sysop']['abusefilter-private'] = true;
+$wgGroupPermissions['sysop']['abusefilter-modify-restricted'] = true;
+$wgGroupPermissions['sysop']['abusefilter-revert'] = true;
+// $wgAvailableRights[] = 'abusefilter-view-private';
+// $wgAvailableRights[] = 'abusefilter-log-private';
+// $wgAvailableRights[] = 'abusefilter-hidden-log';
+// $wgAvailableRights[] = 'abusefilter-hide-log';
+// $wgAvailableRights[] = 'abusefilter-modify-global';
+
+## ConfirmEdit
+$wgCaptchaClass = 'FancyCaptcha';
+$wgCaptchaDirectory = "$wgCacheDirectory/captcha";
+$wgGroupPermissions['sysop']['skipcaptcha'] =
+$wgGroupPermissions['autoconfirmed']['skipcaptcha'] = false;
+if ( true ) {
+	$wgCaptchaTriggers['edit'] = true;
+}
+// $ sudo pip install pil
+// $ python captcha.py --wordlist /usr/share/dict/words --key {wgCaptchaSecret} --output {wgCaptchaDirectory} --font '/Library/Fonts/Arial Black.ttf'
+
 ## Testing
 $wgEnableJavaScriptTest = true;
 $wgJavaScriptTestConfig['qunit']['testswarm-injectjs'] = $kgMainServer . '/jquery/testswarm/js/inject.js';
 $wgLegacyJavaScriptGlobals = false;
 
+## Spam
+$wgSpamRegex = '/spam/i';
+
 ## Resource origins
-$wgAllowUserJs = false;
-$wgAllowUserCss = false;
+$wgAllowUserJs = $wgAllowUserCss = true;
 $wgAllowUserCssPrefs = true;
-$wgUseSiteJs = true;
-$wgUseSiteCss = true;
+$wgUseSiteJs = $wgUseSiteCss = true;
+
+## EventLogging
+$wgEventLoggingBaseUri = 'http://127.0.0.1:8080/event.gif';
+$wgEventLoggingFile = $mwLogDir . '/events.log';
 
 ## Rights
 $wgGroupPermissions['*']['edit'] = true;
@@ -265,6 +296,9 @@ $wgVisualEditorNamespaces[] = NS_VISUALEDITOR;
 
 $wgDefaultUserOptions['visualeditor-enable'] = 1;
 $wgHiddenPrefs[] = 'visualeditor-enable';
+
+## SpamBlacklist
+$wgSpamBlacklistFiles = array( 'http://meta.wikimedia.org/w/index.php?title=Spam_blacklist&action=raw&sb_ver=1' );
 
 ## OnlineStatusBar
 $wgOnlineStatusBarDefaultEnabled = true;

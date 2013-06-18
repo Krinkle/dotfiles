@@ -32,3 +32,4 @@ $wgShellLocale = 'en_US.UTF-8';
 ## Keys
 $wgSecretKey = '***';
 $wgUpgradeKey = '***';
+$wgCaptchaSecret = '***';

@@ -22,7 +22,7 @@
 	"jsdocs_return_tag": "@return",
 	"rulers":
 	[
-		62,
+		65,
 		80,
 		100
 	],

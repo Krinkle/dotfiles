@@ -2,34 +2,42 @@
 	"folders":
 	[
 		{
-			"folder_exclude_patterns":
-			[
+			"path": "/Users/krinkle/Development/mediawiki/core",
+			"folder_exclude_patterns": [
 				"docs/js",
 				"docs/html"
-			],
-			"path": "/Users/krinkle/Development/mediawiki/core"
+			]
 		},
 		{
-			"folder_exclude_patterns":
-			[
-				"docs"
-			],
-			"path": "/Users/krinkle/Development/mediawiki/extensions/VisualEditor"
+			"path": "/Users/krinkle/Development/mediawiki/extensions/VisualEditor",
+			"folder_exclude_patterns": [
+				"docs",
+				"node_modules"
+			]
 		},
 		{
 			"path": "/Users/krinkle/Development/mediawiki/extensions/TemplateData"
 		},
 		{
-			"path": "/Users/krinkle/Development/wikimedia/integration"
+			"path": "/Users/krinkle/Development/wikimedia/integration",
+			"folder_exclude_patterns": [
+				"node_modules"
+			]
 		},
 		{
-			"path": "/Users/krinkle/Development/mediawiki/extensions/Parsoid"
+			"path": "/Users/krinkle/Development/mediawiki/extensions/Parsoid",
+			"folder_exclude_patterns": [
+				"node_modules"
+			]
 		},
 		{
 			"path": "/Users/krinkle/Development/wikimedia/operations"
 		},
 		{
-			"path": "/Users/krinkle/Development/mediawiki/tools"
+			"path": "/Users/krinkle/Development/mediawiki/tools",
+			"folder_exclude_patterns": [
+				"node_modules"
+			]
 		}
 	]
 }

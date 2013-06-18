@@ -21,9 +21,9 @@ esac
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-source $KDF_BASE_DIR/modules/aliases.sh
 source $KDF_BASE_DIR/modules/functions.sh
 source $KDF_BASE_DIR/modules/setup.sh
+source $KDF_BASE_DIR/modules/aliases.sh
 
 case "$KDF_CANONICAL_HOST" in
 	"KrinkleMac")

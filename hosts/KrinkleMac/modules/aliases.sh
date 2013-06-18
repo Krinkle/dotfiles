@@ -1,10 +1,9 @@
 # Version control
-alias docheckcommitmsg='cat ~/Development/tmp/COMMIT.txt'
 alias dosvncommit='svn commit -F ~/Development/tmp/COMMIT.txt'
 alias dogitcommit='git commit -F ~/Development/tmp/COMMIT.txt'
 alias gogogerrit='git review -R'
 alias grabfromgerrit='git review -d'
-alias dooldgerritfixup='git review -s && git remote rm gerrit 2> /dev/null; git branch --set-upstream-to origin/master master'
+alias dogerritfixup='git remote rm gerrit 2> /dev/null; git remote rm origin && git review -s && git branch master -u origin/master'
 
 # http://ariejan.net/2011/11/08/fixing-a-slow-starting-terminal-or-iterm2-on-mac-os-x
 # https://discussions.apple.com/thread/2178316?start=0&tstart=0

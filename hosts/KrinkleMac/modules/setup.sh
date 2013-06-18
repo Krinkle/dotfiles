@@ -25,3 +25,5 @@ export MW_DB="betawiki"
 
 # Local etc (symlinked to data of `brew install bash-completion`)
 source /usr/local/etc/bash_completion
+
+[[ -s /usr/local/etc/autojump.bash ]] && . /usr/local/etc/autojump.bash

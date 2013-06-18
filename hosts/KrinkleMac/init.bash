@@ -44,7 +44,7 @@ function _dotfiles-host-init {
 	npm install -g jshint grunt-cli
 
 	echo "... ensuring presence of RubyGems packages"
-	gem install jsduck
+	gem install jsduck --version '= 4.10.4'
 
 	echo "... updating PEAR"
 	sudo pear channel-discover pear.phpunit.de

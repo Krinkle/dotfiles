@@ -8,7 +8,7 @@ function _dotfiles-prompt-choice() {
 }
 
 function _dotfiles-ps1-exit_code() {
-	[[ $1 != 0 ]] && echo "$CLR_RED$1$CLR_NONE "
+	[[ $1 != 0 ]] && echo "\[$CLR_RED\]$1\[$CLR_NONE\] "
 }
 
 # MacOSX default PS1: '\h:\W \u\$'
@@ -44,7 +44,7 @@ function _dotfiles-ps1-setup() {
 	fi
 
 	if [[ -n $supportcolor ]]; then
-	    PS1="$CLR_WHITE[\$(date +%H:%M\ %Z)] $clr_user\u$CLR_WHITE at $clr_host$host$CLR_WHITE in $CLR_YELLOW\w\$(_dotfiles-git-ps1)$CLR_NONE\n$(_dotfiles-ps1-exit_code $ec)$prompt "
+	    PS1="\[$CLR_WHITE\][\$(date +%H:%M\ %Z)] \[$clr_user\]\u\[$CLR_WHITE\] at \[$clr_host\]$host\[$CLR_WHITE\] in \[$CLR_YELLOW\]\w\$(_dotfiles-git-ps1)\[$CLR_NONE\]\n$(_dotfiles-ps1-exit_code $ec)$prompt "
 	else
 	    PS1="[\$(date +%H:%M\ %Z)] \u@$host:\w$prompt "
 	fi
