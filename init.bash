@@ -3,7 +3,7 @@
 function _dotfiles-init() {
 	local src="$HOME/.krinkle.dotfiles"
 	local backup_used
-	local backup_tmp=`mktemp -d -t dotfiles`
+	local backup_tmp=`mktemp -d 2>/dev/null || mktemp -d -t 'dotfiles'`
 	local backup_dest="$HOME/.dotfiles.backup"
 
 	local file_links="ackrc jshintrc"
