@@ -27,3 +27,6 @@ export MW_DB="betawiki"
 source /usr/local/etc/bash_completion
 
 [[ -s /usr/local/etc/autojump.bash ]] && . /usr/local/etc/autojump.bash
+
+__git_complete gi _git
+__git_complete gir _git
