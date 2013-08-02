@@ -30,7 +30,7 @@ function _dotfiles-host-init {
 	brew tap homebrew/dupes
 	brew tap homebrew/versions
 	brew tap josegonzalez/homebrew-php
-	formulas="git php54 mysql phpmyadmin node08 ruby phantomjs ack bash-completion wget colordiff dnsmasq bash jq"
+	formulas="ack bash bash-completion colordiff dnsmasq git jq mysql node08 phantomjs php54 phpmyadmin ruby wget"
 	for f in $formulas; do
 		brew upgrade $f || brew install $f
 		if [[ $? != 0 ]]
