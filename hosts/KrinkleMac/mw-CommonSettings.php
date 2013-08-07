@@ -206,6 +206,18 @@ $wgScriptExtension  = '.php';
 $wgExtensionAssetsPath = '/extensions';
 $EP = dirname( $IP ) . '/extensions';
 
+if ( php_sapi_name() === 'cli' ) {
+	// Sets $wgServer for CLI
+	switch ( $kgCluster ) {
+		case 'no-ip':
+			$wgServer = 'http://wiki.krinkle.dev';
+			break;
+		case 'dev':
+			$wgServer = "http://$lang.$project.krinkle.dev";
+			break;
+	}
+}
+
 switch ( $kgCluster ) {
 	case 'no-ip':
 		$wgArticlePath = "/$wgDBname/wiki/$1";
