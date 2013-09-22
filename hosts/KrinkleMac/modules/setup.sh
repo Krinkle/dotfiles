@@ -6,7 +6,7 @@
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
 # Bins: Homebrew's npm packages (e.g. jshint)
-export PATH=/usr/local/share/npm/bin:$PATH
+#export PATH=/usr/local/share/npm/bin:$PATH
 # They're put in /usr/local/bin as of node 0.10, disable when upgrading to node 0.10+
 
 # Bins: Homebrew's gem packages (e.g. jsduck)

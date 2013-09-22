@@ -14,7 +14,7 @@ function _dotfiles-ps1-exit_code() {
 # MacOSX default PS1: '\h:\W \u\$'
 function _dotfiles-ps1-setup() {
 	local ec="$?"
-	local host="\h"
+	local host="$KDF_CANONICAL_HOST"
 	local clr_user="$CLR_CYAN"
 	local clr_host="$CLR_CYAN"
 	local prompt="\$"

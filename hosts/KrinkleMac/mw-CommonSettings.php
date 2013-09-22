@@ -1,5 +1,4 @@
 <?php
-
 ## Project
 $wgMetaNamespace = 'Project';
 $wgLanguageCode = 'en';
@@ -24,10 +23,11 @@ $wgCacheDirectory = $IP . '/cache';
 $wgUseLocalMessageCache = true;
 
 ## Output
+$wgUseGzip = true;
 $wgWellFormedXml = false;
 
 ## Media
-$wgEnableUploads  = false;
+$wgEnableUploads  = true;
 $wgUseInstantCommons  = true;
 
 ## Local environment
@@ -69,7 +69,11 @@ if ( defined( 'MW_DB' ) ) {
 		$wgDBname = $m[1] . 'wiki';
 
 	// No-IP Free doesn't have wildcard and uses subdirectories instead
-	} elseif ( $_SERVER['HTTP_HOST'] === 'krinkle-wiki.no-ip.org' || $_SERVER['HTTP_HOST'] === 'wiki.krinkle.dev' ) {
+	} elseif (
+		$_SERVER['HTTP_HOST'] === 'krinkle-wiki.no-ip.org' ||
+		$_SERVER['HTTP_HOST'] === 'krinkle.xs4all.nl' ||
+		$_SERVER['HTTP_HOST'] === 'wiki.krinkle.dev'
+	) {
 		$kgCluster = 'no-ip';
 		preg_match(
 			'#([^/]+)#',
@@ -104,8 +108,10 @@ if ( true ) {
 
 	// Log files
 	$wgDBerrorLog = "$mwLogDir/dberror.log";
-	#$wgRateLimitLog = "$mwLogDir/ratelimit.log";
+	$wgRateLimitLog = "$mwLogDir/ratelimit.log";
 	$wgDebugLogFile = "$mwLogDir/debug.log";
+	$wgDebugLogGroups['resourceloader'] = "$mwLogDir/debug-resourceloader.log";
+	$wgDebugLogGroups['exception'] = "$mwLogDir/debug-exception.log";
 	#$wgDebugLogGroups['somegroup'] = "$mwLogDir/debug-somegroup.log";
 
 	// ResourceLoader
@@ -243,6 +249,8 @@ if ( isset( $kfExtensions ) ) {
 
 unset( $wgGroupPermissions['developer'] );
 
+## Logo (HiDPI)
+#$wgLogo = $wgScriptPath . '/images/thumb/3/3f/VisualEditor-logo.local.png/135px-VisualEditor-logo.local.png';
 
 ## AbuseFilter
 $wgGroupPermissions['sysop']['abusefilter-modify'] = true;
