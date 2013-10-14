@@ -17,7 +17,6 @@ $kfExtensions = array(
 	#'$EP/ParserFunctions/ParserFunctions.php',
 	#'$EP/SyntaxHighlight_GeSHi/SyntaxHighlight_GeSHi.php',
 	#'$EP/TemplateData/TemplateData.php',
-	#'$EP/Vector/Vector.php',
 	#'$EP/VisualEditor/VisualEditor.php',
 	#'$EP/WikiEditor/WikiEditor.php',
 );

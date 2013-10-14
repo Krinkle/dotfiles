@@ -300,10 +300,6 @@ $wgGroupPermissions['script'] = $wgGroupPermissions['bot'];
 $wgGroupPermissions['developer']['userrights']  = true;
 $wgGroupPermissions['developer']['editinterface']  = true;
 
-## Vector
-$wgVectorUseSimpleSearch = true;
-$wgVectorUseIconWatch = true;
-
 ## VisualEditor
 $wgVisualEditorParsoidURL = 'http://localhost:8000/';
 $wgVisualEditorEnableExperimentalCode = true;
@@ -319,9 +315,6 @@ $wgHiddenPrefs[] = 'visualeditor-enable';
 
 ## SpamBlacklist
 $wgSpamBlacklistFiles = array( 'http://meta.wikimedia.org/w/index.php?title=Spam_blacklist&action=raw&sb_ver=1' );
-
-## OnlineStatusBar
-$wgOnlineStatusBarDefaultEnabled = true;
 
 ## MaintenanceShell
 $wgGroupPermissions['developer']['maintenanceshell'] = true;
