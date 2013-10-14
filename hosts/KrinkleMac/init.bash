@@ -128,24 +128,21 @@ source $KDF_BASE_DIR/index.bash
 
 ## Apache
 # $ brew install httpd # Be careful, /etc/ is not preserved through upgrades
-### https://github.com/Homebrew/homebrew-dupes/issues/119
-# $ mkdir /usr/local/opt/httpd/var/apache2/log
-# $ mkdir /usr/local/opt/httpd/var/apache2/run
 ## Disable built-in httpd from Mountain Lion
 # $ sudo /usr/sbin/apachectl stop
 # $ sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist
 # $ sudo launchctl remove org.apache.httpd.plist
 ## Add httpd from Homebrew to launchctl (https://github.com/Homebrew/homebrew-dupes/issues/140)
 # $ edit /usr/local/opt/httpd/homebrew.dupes.httpd.plist `https://github.com/Homebrew/homebrew-dupes/blob/master/httpd.rb#startup_plist`
-# $ sudo chown root /usr/local/opt/httpd/homebrew.dupes.httpd.plist
-# $ sudo chmod 644 /usr/local/opt/httpd/homebrew.dupes.httpd.plist
-# $ sudo launchctl load -w /usr/local/opt/httpd/homebrew.dupes.httpd.plist
-# $ sudo /usr/local/sbin/apachectl restart
-# $ sudo ln -s /usr/local/opt/httpd/var/apache2/log /var/log/httpd
+# $ sudo chown root /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
+# $ sudo chmod 644 /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
+# $ sudo launchctl load -w /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
+# $ sudo apachectl restart
+# $ sudo ln -s /usr/local/var/apache2/log /var/log/httpd
 #
-# $ mkdir /usr/local/opt/httpd/etc/apache2/other
-# $ echo 'Include etc/apache2/other/*.conf' >> /usr/local/opt/httpd/etc/apache2/httpd.conf
-# $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/httpd.conf /usr/local/opt/httpd/etc/apache2/other/krinkle.conf
+# $ mkdir /usr/local/etc/apache2/other
+# $ echo 'Include /usr/local/etc/apache2/other/*.conf' >> /usr/local/etc/apache2/httpd.conf
+# $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/httpd.conf /usr/local/etc/apache2/other/krinkle.conf
 
 ## MySQL
 # Caveat: mysql_install_db and load

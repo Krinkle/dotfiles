@@ -27,8 +27,9 @@ function _dotfiles-ps1-setup() {
 		host="$INSTANCENAME"
 	fi
 
-	if [ "$KDF_CANONICAL_HOST" = "KrinkleMac" ]; then
+	if [ "$KDF_HOST_TYPE" = "KrinkleMac" ]; then
 		clr_host="$CLR_MAGENTA"
+		host="KrinkleMac"
 	fi
 
 	if echo $KDF_CANONICAL_HOST | grep -q -E '\.wikimedia\.org|\.wmnet'; then
@@ -89,6 +90,11 @@ function _dotfiles-git-ps1() {
 	echo -en "${CLR_GITST_BR} ($branch$indicator${CLR_GITST_BR})"
 }
 
+# Courtesy of @tstarling
+function genpass() {
+	tr -cd [:alnum:] < /dev/urandom | head -c10
+	echo
+}
 
 function dotfiles-pull() {
 	cd $KDF_BASE_DIR

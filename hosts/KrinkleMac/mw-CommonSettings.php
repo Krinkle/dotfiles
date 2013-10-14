@@ -2,6 +2,7 @@
 ## Project
 $wgMetaNamespace = 'Project';
 $wgLanguageCode = 'en';
+$wgLocaltimezone = 'Europe/Amsterdam';
 $wgSitename = false;
 $kgMainServer = false;
 $kgCluster = false;
@@ -249,8 +250,11 @@ if ( isset( $kfExtensions ) ) {
 
 unset( $wgGroupPermissions['developer'] );
 
+## Uploads
+$wgUploadPath = "$wgScriptPath/images";
+
 ## Logo (HiDPI)
-#$wgLogo = $wgScriptPath . '/images/thumb/3/3f/VisualEditor-logo.local.png/135px-VisualEditor-logo.local.png';
+$wgLogo = $wgUploadPath . '/thumb/3/3f/VisualEditor-logo.local.png/135px-VisualEditor-logo.local.png';
 
 ## AbuseFilter
 $wgGroupPermissions['sysop']['abusefilter-modify'] = true;
@@ -302,16 +306,9 @@ $wgGroupPermissions['developer']['editinterface']  = true;
 
 ## VisualEditor
 $wgVisualEditorParsoidURL = 'http://localhost:8000/';
-$wgVisualEditorEnableExperimentalCode = true;
-
-define( 'NS_VISUALEDITOR', 2500 );
-define( 'NS_VISUALEDITOR_TALK', 2501 );
-$wgExtraNamespaces[NS_VISUALEDITOR] = 'VisualEditor';
-$wgExtraNamespaces[NS_VISUALEDITOR_TALK] = 'VisualEditor_talk';
-$wgVisualEditorNamespaces[] = NS_VISUALEDITOR;
 
 $wgDefaultUserOptions['visualeditor-enable'] = 1;
-$wgHiddenPrefs[] = 'visualeditor-enable';
+$wgDefaultUserOptions['visualeditor-enable-experimental'] = 1;
 
 ## SpamBlacklist
 $wgSpamBlacklistFiles = array( 'http://meta.wikimedia.org/w/index.php?title=Spam_blacklist&action=raw&sb_ver=1' );

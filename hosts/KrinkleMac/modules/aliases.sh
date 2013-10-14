@@ -28,3 +28,5 @@ alias doparsoid='cd ~/Development/mediawiki/extensions/Parsoid && git remote upd
 alias wget-magic-noindex='wget -m --no-parent --reject "index.html*"'
 alias wget-magic-filter='wget -m --no-parent -A'
 alias wget-magic-mkv='wget-magic-filter "*.mkv"'
+
+alias dotfiles-push='cd $KDF_BASE_DIR; git add -p && _dotfiles-prompt-choice "OK to push now?" && git commit -m "sync dotfiles" && git push origin HEAD; cd -'
