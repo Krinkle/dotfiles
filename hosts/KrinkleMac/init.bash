@@ -19,9 +19,7 @@ function _dotfiles-host-init {
 	brew doctor
 	if [[ $? != 0 ]]
 	then
-		ret=$(_dotfiles-prompt-choice "Check out those warnings. Continue?")
-		if [[ -z $ret ]]
-		then
+		if ! _dotfiles-prompt-choice "Check out those warnings. Continue?"; then
 			exit 2
 		fi
 	fi

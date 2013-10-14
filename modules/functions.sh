@@ -2,9 +2,10 @@ function _dotfiles-prompt-choice() {
 	read -p "$1 (y/n): > " choice
 	case "$choice" in
 		y|Y)
-			echo true
+			return 0
 			;;
 	esac
+	return 1
 }
 
 function _dotfiles-ps1-exit_code() {
@@ -98,8 +99,7 @@ function dotfiles-pull() {
 	git log HEAD^...origin/master --decorate --abbrev-commit --pretty=oneline --color=auto
 	git diff HEAD...origin/master --stat --color=auto && git diff HEAD...origin/master --color=auto
 
-	ret=$(_dotfiles-prompt-choice "OK to pull down?")
-	if [[ -n $ret ]]; then
+	if _dotfiles-prompt-choice "OK to pull down now?"; then
 		git reset --hard origin/master && source $KDF_BASE_DIR/index.bash
 		cd -
 	else

@@ -62,9 +62,7 @@ then
 	echo "${CLR_LINE}${CLR_BOLD}Provisioning $KDF_CANONICAL_HOST$CLR_NONE"
 	echo
 	echo "$CLR_MAGENTA>>$CLR_NONE Recognised host as $KDF_CANONICAL_HOST"
-	ret=$(_dotfiles-prompt-choice "$CLR_MAGENTA>>$CLR_NONE Run host specific provision?")
-	if [[ -n $ret ]]
-	then
+	if _dotfiles-prompt-choice "$CLR_MAGENTA>>$CLR_NONE Run host specific provision?"; then
 		$KDF_HOST_INIT
 		code="$?"
 		if [[ "$code" == "0" ]]
