@@ -11,10 +11,10 @@ export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
 # Bins: Homebrew's gem packages (e.g. jsduck)
 # http://stackoverflow.com/a/14138490/319266
-export PATH=$(brew --prefix ruby)/bin:$PATH
+export PATH=/usr/local/opt/ruby/bin:$PATH
 
 # Bins: Homebrew's pear/pecl packages (e.g. phpunit)
-export PATH=$(brew --prefix php54)/bin:$PATH
+export PATH=/usr/local/opt/php54/bin:$PATH
 
 # Bins: Sublime Text 2 (subl)
 export PATH=/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin:$PATH
