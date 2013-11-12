@@ -17,7 +17,7 @@ alias doflushdns='sudo killall -HUP mDNSResponder'
 alias dormdsstore='find . -name ".DS_Store" -type f -exec rm {} \;'
 
 # Web server
-alias doapachereset='cd /var/log/httpd && rm -f *_log && sudo apachectl restart && l'
+alias doapachereset='cd /var/log/httpd && rm -f *_log && rm -rf mw/*.log && sudo apachectl restart && l . mw/*'
 
 # Parsoid
 alias doparsoid='cd ~/Development/mediawiki/extensions/Parsoid && git remote update && git checkout origin/master && cd js && npm install && node api/server.js'

@@ -161,6 +161,7 @@ source $KDF_BASE_DIR/index.bash
 # $ git clone ssh://krinkle@gerrit.wikimedia.org:29418/mediawiki/extensions.git ~/Development/mediawiki/extensions
 ## Configure
 # $ sudo mkdir /var/log/mediawiki && sudo chmod 777 /var/log/mediawiki
+# $ ln -s /usr/log/mediawiki /var/log/httpd/mw
 # $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/mw-CommonSettings.php ~/Development/mediawiki/core/CommonSettings.php
 # $ edit ~/Development/mediawiki/core/.git/info/exclude # Add CommonSettings.php
 # $ cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/mw-LocalSettings.php ~/Development/mediawiki/core/LocalSettings.php
