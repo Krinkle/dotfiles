@@ -11,6 +11,11 @@ git clone git://github.com/Krinkle/dotfiles.git ~/.krinkle.dotfiles && ~/.krinkl
 ```bash
 git clone git@github.com:Krinkle/dotfiles.git ~/.krinkle.dotfiles && ~/.krinkle.dotfiles/bin/init
 ```
+## Screenshots
+
+![Screenshot of main view and navigation](http://f.cl.ly/items/2p060T0A2734243Y0c35/screenshot-dotfiles-22062575ac-nav.png)
+
+![Screenshot of git interaction](http://f.cl.ly/items/3B1q3T2o3G223Y123B0P/screenshot-dotfiles-22062575ac-git.png)
 
 ## Thanks
 
