@@ -18,8 +18,8 @@ shopt -s no_empty_cmd_completion >/dev/null 2>&1
 : ${UNAME=$(uname)}
 
 export HISTCONTROL=ignorespace:erasedups
-export HISTSIZE=10000
-export HISTFILESIZE=20000
+export HISTSIZE=1000
+export HISTFILESIZE=2000
 
 # Sort dotfiles before "a" in ls(1) and sort(1) (http://superuser.com/a/448294/164493)
 export LC_COLLATE="C"

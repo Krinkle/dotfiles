@@ -159,7 +159,7 @@ $wgConf->settings = array(
 	'wgSitename' => array(
 		'default' => '$lang.$Project',
 		'alphawiki' => 'Wikipedia 2.0alpha',
-	)
+	),
 );
 
 if ( !in_array( $wgDBname, $wgConf->getLocalDatabases() ) ) {
@@ -253,8 +253,7 @@ unset( $wgGroupPermissions['developer'] );
 ## Uploads
 $wgUploadPath = "$wgScriptPath/images";
 
-## Logo (HiDPI)
-$wgLogo = $wgUploadPath . '/thumb/3/3f/VisualEditor-logo.local.png/135px-VisualEditor-logo.local.png';
+$wgLogo = "$wgUploadPath/thumb/3/3f/VisualEditor-logo.local.png/135px-VisualEditor-logo.local.png";
 
 ## AbuseFilter
 $wgGroupPermissions['sysop']['abusefilter-modify'] = true;
@@ -330,3 +329,7 @@ $wgNarayamEnabledByDefault = true;
 ## Interwiki
 $wgGroupPermissions['developer']['interwiki'] = true;
 
+## Scribunto
+$wgScribuntoDefaultEngine = 'luastandalone';
+$wgScribuntoEngineConf['luastandalone']['luaPath'] = '/usr/local/bin/lua';
+$wgScribuntoEngineConf['luastandalone']['errorFile'] = "$mwLogDir/lua-error.log";

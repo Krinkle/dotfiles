@@ -28,8 +28,23 @@ function _dotfiles-host-init {
 	brew tap homebrew/dupes
 	brew tap homebrew/versions
 	brew tap josegonzalez/homebrew-php
-	formulas="ack bash bash-completion colordiff dnsmasq git jq mysql node08 phantomjs php54 phpmyadmin ruby wget"
-	for f in $formulas; do
+	formulas=(
+		ack
+		bash
+		bash-completion
+		colordiff
+		dnsmasq
+		git
+		jq
+		mysql
+		node
+		phantomjs
+		php54
+		phpmyadmin
+		ruby
+		wget
+	)
+	for f in "${formulas[@]}"; do
 		brew upgrade $f || brew install $f
 		if [[ $? != 0 ]]
 		then
@@ -39,7 +54,7 @@ function _dotfiles-host-init {
 	done
 
 	echo "... ensuring presence of NPM packages"
-	npm install -g jshint grunt-cli
+	npm install -g jshint grunt-cli bower csslint
 
 	echo "... ensuring presence of RubyGems packages"
 	gem install jsduck --version '= 4.10.4'
@@ -165,7 +180,7 @@ source $KDF_BASE_DIR/index.bash
 # $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/mw-CommonSettings.php ~/Development/mediawiki/core/CommonSettings.php
 # $ edit ~/Development/mediawiki/core/.git/info/exclude # Add CommonSettings.php
 # $ cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/mw-LocalSettings.php ~/Development/mediawiki/core/LocalSettings.php
-
+# brew install lua5.1
 
 ## Mac OS X
 # $ sudo defaults read /Library/Preferences/com.apple.TimeMachine SkipSystemFiles
