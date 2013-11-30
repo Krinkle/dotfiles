@@ -9,7 +9,7 @@ function _dotfiles-host-init {
 	if [ -z "$(which brew)" ]
 	then
 		echo "$CLR_RED>> ERROR$CLR_NONE: Install Homebrew first"
-		open http://mxcl.github.io/homebrew/
+		open http://brew.sh
 		exit 1
 	fi
 
@@ -30,10 +30,10 @@ function _dotfiles-host-init {
 	brew tap josegonzalez/homebrew-php
 	formulas=(
 		ack
+		autojump
 		bash
 		bash-completion
 		colordiff
-		dnsmasq
 		git
 		jq
 		mysql
@@ -71,9 +71,6 @@ function _dotfiles-host-init {
 	sudo mkdir -p /var/log/php && sudo chmod 777 /var/log/php
 	sudo mkdir -p /var/lib/php5 && sudo chmod 777 /var/lib/php5
 	test -f /usr/local/etc/php/5.4/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/KrinkleMac/php.ini /usr/local/etc/php/5.4/conf.d/krinkle.ini )
-
-	echo "... Post-install for package: dnsmaq"
-	test -f /usr/local/etc/dnsmasq.conf || ( echo "linking dnsmasq.conf" && ln -s $KDF_BASE_DIR/hosts/KrinkleMac/dnsmasq.conf /usr/local/etc/dnsmasq.conf )
 
 	echo "... Post-install for package: git"
 	# Only change if not a symlink, or a symlink to the wrong place
@@ -114,16 +111,15 @@ function _dotfiles-host-init {
 	fi
 
 
-	#echo "... checking dev directory tree"
+	# echo "... checking dev directory tree"
 	# ~/Development
 	# ~/Development/Krinkle
 	# ~/Development/mediawiki/core
 	# ~/Development/mediawiki/extensions
 	# ~/Development/wikimedia
-	# ~/Development/wikimedia/integration/j, jjb, jjb-config, zuul, zuul-config, docroots
-	# ~/Development/wikimedia/operations/ mw-config, apache-config, puppet
-	# ~/Development/jquery/jquery, qunit, testswarm, qunit-*, *qunitjs.com
-	# ~/Development/countervandalism
+	# ~/Development/wikimedia/integration/j, jjb, jjb-config, zuul-config, docroot
+	# ~/Development/wikimedia/operations/ mediawiki-config, puppet
+	# ~/Development/jquery/jquery, qunit, testswarm
 }
 
 _dotfiles-host-init
@@ -131,98 +127,110 @@ _dotfiles-host-init
 source $KDF_BASE_DIR/index.bash
 
 #
-# Manual steps for Terminal workspace
+# SSH Key
 #
+# https://help.github.com/articles/generating-ssh-keys
+# $ cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/sshconfig ~/.ssh/config
+#
+# Generate different keys (for GitHub, Wikimedia Labs LDAP, Toolserver etc.)
+# and submit them to those organisations.
+# $ cd $KDF_BASE_DIR
+# $ git remote rm origin
+# $ git remote add origin git@...
+# $ git pull origin master -u
 
-## SSH Key
-## https://help.github.com/articles/generating-ssh-keys
-# cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/sshconfig ~/.ssh/config
-## Generate different keys (for GitHub, Wikimedia Labs LDAP, Toolserver etc.)
-## and submit them to those organisations.
-# cd $KDF_BASE_DIR; git remote rm origin; git remote add origin git@...; git pull origin master -u
-
-## Apache
+#
+# Apache
+#
 # $ brew install httpd # Be careful, /etc/ is not preserved through upgrades
-## Disable built-in httpd from Mountain Lion
+#
+# Disable built-in httpd from Mountain Lion
 # $ sudo /usr/sbin/apachectl stop
 # $ sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist
 # $ sudo launchctl remove org.apache.httpd.plist
-## Add httpd from Homebrew to launchctl (https://github.com/Homebrew/homebrew-dupes/issues/140)
-# $ edit /usr/local/opt/httpd/homebrew.dupes.httpd.plist `https://github.com/Homebrew/homebrew-dupes/blob/master/httpd.rb#startup_plist`
-# $ sudo chown root /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
-# $ sudo chmod 644 /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
-# $ sudo launchctl load -w /usr/local/opt/httpd/homebrew.mxcl.httpd.plist
-# $ sudo apachectl restart
+#
+# Add httpd from Homebrew to launchctl and start it (follow Caveats from brew-install).
 # $ sudo ln -s /usr/local/var/apache2/log /var/log/httpd
 #
 # $ mkdir /usr/local/etc/apache2/other
 # $ echo 'Include /usr/local/etc/apache2/other/*.conf' >> /usr/local/etc/apache2/httpd.conf
 # $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/httpd.conf /usr/local/etc/apache2/other/krinkle.conf
+# $ doapachereset
+#
+# $ sudo nano /etc/hosts <<<TEXT
+#
+# 127.0.0.1 krinkle.dev
+# 127.0.0.1 wikipedia.dev
+# 127.0.0.1 alpha.wikipedia.krinkle.dev
+# 127.0.0.1 beta.wikipedia.krinkle.dev
+#
+# TEXT;
 
-## MySQL
-# Caveat: mysql_install_db and load
-# Ignore rest of caveat, mysql_install_db command gives command
-# for mysql_secure_installation wizard. Use that instead.
+#
+# MySQL
+#
+# (brew-install)
+# $ mysqladmin -u root password *******
 
-## DNSmasq
-# Local DNS service (as /etc/hosts doesn't support wildards)
-# Mac OS X System Preferences > Network > DNS: [127.0.0.1, 8.8.8.8, 8.8.8.4] # Prepend local DNSmasq
-
-## MediaWiki
-## Install
+#
+# MediaWiki
+#
+# Install
 # $ mkdir ~/Development
-# $ git clone ssh://krinkle@gerrit.wikimedia.org:29418/mediawiki/core.git ~/Development/mediawiki/core
+# $ git clone gerrit.wikimedia/mediawiki/core.git ~/Development/mediawiki/core
 # $ chmod 777 ~/Development/mediawiki/core/cache
-# $ git clone ssh://krinkle@gerrit.wikimedia.org:29418/mediawiki/extensions.git ~/Development/mediawiki/extensions
-## Configure
+# $ git clone gerrit.wikimedia/mediawiki/extensions.git ~/Development/mediawiki/extensions
+#
+# Configure
 # $ sudo mkdir /var/log/mediawiki && sudo chmod 777 /var/log/mediawiki
-# $ ln -s /usr/log/mediawiki /var/log/httpd/mw
+# $ ln -s /var/log/mediawiki /var/log/httpd/mw
 # $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/mw-CommonSettings.php ~/Development/mediawiki/core/CommonSettings.php
 # $ edit ~/Development/mediawiki/core/.git/info/exclude # Add CommonSettings.php
 # $ cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/mw-LocalSettings.php ~/Development/mediawiki/core/LocalSettings.php
-# brew install lua5.1
-
-## Mac OS X
-# $ sudo defaults read /Library/Preferences/com.apple.TimeMachine SkipSystemFiles
+# $ brew install lua
+#
+# Database:
+# $ open 'http://localhost/phpmyadmin'
+# Create alphawiki, betawiki
 
 #
-# Manual steps for GUI
+# GUI Applications
 #
-
+## Applications
+# Install:
+# - Aperture
+# - Cloud
+# - coconutBattery
+# - Firefox
+# - FirefoxAurora
+# - GarageBand
+# - Google Chrome
+# - Google Chrome Canary
+# - Image Optim
+# - Keynote
+# - LimeChat
+# - MySQLWorkbench
+# - OpenOffice
+# - Opera
+# - Pages
+# - Sequel Pro
+# - Sublime Text 2
+# - The Unarchiver
+# - VirtualBox
+# - VLC
+# - Xcode
+#
 ## Sublime Text 2
-## http://www.sublimetext.com/2
-## http://wbond.net/sublime_packages/package_control
-## Install Package:
-## - SublimeLinter,
-## - DocBlockr
-## - Soda Theme
-## Preferences:
-
-## LimeChat
-## http://limechat.net/mac/
-## https://github.com/Krinkle/limechat-theme-colloquy
-
-## Terminal
-## When connecting over SSH, Linux sometimes thinks the Mac Terminal doesn't
-## support colors (base on through $TERM and /usr/bin/tput)
-## Default $TERM in Apple's Terminal.app: xterm-256color
-## Change this (in Terminal.app's Preferences) to: rxvt
-
-
+# Plugins:
+# - http://wbond.net/sublime_packages/package_control
+# - DocBlockr
+# - LESS
+# - Puppet
+# - SublimeLinter
+# - Theme Soda
+# - TrailingSpaces
 #
-# Archive
+### LimeChat
+## Plugins:
+## - https://github.com/Krinkle/limechat-theme-colloquy
 #
-
-## Setting up tunnels in BrowserStack needs Java.
-## Somehow it stopped working with Java 6, so install Java 7.
-## But Java 7 doesn't go well with Google Chrome, so execute the following
-## to disable Java 7 and re-enable the Apple-provided Java 6.
-## I have no idea why it works with this, since why wouldn't it work before
-## installing Java 7 with "just" Java 6.
-## (which should be similar to installing 7, disabling it and re-enabling 6)
-## http://support.apple.com/kb/HT5559
-# $ sudo mkdir -p /Library/Internet\ Plug-Ins/disabled
-# $ sudo mv /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin /Library/Internet\ Plug-Ins/disabled
-# $ sudo ln -sf /System/Library/Java/Support/Deploy.bundle/Contents/Resources/JavaPlugin2_NPAPI.plugin /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin
-# $ sudo ln -sf /System/Library/Frameworks/JavaVM.framework/Commands/javaws /usr/bin/javaws
-

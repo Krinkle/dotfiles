@@ -7,42 +7,30 @@
 				"docs/js",
 				"docs/html"
 			],
+			"name": "mediawiki",
 			"path": "/Users/krinkle/Development/mediawiki/core"
 		},
 		{
 			"folder_exclude_patterns":
 			[
-				"docs",
-				"node_modules"
+				"docs"
 			],
+			"name": "mwext-VisualEditor",
 			"path": "/Users/krinkle/Development/mediawiki/extensions/VisualEditor"
 		},
 		{
+			"name": "mwext-TemplateData",
 			"path": "/Users/krinkle/Development/mediawiki/extensions/TemplateData"
 		},
 		{
-			"folder_exclude_patterns":
-			[
-				"node_modules"
-			],
 			"path": "/Users/krinkle/Development/wikimedia/integration"
 		},
 		{
+			"path": "/Users/krinkle/Development/wikimedia/oojs",
 			"folder_exclude_patterns":
 			[
-				"node_modules"
-			],
-			"path": "/Users/krinkle/Development/mediawiki/extensions/Parsoid"
-		},
-		{
-			"folder_exclude_patterns":
-			[
-				"node_modules"
-			],
-			"path": "/Users/krinkle/Development/mediawiki/tools"
-		},
-		{
-			"path": "/Users/krinkle/Development/wikimedia/oojs"
+				"ui/dist"
+			]
 		},
 		{
 			"folder_exclude_patterns":
@@ -50,6 +38,17 @@
 				"static-*"
 			],
 			"path": "/Users/krinkle/Development/wikimedia/operations"
+		},
+		{
+			"name": "mwext-Parsoid",
+			"path": "/Users/krinkle/Development/mediawiki/extensions/Parsoid"
+		},
+		{
+			"path": "/Users/krinkle/Development/mediawiki/services/parsoid"
+		},
+		{
+			"name": "mw-tools",
+			"path": "/Users/krinkle/Development/mediawiki/tools"
 		}
 	]
 }

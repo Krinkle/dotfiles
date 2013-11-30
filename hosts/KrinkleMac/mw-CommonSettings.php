@@ -8,14 +8,14 @@ $kgMainServer = false;
 $kgCluster = false;
 
 ## Database settings
-$wgDBtype           = 'mysql';
-$wgDBserver         = 'localhost';
-$wgDBname           = false;
-$wgDBuser           = 'root';
-$wgDBpassword       = 'root';
-$wgDBprefix         = '';
-$wgDBTableOptions   = 'ENGINE=InnoDB, DEFAULT CHARSET=binary';
-$wgDBmysql5         = false;
+$wgDBtype = 'mysql';
+$wgDBserver = 'localhost';
+$wgDBname = false;
+$wgDBuser = 'root';
+$wgDBpassword = 'root';
+$wgDBprefix = '';
+$wgDBTableOptions = 'ENGINE=InnoDB, DEFAULT CHARSET=binary';
+$wgDBmysql5 = false;
 
 ## Caching
 $wgMainCacheType = CACHE_ANYTHING;
@@ -28,8 +28,8 @@ $wgUseGzip = true;
 $wgWellFormedXml = false;
 
 ## Media
-$wgEnableUploads  = true;
-$wgUseInstantCommons  = true;
+$wgEnableUploads = true;
+$wgUseInstantCommons = true;
 
 ## Local environment
 $wgDiff3 = '/usr/bin/diff3';
@@ -104,16 +104,16 @@ if ( true ) {
 	$wgShowExceptionDetails = true;
 	#$wgDebugRedirects = false;
 	#$wgShowSQLErrors = true;
-	#$wgDebugDumpSql  = true;
+	#$wgDebugDumpSql = true;
 	#$wgMemCachedDebug = false;
 
 	// Log files
+	$wgDebugLogFile = "$mwLogDir/debug-{$wgDBname}.log";
 	$wgDBerrorLog = "$mwLogDir/dberror.log";
 	$wgRateLimitLog = "$mwLogDir/ratelimit.log";
-	$wgDebugLogFile = "$mwLogDir/debug.log";
-	$wgDebugLogGroups['resourceloader'] = "$mwLogDir/debug-resourceloader.log";
-	$wgDebugLogGroups['exception'] = "$mwLogDir/debug-exception.log";
-	#$wgDebugLogGroups['somegroup'] = "$mwLogDir/debug-somegroup.log";
+	$wgDebugLogGroups['resourceloader'] = "$mwLogDir/resourceloader.log";
+	$wgDebugLogGroups['exception'] = "$mwLogDir/exception.log";
+	#$wgDebugLogGroups['somegroup'] = "$mwLogDir/somegroup.log";
 
 	// ResourceLoader
 	$wgDebugRawPage = true; // wmbug.com/47960
@@ -158,7 +158,6 @@ $wgConf->wikis = array(
 $wgConf->settings = array(
 	'wgSitename' => array(
 		'default' => '$lang.$Project',
-		'alphawiki' => 'Wikipedia 2.0alpha',
 	),
 );
 
@@ -198,9 +197,9 @@ list( $project, $lang ) = $wgConf->siteFromDB( $wgDBname );
 
 $dbSuffix = 'wiki';
 $globals = $wgConf->getAll( $wgDBname, $dbSuffix, array(
-	'lang'    => $lang,
-	'project'    => $project,
-	'Project'    => ucfirst( $project ),
+	'lang' => $lang,
+	'project' => $project,
+	'Project' => ucfirst( $project ),
 ));
 extract( $globals );
 
@@ -209,7 +208,7 @@ extract( $globals );
 ## Server paths
 ##
 
-$wgScriptExtension  = '.php';
+$wgScriptExtension = '.php';
 $wgExtensionAssetsPath = '/extensions';
 $EP = dirname( $IP ) . '/extensions';
 
@@ -300,8 +299,12 @@ $wgEventLoggingFile = $mwLogDir . '/events.log';
 ## Rights
 $wgGroupPermissions['*']['edit'] = true;
 $wgGroupPermissions['script'] = $wgGroupPermissions['bot'];
-$wgGroupPermissions['developer']['userrights']  = true;
-$wgGroupPermissions['developer']['editinterface']  = true;
+$wgGroupPermissions['developer']['userrights'] = true;
+$wgGroupPermissions['developer']['editinterface'] = true;
+
+## Namespaces
+$wgNamespacesWithSubpages[NS_MAIN] = true;
+$wgNamespacesWithSubpages[NS_TEMPLATE] = true;
 
 ## VisualEditor
 $wgVisualEditorParsoidURL = 'http://localhost:8000/';

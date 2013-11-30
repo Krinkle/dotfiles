@@ -25,14 +25,10 @@ function _dotfiles-ps1-setup() {
 	# Fix up Wikimedia Labs hostnames
 	if [ "$INSTANCENAME" != "" ]; then
 		host="$INSTANCENAME"
-	fi
-
-	if [ "$KDF_HOST_TYPE" = "KrinkleMac" ]; then
+	elif [ "$KDF_HOST_TYPE" = "KrinkleMac" ]; then
 		clr_host="$CLR_MAGENTA"
 		host="KrinkleMac"
-	fi
-
-	if echo $KDF_CANONICAL_HOST | grep -q -E '\.wikimedia\.org|\.wmnet'; then
+	elif echo $KDF_CANONICAL_HOST | grep -q -E '\.wikimedia\.org|\.wmnet'; then
 		clr_host="$CLR_GREEN"
 	fi
 

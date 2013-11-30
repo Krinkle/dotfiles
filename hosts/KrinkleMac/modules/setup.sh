@@ -5,9 +5,6 @@
 # Bins: Homebrew and manually installed programs
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
-# Bins: Homebrew's npm packages (e.g. jshint)
-export PATH=/usr/local/share/npm/bin:$PATH
-
 # Bins: Homebrew's gem packages (e.g. jsduck)
 # http://stackoverflow.com/a/14138490/319266
 export PATH=/usr/local/opt/ruby/bin:$PATH
@@ -25,6 +22,7 @@ export MW_DB="betawiki"
 # Local etc (symlinked to data of `brew install bash-completion`)
 source /usr/local/etc/bash_completion
 
+export AUTOJUMP_IGNORE_CASE=1
 [[ -s /usr/local/etc/autojump.bash ]] && . /usr/local/etc/autojump.bash
 
 __git_complete gi _git
