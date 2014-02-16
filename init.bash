@@ -52,8 +52,8 @@ function _dotfiles-init() {
 _dotfiles-init
 
 source $(dirname $0)/index.bash
-source $KDF_BASE_DIR/modules/functions.sh
-source $KDF_BASE_DIR/modules/setup.sh
+source $(dirname $0)/modules/functions.sh
+source $(dirname $0)/modules/setup.sh
 
 # Host specific installation
 if [[ "$KDF_HOST_INIT" != "" ]]

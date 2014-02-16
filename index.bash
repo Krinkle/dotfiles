@@ -1,11 +1,29 @@
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+
+#
+# Set up
+#
+
+#export KDF_BASE_DIR=~/.krinkle.dotfiles
+export KDF_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $KDF_BASE_DIR/modules/setup.sh
+
 #
 # Variables
 #
-#export KDF_BASE_DIR=~/.krinkle.dotfiles
-export KDF_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 export KDF_CANONICAL_HOST="$( hostname -f 2>/dev/null )"
 export KDF_HOST_INIT=""
 export KDF_HOST_TYPE="misc"
+
+if [[ "$UNAME" == "SunOS" && -z "$KDF_CANONICAL_HOST" ]]
+then
+	# Solaris doesn't support `hostname -f` to get fqdn
+	# fallback to plain `hostname`, already set in $HOSTNAME.
+	export KDF_CANONICAL_HOST="$HOSTNAME"
+fi
 
 if [[ "$KDF_CANONICAL_HOST" =~ 'krinkle-mbp' ]]
 then
@@ -17,11 +35,7 @@ fi
 # Includes
 #
 
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
-
 source $KDF_BASE_DIR/modules/functions.sh
-source $KDF_BASE_DIR/modules/setup.sh
 source $KDF_BASE_DIR/modules/aliases.sh
 
 if [ -n "$KDF_HOST_TYPE" ]

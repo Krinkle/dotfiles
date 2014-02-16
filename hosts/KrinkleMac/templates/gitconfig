@@ -3,3 +3,5 @@
 [user]
 	name = Timo Tijhof
 	email = krinklemail@gmail.com
+[core]
+	editor = subl -n -w

@@ -2,22 +2,37 @@
 
 #IdentityFile ~/.ssh/id_rsa_example
 
+## Preferences
+
+# http://stackoverflow.com/a/8660564/319266
+ServerAliveInterval 30
+
+## Wikimedia
+
 ## WMFLabs
-## https://labsconsole.wikimedia.org/wiki/Help:Access#Using_ProxyCommand_ssh_option
+## https://wikitech.wikimedia.org/wiki/Help:Access#ProxyCommand
 
 Host bastion1.pmtpa.wmflabs
-Hostname bastion.wmflabs.org
-ProxyCommand none
+    Hostname bastion.wmflabs.org
+    ProxyCommand none
+
+Host bastion2.pmtpa.wmflabs
+    Hostname bastion2.wmflabs.org
+    ProxyCommand none
+
+Host bastion3.pmtpa.wmflabs
+    Hostname bastion3.wmflabs.org
+    ProxyCommand none
 
 Host bastion1.eqiad.wmflabs
-Hostname bastion2.wmflabs.org
-ProxyCommand none
+    Hostname bastion-eqiad.wmflabs.org
+    ProxyCommand none
 
 Host *.pmtpa.wmflabs
-ProxyCommand ssh -a -W %h:%p bastion1.pmtpa.wmflabs
+    ProxyCommand ssh -a -W %h:%p bastion1.pmtpa.wmflabs
 
 Host *.eqiad.wmflabs
-ProxyCommand ssh -a -W %h:%p bastion1.eqiad.wmflabs
+    ProxyCommand ssh -a -W %h:%p bastion1.eqiad.wmflabs
 
 Host *.wmflabs
 User krinkle

@@ -12,7 +12,8 @@
 			"path": "/Users/krinkle/Development/Krinkle",
 			"folder_exclude_patterns":
 			[
-				"node_modules"
+				"node_modules",
+				"dist/doc"
 			]
 		},
 		{

@@ -4,7 +4,7 @@ source $KDF_BASE_DIR/modules/functions.sh
 
 function _dotfiles-host-init {
 
-	# Homwbrew
+	# Homebrew
 	echo "... checking Homebrew"
 	if [ -z "$(which brew)" ]
 	then
@@ -27,7 +27,7 @@ function _dotfiles-host-init {
 	echo "... ensuring presence of Homebrew packages"
 	brew tap homebrew/dupes
 	brew tap homebrew/versions
-	brew tap josegonzalez/homebrew-php
+	brew tap homebrew/homebrew-php
 	formulas=(
 		ack
 		autojump
@@ -54,17 +54,10 @@ function _dotfiles-host-init {
 	done
 
 	echo "... ensuring presence of NPM packages"
-	npm install -g jshint grunt-cli bower csslint
+	npm install -g bower csslint grunt-cli jshint jscs
 
 	echo "... ensuring presence of RubyGems packages"
-	gem install jsduck --version '= 4.10.4'
-
-	echo "... updating PEAR"
-	sudo pear channel-discover pear.phpunit.de
-	sudo pear channel-discover pear.symfony.com
-	sudo pear upgrade-all
-	echo "... ensuring presence of PEAR packages"
-	sudo pear install --alldeps phpunit/phpunit
+	gem install jsduck
 
 	echo "... Post-install for package: php"
 	mkdir -p /usr/local/etc/php/5.4/conf.d
@@ -83,16 +76,16 @@ function _dotfiles-host-init {
 		ln -s $tmpDest $tmpPath
 	fi
 
-	echo "... checking Sublime Text 2"
+	echo "... checking Sublime Text 3"
 	if [ -z "$(which subl)" ]
 	then
-		echo "$CLR_RED>> ERROR$CLR_NONE: Install Sublime Text 2"
-		open http://www.sublimetext.com/2
+		echo "$CLR_RED>> ERROR$CLR_NONE: Install Sublime Text 3"
+		open http://www.sublimetext.com/3
 		exit 1
 	fi
 
-	echo "... Post-install for application: Sublime Text 2"
-	tmpPath=~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User/Preferences.sublime-settings
+	echo "... Post-install for application: Sublime Text 3"
+	tmpPath=~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings
 	tmpDest=$KDF_BASE_DIR/hosts/KrinkleMac/SublimePreferences.json
 	if [[ ! -L "$tmpPath" || $(readlink "$tmpPath") != $tmpDest ]]
 	then
@@ -138,6 +131,15 @@ source $KDF_BASE_DIR/index.bash
 # $ git remote rm origin
 # $ git remote add origin git@...
 # $ git pull origin master -u
+
+
+#
+# Terminal
+#
+# On "Ubuntu 12.04.2 LTS" (.wmnet) tput gives 'tput: unknown terminal "screen.rxvt"'
+#
+# Preferences > Advanced > Emulation > Declare as: xterm
+
 
 #
 # Apache
@@ -203,34 +205,39 @@ source $KDF_BASE_DIR/index.bash
 # - coconutBattery
 # - Firefox
 # - FirefoxAurora
-# - GarageBand
 # - Google Chrome
 # - Google Chrome Canary
 # - Image Optim
-# - Keynote
 # - LimeChat
 # - MySQLWorkbench
 # - OpenOffice
 # - Opera
-# - Pages
 # - Sequel Pro
-# - Sublime Text 2
+# - Sublime Text 3
 # - The Unarchiver
-# - VirtualBox
 # - VLC
 # - Xcode
 #
-## Sublime Text 2
+## Sublime Text 3
 # Plugins:
-# - http://wbond.net/sublime_packages/package_control
+# - https://sublime.wbond.net/installation
 # - DocBlockr
+# - GitGutter
 # - LESS
-# - Puppet
 # - SublimeLinter
+# - SublimeLinter-jscs
+# - SublimeLinter-jshint
+# - SublimeLinter-php
 # - Theme Soda
 # - TrailingSpaces
 #
 ### LimeChat
 ## Plugins:
 ## - https://github.com/Krinkle/limechat-theme-colloquy
+#
+
+#
+# Bash programs
+#
+# - dotcs-hangouts-log-reader
 #

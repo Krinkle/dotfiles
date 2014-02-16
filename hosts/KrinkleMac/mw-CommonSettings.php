@@ -7,6 +7,8 @@ $wgSitename = false;
 $kgMainServer = false;
 $kgCluster = false;
 
+$wgShowHostnames = true;
+
 ## Database settings
 $wgDBtype = 'mysql';
 $wgDBserver = 'localhost';
@@ -22,10 +24,12 @@ $wgMainCacheType = CACHE_ANYTHING;
 $wgMemCachedServers = array();
 $wgCacheDirectory = $IP . '/cache';
 $wgUseLocalMessageCache = true;
+$wgInvalidateCacheOnLocalSettingsChange = false;
 
 ## Output
 $wgUseGzip = true;
 $wgWellFormedXml = false;
+$wgUseTidy = true;
 
 ## Media
 $wgEnableUploads = true;
@@ -94,6 +98,10 @@ $kgMainServer = kfGetMainServer();
 ## http://www.mediawiki.org/wiki/Manual:How_to_debug
 ##
 
+function kfHttpDump( $key, $value ) {
+	header( 'X-Debug- ' . $key . ': ' . json_encode( $value ) );
+}
+
 if ( true ) {
 	error_reporting( -1 );
 
@@ -103,7 +111,7 @@ if ( true ) {
 	// Types
 	$wgShowExceptionDetails = true;
 	#$wgDebugRedirects = false;
-	#$wgShowSQLErrors = true;
+	$wgShowSQLErrors = true;
 	#$wgDebugDumpSql = true;
 	#$wgMemCachedDebug = false;
 
@@ -116,6 +124,7 @@ if ( true ) {
 	#$wgDebugLogGroups['somegroup'] = "$mwLogDir/somegroup.log";
 
 	// ResourceLoader
+	$wgResourceLoaderDebug = false;
 	$wgDebugRawPage = true; // wmbug.com/47960
 	$wgResourceLoaderMaxage['versioned']['server'] = 1;
 	$wgResourceLoaderMaxage['versioned']['client'] = 1;
@@ -202,7 +211,6 @@ $globals = $wgConf->getAll( $wgDBname, $dbSuffix, array(
 	'Project' => ucfirst( $project ),
 ));
 extract( $globals );
-
 
 ##
 ## Server paths
@@ -308,6 +316,7 @@ $wgNamespacesWithSubpages[NS_TEMPLATE] = true;
 
 ## VisualEditor
 $wgVisualEditorParsoidURL = 'http://localhost:8000/';
+$wgVisualEditorParsoidPrefix = $wgDBname;
 
 $wgDefaultUserOptions['visualeditor-enable'] = 1;
 $wgDefaultUserOptions['visualeditor-enable-experimental'] = 1;
@@ -336,3 +345,10 @@ $wgGroupPermissions['developer']['interwiki'] = true;
 $wgScribuntoDefaultEngine = 'luastandalone';
 $wgScribuntoEngineConf['luastandalone']['luaPath'] = '/usr/local/bin/lua';
 $wgScribuntoEngineConf['luastandalone']['errorFile'] = "$mwLogDir/lua-error.log";
+
+## TemplateData
+$wgTemplateDataUseGUI = true;
+
+## WikiEditor
+$wgDefaultUserOptions['usebetatoolbar'] = 1;
+$wgDefaultUserOptions['usebetatoolbar-cgd'] = 1;

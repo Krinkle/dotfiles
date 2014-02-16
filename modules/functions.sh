@@ -21,11 +21,7 @@ function _dotfiles-ps1-setup() {
 	local prompt="\$"
 	local supportcolor
 
-
-	# Fix up Wikimedia Labs hostnames
-	if [ "$INSTANCENAME" != "" ]; then
-		host="$INSTANCENAME"
-	elif [ "$KDF_HOST_TYPE" = "KrinkleMac" ]; then
+	if [ "$KDF_HOST_TYPE" = "KrinkleMac" ]; then
 		clr_host="$CLR_MAGENTA"
 		host="KrinkleMac"
 	elif echo $KDF_CANONICAL_HOST | grep -q -E '\.wikimedia\.org|\.wmnet'; then

@@ -9,9 +9,8 @@ fi
 
 alias ll='ls -ahlF'
 alias l='ll'
-alias g='git'
-alias gi='git'
 alias gir='git'
+alias got='git'
 
 alias ..='cd ..'
 alias ...='cd ../..'

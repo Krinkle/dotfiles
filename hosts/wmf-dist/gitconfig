@@ -1,3 +1,6 @@
+[user]
+	name = Timo Tijhof
+	email = ttijhof@wikimedia.org
 [color]
 	ui = auto
 [alias]
@@ -14,10 +17,3 @@
 	pulll = pull
 	so = show
 	st = status -sb
-	gerrit-config-co = ! git fetch origin refs/meta/config:refs/remotes/origin/meta/config && git checkout meta/config
-	gerrit-config-push = push origin meta/config:refs/meta/config
-	gerrit-config-review = push origin meta/config:refs/for/refs/meta/config
-[core]
-	quotepath = false
-[push]
-	default = matching

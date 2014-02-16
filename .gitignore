@@ -5,4 +5,7 @@
 hosts/KrinkleMac/config/git-review/latest-version
 
 # bower (npm)
-hosts/KrinkleMac/config/configstore/update-notifier-bower.yml
+hosts/KrinkleMac/config/configstore
+
+# hub (brew)
+hosts/KrinkleMac/config/hub
