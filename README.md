@@ -14,6 +14,10 @@ git clone git@github.com:Krinkle/dotfiles.git ~/.krinkle.dotfiles && ~/.krinkle.
 
 ### Read only (WMF)
 ```bash
+# Bastion
+git clone git://github.com/Krinkle/dotfiles.git ~/.krinkle.dotfiles && ~/.krinkle.dotfiles/bin/init-wmf
+
+# Elsewhere
 git clone krinkle@fenari:.krinkle.dotfiles ~/.krinkle.dotfiles && ~/.krinkle.dotfiles/bin/init-wmf
 ```
 

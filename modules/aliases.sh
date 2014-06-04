@@ -16,6 +16,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias -- -='cd -'
 
+alias nit='npm install && npm test'
 alias jsonhint='jshint --extra-ext .json'
 alias dsize='du -hs'
 alias wanip='dig +short myip.opendns.com @resolver1.opendns.com'

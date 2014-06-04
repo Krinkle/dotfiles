@@ -15,8 +15,8 @@
 	"ignored_packages":
 	[
 		"Vintage",
-		"SublimeLinter-php",
-		"GitGutter"
+		"GitGutter",
+		"SublimeLinter-php"
 	],
 	"jsdocs_align_tags": "no",
 	"jsdocs_deep_indent": false,

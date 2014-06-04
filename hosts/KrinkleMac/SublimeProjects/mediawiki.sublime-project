@@ -32,7 +32,6 @@
 		{
 			"folder_exclude_patterns":
 			[
-				"ui/dist/*",
 				"ui/docs"
 			],
 			"follow_symlinks": true,

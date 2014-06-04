@@ -23,6 +23,8 @@ export HISTCONTROL=ignorespace:erasedups
 export HISTSIZE=1000
 export HISTFILESIZE=2000
 
+export PATH=~/bin:$PATH
+
 if [ -x /usr/bin/dircolors ]
 then
 	eval "`dircolors -b`"

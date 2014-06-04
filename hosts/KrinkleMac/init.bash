@@ -41,7 +41,9 @@ function _dotfiles-host-init {
 		phantomjs
 		php54
 		phpmyadmin
-		ruby
+		#ruby: JSDuck 5.3.4 has issues with Ruby 2.1.2
+		ruby20
+		watch
 		wget
 	)
 	for f in "${formulas[@]}"; do
@@ -140,6 +142,14 @@ source $KDF_BASE_DIR/index.bash
 #
 # Preferences > Advanced > Emulation > Declare as: xterm
 
+#
+# Sytem
+#
+# Preferences > Mission Control
+# * Closing an app can refocus an app in a different space
+#   http://apple.stackexchange.com/a/44801
+#   [_] When switching to an application, switch to a space with open windows for the application
+
 
 #
 # Apache
@@ -230,6 +240,24 @@ source $KDF_BASE_DIR/index.bash
 # - SublimeLinter-php
 # - Theme Soda
 # - TrailingSpaces
+# - rsub
+#
+## rsub
+# - http://www.danieldemmel.me/blog/2012/09/02/setting-up-rmate-with-sublime-text-for-remote-file-editing-over-ssh/
+# - http://pogidude.com/2013/how-to-edit-a-remote-file-over-ssh-using-sublime-text-and-rmate/
+# - http://aurora.github.io/rmate/
+#
+# 1. Install rsub in Sublime Text 3 via Package Control
+# 2. Add `RemoteForward 52698 localhost:52698` to a host in sshconfig
+# 3. On remote server, install command rmate:
+#    curl https://raw.githubusercontent.com/aurora/rmate/ea116b5ef619cb8/rmate > ~/bin/rmate
+#
+# To edit:
+# 1. ssh example.org
+# 2. rmate foo.txt
+#    (sends signal over tunnel to plugin in sublime)
+# 3. File opens in local editor and saves back through the tunnel
+#    when you save as usual!
 #
 ### LimeChat
 ## Plugins:

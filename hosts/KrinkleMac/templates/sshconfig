@@ -1,6 +1,8 @@
 ## Keys
 
 #IdentityFile ~/.ssh/id_rsa_example
+#IdentityFile ~/.ssh/id_rsa_foo
+#IdentityFile ~/.ssh/id_rsa_bar
 
 ## Preferences
 
@@ -35,4 +37,10 @@ Host *.eqiad.wmflabs
     ProxyCommand ssh -a -W %h:%p bastion1.eqiad.wmflabs
 
 Host *.wmflabs
-User krinkle
+    User krinkle
+
+Host tools-login.wmflabs.org
+    RemoteForward 52698 localhost:52698
+
+Host *.jquery.com
+    RemoteForward 52698 localhost:52698

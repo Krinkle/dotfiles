@@ -21,6 +21,9 @@ export HISTCONTROL=ignorespace:erasedups
 export HISTSIZE=1000
 export HISTFILESIZE=2000
 
+# Bins: Home
+export PATH=~/bin:$PATH
+
 # Sort dotfiles before "a" in ls(1) and sort(1) (http://superuser.com/a/448294/164493)
 export LC_COLLATE="C"
 
@@ -28,7 +31,6 @@ export LC_COLLATE="C"
 export LC_CTYPE="en_US.UTF-8"
 export LANG="en_US.UTF-8"
 unset LC_ALL
-
 
 #
 # Colors

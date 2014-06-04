@@ -21,7 +21,6 @@ $wgDBmysql5 = false;
 
 ## Caching
 $wgMainCacheType = CACHE_ANYTHING;
-$wgMemCachedServers = array();
 $wgCacheDirectory = $IP . '/cache';
 $wgUseLocalMessageCache = true;
 $wgInvalidateCacheOnLocalSettingsChange = false;
@@ -45,14 +44,13 @@ $mwLogDir = '/var/log/mediawiki';
 ##
 
 function kfGetMainServer() {
-	global $kgCluster;
+	global $kgCluster, $wgServer;
 	switch ( $kgCluster ) {
-		case 'no-ip':
-			return 'http://krinkle.no-ip.org';
 		case 'dev':
 			return 'http://krinkle.dev';
+		case 'no-ip':
 		default:
-			return false;
+			return $wgServer;
 	}
 }
 
@@ -74,11 +72,7 @@ if ( defined( 'MW_DB' ) ) {
 		$wgDBname = $m[1] . 'wiki';
 
 	// No-IP Free doesn't have wildcard and uses subdirectories instead
-	} elseif (
-		$_SERVER['HTTP_HOST'] === 'krinkle-wiki.no-ip.org' ||
-		$_SERVER['HTTP_HOST'] === 'krinkle.xs4all.nl' ||
-		$_SERVER['HTTP_HOST'] === 'wiki.krinkle.dev'
-	) {
+	} else {
 		$kgCluster = 'no-ip';
 		preg_match(
 			'#([^/]+)#',
@@ -175,6 +169,10 @@ if ( !in_array( $wgDBname, $wgConf->getLocalDatabases() ) ) {
 		echo "Error: Specify a wiki database.\n";
 	} else {
 		$mainServerHtml = htmlspecialchars( $kgMainServer );
+		$link = strlen( $_SERVER['REQUEST_URI'] ) > 1
+			? "<p style=\"text-align: right;\"><a href=\"{$mainServerHtml}\">&raquo; Go to root domain</a></p>"
+			: ''
+		;
 		echo <<<HTML
 <!DOCTYPE html>
 <html lang=en>
@@ -193,7 +191,7 @@ em { font-style: normal; color: #777; }
 </style>
 <h1>Domain not configured</h1>
 <p>This domain points to the Krinkle Dev server, but is not configured in Apache.<br><em>That’s all we know.</em></p>
-<p style="text-align: right;"><a href="{$mainServerHtml}">&raquo; Go to root domain</a></p>
+$link
 </script>
 </html>
 HTML;
@@ -227,6 +225,7 @@ if ( php_sapi_name() === 'cli' ) {
 			$wgServer = 'http://wiki.krinkle.dev';
 			break;
 		case 'dev':
+		default:
 			$wgServer = "http://$lang.$project.krinkle.dev";
 			break;
 	}
@@ -314,6 +313,9 @@ $wgGroupPermissions['developer']['editinterface'] = true;
 $wgNamespacesWithSubpages[NS_MAIN] = true;
 $wgNamespacesWithSubpages[NS_TEMPLATE] = true;
 
+## ActivityMonitor
+$wgActivityMonitorRCStreamUrl = 'http://stream.wikimedia.org:80/rc';
+
 ## VisualEditor
 $wgVisualEditorParsoidURL = 'http://localhost:8000/';
 $wgVisualEditorParsoidPrefix = $wgDBname;
@@ -342,9 +344,13 @@ $wgNarayamEnabledByDefault = true;
 $wgGroupPermissions['developer']['interwiki'] = true;
 
 ## Scribunto
-$wgScribuntoDefaultEngine = 'luastandalone';
-$wgScribuntoEngineConf['luastandalone']['luaPath'] = '/usr/local/bin/lua';
 $wgScribuntoEngineConf['luastandalone']['errorFile'] = "$mwLogDir/lua-error.log";
+
+$wgScribuntoEngineConf['luastandalone']['luaPath'] = '/usr/local/bin/lua';
+$wgScribuntoDefaultEngine = 'luastandalone';
+
+// See https://www.mediawiki.org/wiki/Extension:Scribunto#LuaSandbox
+$wgScribuntoDefaultEngine = 'luasandbox';
 
 ## TemplateData
 $wgTemplateDataUseGUI = true;

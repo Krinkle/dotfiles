@@ -6,12 +6,14 @@
 	br = branch
 	co = checkout
 	comit = commit
+	ap = commit --amend
 	di = diff
 	ds = diff --staged
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
 	log-nice = log --graph --decorate --abbrev-commit --pretty=oneline
 	pul = pull
 	pulll = pull
+	sh = show
 	so = show
 	st = status -sb
 	gerrit-config-co = ! git fetch origin refs/meta/config:refs/remotes/origin/meta/config && git checkout meta/config

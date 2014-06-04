@@ -5,3 +5,4 @@
 	email = krinklemail@gmail.com
 [core]
 	editor = subl -n -w
+	pager = less -x4
