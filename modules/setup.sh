@@ -22,7 +22,7 @@ export HISTSIZE=1000
 export HISTFILESIZE=2000
 
 # Bins: Home
-export PATH=~/bin:$PATH
+export PATH=$PATH:$HOME/bin
 
 # Sort dotfiles before "a" in ls(1) and sort(1) (http://superuser.com/a/448294/164493)
 export LC_COLLATE="C"

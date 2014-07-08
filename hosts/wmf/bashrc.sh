@@ -23,7 +23,7 @@ export HISTCONTROL=ignorespace:erasedups
 export HISTSIZE=1000
 export HISTFILESIZE=2000
 
-export PATH=~/bin:$PATH
+export PATH=$PATH:$HOME/bin
 
 if [ -x /usr/bin/dircolors ]
 then
@@ -44,7 +44,7 @@ CLR_WHITE=`tput setaf 7`
 export EDITOR=vim
 export GREP_OPTIONS='--color=auto'
 
-PROMPT_COMMAND="_dotfiles-ps1-setup"
+PROMPT_COMMAND="_dotfiles-ps1-setup && _dotfiles_wmf_setscreentitle"
 
 ## functions
 
@@ -104,10 +104,36 @@ function _dotfiles-ps1-setup() {
 	fi
 
 	if [[ -n $supportcolor ]]; then
-	    PS1="\[$CLR_WHITE\][\$(date +%H:%M\ %Z)] \[$clr_user\]\u\[$CLR_WHITE\] at \[$clr_host\]$host\[$CLR_WHITE\] in \[$CLR_YELLOW\]\w\$(_dotfiles-git-ps1)\[$CLR_NONE\]\n$(_dotfiles-ps1-exit_code $ec)$prompt "
+		PS1="\[$CLR_WHITE\][\$(date +%H:%M\ %Z)] \[$clr_user\]\u\[$CLR_WHITE\] at \[$clr_host\]$host\[$CLR_WHITE\] in \[$CLR_YELLOW\]\w\$(_dotfiles-git-ps1)\[$CLR_NONE\]\n$(_dotfiles-ps1-exit_code $ec)$prompt "
 	else
-	    PS1="[\$(date +%H:%M\ %Z)] \u@$host:\w$prompt "
+		PS1="[\$(date +%H:%M\ %Z)] \u@$host:\w$prompt "
 	fi
+}
+
+## functions-wmf
+
+function _dotfiles_wmf_setscreentitle() {
+	if [ "$TERM" == "screen" ]
+	then
+		if [ "$HOSTNAME" == "fenari" ]
+		then
+			echo -ne "\033k$(basename $PWD)$\033\\"
+		else
+			echo -ne "\033k$HOSTNAME$\033\\"
+		fi
+	fi
+}
+
+ssh() {
+        inargs="$@"
+        if [ "$TERM" == "screen" ]
+        then
+                host="${inargs#*@}"
+                host="${host% *}"
+                echo -ne "\033k$host\033\\"
+        fi
+        /usr/bin/ssh $inargs
+        _dotfiles_wmf_setscreentitle
 }
 
 ## aliases
@@ -128,4 +154,3 @@ if which ack-grep > /dev/null 2>&1
 then
 	alias ack=ack-grep
 fi
-

@@ -217,6 +217,7 @@ extract( $globals );
 $wgScriptExtension = '.php';
 $wgExtensionAssetsPath = '/extensions';
 $EP = dirname( $IP ) . '/extensions';
+$SP = $IP . '/skins';
 
 if ( php_sapi_name() === 'cli' ) {
 	// Sets $wgServer for CLI
@@ -245,7 +246,11 @@ switch ( $kgCluster ) {
 
 if ( isset( $kfExtensions ) ) {
 	foreach ( $kfExtensions as $path ) {
-		require_once str_replace( '$EP', $EP, $path );
+		require_once str_replace(
+			array( '$EP', '$SP' ),
+			array( $EP, $SP ),
+			$path
+		);
 	}
 }
 

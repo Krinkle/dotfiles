@@ -40,7 +40,9 @@ function _dotfiles-host-init {
 		node
 		phantomjs
 		php54
+		php54-xdebug
 		phpmyadmin
+		pwgen
 		#ruby: JSDuck 5.3.4 has issues with Ruby 2.1.2
 		ruby20
 		watch
@@ -115,6 +117,11 @@ function _dotfiles-host-init {
 	# ~/Development/wikimedia/integration/j, jjb, jjb-config, zuul-config, docroot
 	# ~/Development/wikimedia/operations/ mediawiki-config, puppet
 	# ~/Development/jquery/jquery, qunit, testswarm
+
+	# Dangerous, don't automate:
+	# $ cat /etc/hosts
+	# $ sudo rm /etc/hosts
+	# $ sudo ln -s $KDF_BASE_DIR/hosts/KrinkleMac/hosts /etc/hosts
 }
 
 _dotfiles-host-init
@@ -127,7 +134,7 @@ source $KDF_BASE_DIR/index.bash
 # https://help.github.com/articles/generating-ssh-keys
 # $ cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/sshconfig ~/.ssh/config
 #
-# Generate different keys (for GitHub, Wikimedia Labs LDAP, Toolserver etc.)
+# Generate different keys (for GitHub, Wikimedia Labs LDAP etc.)
 # and submit them to those organisations.
 # $ cd $KDF_BASE_DIR
 # $ git remote rm origin

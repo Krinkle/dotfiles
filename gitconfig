@@ -14,6 +14,7 @@
 	pul = pull
 	pulll = pull
 	sh = show
+	sho = show
 	so = show
 	st = status -sb
 	gerrit-config-co = ! git fetch origin refs/meta/config:refs/remotes/origin/meta/config && git checkout meta/config

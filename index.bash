@@ -40,7 +40,7 @@ source $KDF_BASE_DIR/modules/aliases.sh
 
 if [ -n "$KDF_HOST_TYPE" ]
 then
-	files="aliases setup"
+	files="setup functions aliases"
 	for f in $files; do
 		[[ -s $KDF_BASE_DIR/hosts/$KDF_HOST_TYPE/modules/$f.sh ]] && . $KDF_BASE_DIR/hosts/$KDF_HOST_TYPE/modules/$f.sh
 	done
