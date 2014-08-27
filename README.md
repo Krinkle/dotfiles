@@ -23,9 +23,9 @@ git clone krinkle@fenari:.krinkle.dotfiles ~/.krinkle.dotfiles && ~/.krinkle.dot
 
 ## Screenshots
 
-![Screenshot of main view and navigation](http://f.cl.ly/items/2p060T0A2734243Y0c35/screenshot-dotfiles-22062575ac-nav.png)
+![Screenshot of main view and navigation](http://i.imgur.com/YAIdnsy.png)
 
-![Screenshot of git interaction](http://f.cl.ly/items/3B1q3T2o3G223Y123B0P/screenshot-dotfiles-22062575ac-git.png)
+![Screenshot of git interaction](http://i.imgur.com/AGJ9uz1.png)
 
 ## Thanks
 
