@@ -2,25 +2,28 @@
 	"folders":
 	[
 		{
-			"path": "/Users/krinkle/Development/jquery",
 			"folder_exclude_patterns":
 			[
 				"node_modules"
-			]
+			],
+			"path": "/Users/krinkle/Development/jquery"
 		},
 		{
-			"path": "/Users/krinkle/Development/Krinkle",
 			"folder_exclude_patterns":
 			[
 				"node_modules",
 				"dist/doc"
-			]
+			],
+			"path": "/Users/krinkle/Development/Krinkle"
 		},
 		{
 			"path": "/Users/krinkle/Development/cssjanus"
 		},
 		{
 			"path": "/Users/krinkle/Development/countervandalism"
+		},
+		{
+			"path": "/Users/krinkle/Development/doqpad"
 		}
 	]
 }

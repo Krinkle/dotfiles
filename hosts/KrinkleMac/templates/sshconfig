@@ -1,46 +1,58 @@
 ## Keys
 
-#IdentityFile ~/.ssh/id_rsa_example
-#IdentityFile ~/.ssh/id_rsa_foo
-#IdentityFile ~/.ssh/id_rsa_bar
+#IdentityFile ~/.ssh/id_rsa_misc_krinkle_xl
+#IdentityFile ~/.ssh/id_rsa_misc_krinkle_pm
+#IdentityFile ~/.ssh/id_rsa_misc_krinkle_fa
+#IdentityFile ~/.ssh/id_rsa_stack
 
 ## Preferences
 
 # http://stackoverflow.com/a/8660564/319266
 ServerAliveInterval 30
 
-## Wikimedia
-
-## WMFLabs
+## Wikimedia Labs
 ## https://wikitech.wikimedia.org/wiki/Help:Access#ProxyCommand
 
-Host bastion1.pmtpa.wmflabs
-    Hostname bastion.wmflabs.org
+Host bastion.wmflabs.org tools-login.wmflabs.org
+    User krinkle
+    IdentityFile ~/.ssh/id_rsa_krinkle2
     ProxyCommand none
-
-Host bastion2.pmtpa.wmflabs
-    Hostname bastion2.wmflabs.org
-    ProxyCommand none
-
-Host bastion3.pmtpa.wmflabs
-    Hostname bastion3.wmflabs.org
-    ProxyCommand none
-
-Host bastion1.eqiad.wmflabs
-    Hostname bastion-eqiad.wmflabs.org
-    ProxyCommand none
-
-Host *.pmtpa.wmflabs
-    ProxyCommand ssh -a -W %h:%p bastion1.pmtpa.wmflabs
+    ControlMaster auto
 
 Host *.eqiad.wmflabs
-    ProxyCommand ssh -a -W %h:%p bastion1.eqiad.wmflabs
+    ProxyCommand ssh -a -W %h:%p bastion.wmflabs.org
 
-Host *.wmflabs
+## Wikimedia Production
+## https://wikitech.wikimedia.org/wiki/Managing_Multiple_SSH_Agents
+
+Host fenari.wikimedia.org bast1001.wikimedia.org iron.wikimedia.org bast4001.wikimedia.org hooft.esams.wikimedia.org
     User krinkle
+    IdentityFile ~/.ssh/id_rsa_wm
+    ProxyCommand none
+    ControlMaster auto
 
-Host tools-login.wmflabs.org
-    RemoteForward 52698 localhost:52698
+Host gerrit.wikimedia.org
+    ProxyCommand none
+
+Host *.wikimedia.org
+    ProxyCommand ssh -a -W %h:%p bast1001.wikimedia.org
+
+Host *.pmtpa.wmnet
+    ProxyCommand ssh -a -W %h:%p bast1001.wikimedia.org
+
+Host *.eqiad.wmnet
+    ProxyCommand ssh -a -W %h:%p bast1001.wikimedia.org
+
+Host *.ulsfo.wmnet
+    ProxyCommand ssh -a -W %h:%p bast4001.wikimedia.org
+
+Host *.esams.wmnet
+    ProxyCommand ssh -a -W %h:%p hooft.esams.wikimedia.org
+
+## jQuery
 
 Host *.jquery.com
+    User krinkle
+    IdentityFile ~/.ssh/id_rsa_jq
+    # rmate
     RemoteForward 52698 localhost:52698

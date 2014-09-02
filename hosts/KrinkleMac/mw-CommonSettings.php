@@ -96,6 +96,29 @@ function kfHttpDump( $key, $value ) {
 	header( 'X-Debug- ' . $key . ': ' . json_encode( $value ) );
 }
 
+/**
+ * Call after $wgConf->wikis is set.
+ */
+function kfGetServerInfos() {
+	global $kgCluster, $wgConf, $kgMainServer;
+
+	$vars = array(
+		'wgCanonicalServer' => array(),
+		'wgScriptPath' => array(),
+	);
+	foreach ( $wgConf->wikis as $wiki ) {
+		list( $project, $lang ) = $wgConf->siteFromDB( $wiki );
+		if ( $kgCluster === 'dev' ) {
+			$vars[ 'wgCanonicalServer' ][ $wiki ] = 'http://' . $lang . '.wikipedia.krinkle.dev';
+			$vars[ 'wgScriptPath' ][ $wiki ] = '/w';
+		} elseif ( $kgCluster === 'no-ip' ) {
+			$vars[ 'wgCanonicalServer' ][ $wiki ] = $kgMainServer;
+			$vars[ 'wgScriptPath' ][ $wiki ] = '/' . $wiki;
+		}
+	}
+	return $vars;
+}
+
 if ( true ) {
 	error_reporting( -1 );
 
@@ -115,13 +138,16 @@ if ( true ) {
 	$wgRateLimitLog = "$mwLogDir/ratelimit.log";
 	$wgDebugLogGroups['resourceloader'] = "$mwLogDir/resourceloader.log";
 	$wgDebugLogGroups['exception'] = "$mwLogDir/exception.log";
+	$wgDebugLogGroups['exception-json'] = "$mwLogDir/exception.json";
+	$wgDebugLogGroups['error'] = "$mwLogDir/error.log";
+	$wgDebugLogGroups['error-json'] = "$mwLogDir/error.json";
 	#$wgDebugLogGroups['somegroup'] = "$mwLogDir/somegroup.log";
 
 	// ResourceLoader
 	$wgResourceLoaderDebug = false;
 	$wgDebugRawPage = true; // wmbug.com/47960
-	$wgResourceLoaderMaxage['versioned']['server'] = 1;
-	$wgResourceLoaderMaxage['versioned']['client'] = 1;
+	// $wgResourceLoaderMaxage['versioned']['server'] = 1;
+	// $wgResourceLoaderMaxage['versioned']['client'] = 1;
 	$wgResourceLoaderMaxage['unversioned']['server'] = 1;
 	$wgResourceLoaderMaxage['unversioned']['client'] = 1;
 }
@@ -158,13 +184,15 @@ $wgConf->wikis = array(
 	'gammawiki',
 );
 
-$wgConf->settings = array(
+$wgConf->settings = kfGetServerInfos() + array(
 	'wgSitename' => array(
 		'default' => '$lang.$Project',
-	),
+	)
 );
 
-if ( !in_array( $wgDBname, $wgConf->getLocalDatabases() ) ) {
+$wgLocalDatabases =& $wgConf->getLocalDatabases();
+
+if ( !in_array( $wgDBname, $wgLocalDatabases ) ) {
 	if ( php_sapi_name() === 'cli' ) {
 		echo "Error: Specify a wiki database.\n";
 	} else {
@@ -261,6 +289,12 @@ if ( isset( $kfExtensions ) ) {
 
 unset( $wgGroupPermissions['developer'] );
 
+## User rights
+$wgGroupPermissions['bureaucrat']['userrights-interwiki'] = true;
+
+// Example user group for testing cross-wiki user rights
+$wgGroupPermissions['debuglocal-' . $wgDBname]['edit'] = true;
+
 ## Uploads
 $wgUploadPath = "$wgScriptPath/images";
 
@@ -280,6 +314,10 @@ $wgGroupPermissions['sysop']['abusefilter-revert'] = true;
 // $wgAvailableRights[] = 'abusefilter-hide-log';
 // $wgAvailableRights[] = 'abusefilter-modify-global';
 
+## CentralAuth
+$wgGroupPermissions['steward']['globalgrouppermissions'] = true;
+$wgGroupPermissions['steward']['globalgroupmembership'] = true;
+
 ## ConfirmEdit
 $wgCaptchaClass = 'FancyCaptcha';
 $wgCaptchaDirectory = "$wgCacheDirectory/captcha";
@@ -293,11 +331,10 @@ if ( true ) {
 
 ## Testing
 $wgEnableJavaScriptTest = true;
-$wgJavaScriptTestConfig['qunit']['testswarm-injectjs'] = $kgMainServer . '/jquery/testswarm/js/inject.js';
 $wgLegacyJavaScriptGlobals = false;
 
 ## Spam
-$wgSpamRegex = '/spam/i';
+$wgSpamRegex = '/thisisspam/i';
 
 ## Resource origins
 $wgAllowUserJs = $wgAllowUserCss = true;
@@ -305,8 +342,10 @@ $wgAllowUserCssPrefs = true;
 $wgUseSiteJs = $wgUseSiteCss = true;
 
 ## EventLogging
-$wgEventLoggingBaseUri = 'http://127.0.0.1:8080/event.gif';
 $wgEventLoggingFile = $mwLogDir . '/events.log';
+$wgEventLoggingDBname = 'alphawiki';
+$wgEventLoggingBaseUri = 'http://localhost:8080/event.gif';
+$wgEventLoggingSchemaApiUri = 'http://meta.wikimedia.org/w/api.php';
 
 ## Rights
 $wgGroupPermissions['*']['edit'] = true;

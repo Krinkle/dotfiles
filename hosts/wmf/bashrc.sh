@@ -16,6 +16,8 @@ shopt -s interactive_comments >/dev/null 2>&1
 shopt -u mailwarn >/dev/null 2>&1
 shopt -s no_empty_cmd_completion >/dev/null 2>&1
 
+test -f /etc/bash_completion && . /etc/bash_completion
+
 : ${HOME=~}
 : ${UNAME=$(uname)}
 
@@ -44,7 +46,7 @@ CLR_WHITE=`tput setaf 7`
 export EDITOR=vim
 export GREP_OPTIONS='--color=auto'
 
-PROMPT_COMMAND="_dotfiles-ps1-setup && _dotfiles_wmf_setscreentitle"
+PROMPT_COMMAND="_dotfiles-ps1-setup; _dotfiles_wmf_setscreentitle"
 
 ## functions
 
@@ -115,25 +117,8 @@ function _dotfiles-ps1-setup() {
 function _dotfiles_wmf_setscreentitle() {
 	if [ "$TERM" == "screen" ]
 	then
-		if [ "$HOSTNAME" == "fenari" ]
-		then
-			echo -ne "\033k$(basename $PWD)$\033\\"
-		else
-			echo -ne "\033k$HOSTNAME$\033\\"
-		fi
+		echo -ne "\033k$(basename $PWD)$\033\\"
 	fi
-}
-
-ssh() {
-        inargs="$@"
-        if [ "$TERM" == "screen" ]
-        then
-                host="${inargs#*@}"
-                host="${host% *}"
-                echo -ne "\033k$host\033\\"
-        fi
-        /usr/bin/ssh $inargs
-        _dotfiles_wmf_setscreentitle
 }
 
 ## aliases

@@ -7,8 +7,12 @@ alias grabfromgerrit='git review -d'
 alias dogerritfixup='git remote rm gerrit 2> /dev/null; git remote rm origin && git review -s && git branch master -u origin/master'
 alias domakejenkinscommit='git remote update origin && git co -b jenkins -t origin/master && touch jenkins.js jenkins.css jenkins.php .jenkins && git add jenkins.js jenkins.css jenkins.php .jenkins && git commit -m "Sample commit for Jenkins"'
 
-alias gi='git'
 alias g='git'
+alias gi='git'
+alias gir='git'
+alias got='git'
+alias gt='git'
+alias qgit='git'
 
 # http://ariejan.net/2011/11/08/fixing-a-slow-starting-terminal-or-iterm2-on-mac-os-x
 # https://discussions.apple.com/thread/2178316?start=0&tstart=0
@@ -22,7 +26,7 @@ alias doflushdns='sudo killall -HUP mDNSResponder'
 alias dormdsstore='find . -name ".DS_Store" -type f -exec rm {} \;'
 
 # Web server
-alias doapachereset='cd /var/log/httpd && rm -rf mw/*.log && sudo apachectl graceful && l . mw/'
+alias doapachereset='cd /var/log/httpd && rm -rf mw/* && sudo apachectl graceful && l . mw/'
 
 # Parsoid
 alias doparsoid='cd ~/Development/mediawiki/services/parsoid && git remote update && git checkout origin/master && npm install && npm start'
@@ -35,3 +39,5 @@ alias wget-magic-filter='wget -m --no-parent -A'
 alias wget-magic-mkv='wget-magic-filter "*.mkv"'
 
 alias dotfiles-push='cd $KDF_BASE_DIR; git add -p && _dotfiles-prompt-choice "OK to push now?" && git commit -m "sync dotfiles" && git push origin HEAD; cd -'
+
+alias domwfixup='cd ~/Development/mediawiki/core/skins && ln -s ../../skins/Vector . && ln -s ../../skins/MonoBook . && cd -'

@@ -56,6 +56,7 @@ function _dotfiles-host-init {
 			exit 1
 		fi
 	done
+	brew cleanup
 
 	echo "... ensuring presence of NPM packages"
 	npm install -g bower csslint grunt-cli jshint jscs
@@ -121,7 +122,7 @@ function _dotfiles-host-init {
 	# Dangerous, don't automate:
 	# $ cat /etc/hosts
 	# $ sudo rm /etc/hosts
-	# $ sudo ln -s $KDF_BASE_DIR/hosts/KrinkleMac/hosts /etc/hosts
+	# $ sudo ln $KDF_BASE_DIR/hosts/KrinkleMac/hosts /etc/hosts
 }
 
 _dotfiles-host-init

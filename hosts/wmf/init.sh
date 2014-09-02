@@ -2,7 +2,8 @@
 # That does not make use of the global modules and templates
 
 cd $HOME
-rm -f .bash_profile .bashrc .gitconfig
+rm -f .bash_profile .bashrc .gitconfig .screenrc
 ln -s .krinkle.dotfiles/hosts/wmf/bash_profile.sh .bash_profile
 ln -s .krinkle.dotfiles/hosts/wmf/bashrc.sh .bashrc
 ln -s .krinkle.dotfiles/hosts/wmf/gitconfig .gitconfig
+ln -s .krinkle.dotfiles/hosts/wmf/screenrc .screenrc

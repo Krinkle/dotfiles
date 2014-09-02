@@ -21,15 +21,17 @@ export PATH=/Users/krinkle/Development/tmp/bin:$PATH
 # MediaWiki
 export MW_INSTALL_PATH="/Users/krinkle/Development/mediawiki/core"
 export MW_DB="betawiki"
+export MW_SERVER="http://alpha.wikipedia.krinkle.dev"
+export MW_SCRIPT_PATH="/w"
 
 # Local etc (symlinked to data of `brew install bash-completion`)
 source /usr/local/etc/bash_completion
 
-export AUTOJUMP_KEEP_SYMLINKS=1
-export AUTOJUMP_IGNORE_CASE=1
-[[ -s /usr/local/etc/autojump.bash ]] && . /usr/local/etc/autojump.bash
+test -s /usr/local/etc/autojump.bash && . /usr/local/etc/autojump.bash
 
 __git_complete g _git
 __git_complete gi _git
 __git_complete gir _git
 __git_complete got _git
+__git_complete gt _git
+__git_complete qgit _git
