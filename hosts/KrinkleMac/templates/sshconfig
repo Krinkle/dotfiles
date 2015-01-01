@@ -1,9 +1,7 @@
 ## Keys
 
-#IdentityFile ~/.ssh/id_rsa_misc_krinkle_xl
-#IdentityFile ~/.ssh/id_rsa_misc_krinkle_pm
-#IdentityFile ~/.ssh/id_rsa_misc_krinkle_fa
-#IdentityFile ~/.ssh/id_rsa_stack
+#IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
+#IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
 
 ## Preferences
 
@@ -15,7 +13,7 @@ ServerAliveInterval 30
 
 Host bastion.wmflabs.org tools-login.wmflabs.org
     User krinkle
-    IdentityFile ~/.ssh/id_rsa_krinkle2
+    IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
     ProxyCommand none
     ControlMaster auto
 
@@ -27,11 +25,13 @@ Host *.eqiad.wmflabs
 
 Host fenari.wikimedia.org bast1001.wikimedia.org iron.wikimedia.org bast4001.wikimedia.org hooft.esams.wikimedia.org
     User krinkle
-    IdentityFile ~/.ssh/id_rsa_wm
+    IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
     ProxyCommand none
     ControlMaster auto
 
 Host gerrit.wikimedia.org
+    User krinkle
+    IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
     ProxyCommand none
 
 Host *.wikimedia.org
@@ -53,6 +53,12 @@ Host *.esams.wmnet
 
 Host *.jquery.com
     User krinkle
-    IdentityFile ~/.ssh/id_rsa_jq
+    IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
     # rmate
     RemoteForward 52698 localhost:52698
+
+## GitHub
+
+Host github.com
+    User krinkle
+    IdentityFile ~/.ssh/id_rsa_INSERT_LABEL

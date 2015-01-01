@@ -13,7 +13,7 @@ export PATH=/usr/local/opt/ruby20/bin:$PATH
 export PATH=/usr/local/opt/php54/bin:$PATH
 
 # Bins: Sublime Text (subl)
-export PATH=/Applications/Sublime\ Text\ 3.app/Contents/SharedSupport/bin:$PATH
+export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
 
 # Bins: Tmp installs
 export PATH=/Users/krinkle/Development/tmp/bin:$PATH

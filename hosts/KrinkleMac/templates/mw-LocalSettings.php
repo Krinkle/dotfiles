@@ -7,18 +7,17 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	exit;
 }
 
-$kfExtensions = array(
+$kfIncludes = array(
 	#'$EP/Cite/Cite.php',
-	#'$EP/DeploymentPF/DeploymentPF.php',
 	#'$EP/Gadgets/Gadgets.php',
 	#'$EP/Interwiki/Interwiki.php',
 	#'$EP/MaintenanceShell/MaintenanceShell.php',
-	#'$EP/Nuke/Nuke.php',
 	#'$EP/ParserFunctions/ParserFunctions.php',
 	#'$EP/SyntaxHighlight_GeSHi/SyntaxHighlight_GeSHi.php',
 	#'$EP/TemplateData/TemplateData.php',
 	#'$EP/VisualEditor/VisualEditor.php',
 	#'$EP/WikiEditor/WikiEditor.php',
+	'$SP/Vector/Vector.php',
 );
 
 ## Include symlinked settings from Krinkle Dotfiles

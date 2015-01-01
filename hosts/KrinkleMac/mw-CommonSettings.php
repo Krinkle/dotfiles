@@ -272,8 +272,8 @@ switch ( $kgCluster ) {
 }
 
 
-if ( isset( $kfExtensions ) ) {
-	foreach ( $kfExtensions as $path ) {
+if ( isset( $kfIncludes ) ) {
+	foreach ( $kfIncludes as $path ) {
 		require_once str_replace(
 			array( '$EP', '$SP' ),
 			array( $EP, $SP ),
