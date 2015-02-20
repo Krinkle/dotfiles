@@ -10,14 +10,7 @@ $kgCluster = false;
 $wgShowHostnames = true;
 
 ## Database settings
-$wgDBtype = 'mysql';
-$wgDBserver = 'localhost';
 $wgDBname = false;
-$wgDBuser = 'root';
-$wgDBpassword = 'root';
-$wgDBprefix = '';
-$wgDBTableOptions = 'ENGINE=InnoDB, DEFAULT CHARSET=binary';
-$wgDBmysql5 = false;
 
 ## Caching
 $wgMainCacheType = CACHE_ANYTHING;
@@ -54,6 +47,29 @@ function kfGetMainServer() {
 	}
 }
 
+/**
+ * Call after $wgConf->wikis is set.
+ */
+function kfGetServerInfos() {
+	global $kgCluster, $wgConf, $kgMainServer;
+
+	$vars = array(
+		'wgCanonicalServer' => array(),
+		'wgScriptPath' => array(),
+	);
+	foreach ( $wgConf->wikis as $wiki ) {
+		list( $project, $lang ) = $wgConf->siteFromDB( $wiki );
+		if ( $kgCluster === 'dev' ) {
+			$vars[ 'wgCanonicalServer' ][ $wiki ] = 'http://' . $lang . '.wikipedia.krinkle.dev';
+			$vars[ 'wgScriptPath' ][ $wiki ] = '/w';
+		} elseif ( $kgCluster === 'no-ip' ) {
+			$vars[ 'wgCanonicalServer' ][ $wiki ] = $kgMainServer;
+			$vars[ 'wgScriptPath' ][ $wiki ] = '/' . $wiki;
+		}
+	}
+	return $vars;
+}
+
 if ( defined( 'MW_DB' ) ) {
 	$wgDBname = MW_DB;
 	$kgCluster = 'dev';
@@ -87,43 +103,11 @@ if ( defined( 'MW_DB' ) ) {
 
 $kgMainServer = kfGetMainServer();
 
-##
-## Debug
-## http://www.mediawiki.org/wiki/Manual:How_to_debug
-##
-
-function kfHttpDump( $key, $value ) {
-	header( 'X-Debug- ' . $key . ': ' . json_encode( $value ) );
-}
-
-/**
- * Call after $wgConf->wikis is set.
- */
-function kfGetServerInfos() {
-	global $kgCluster, $wgConf, $kgMainServer;
-
-	$vars = array(
-		'wgCanonicalServer' => array(),
-		'wgScriptPath' => array(),
-	);
-	foreach ( $wgConf->wikis as $wiki ) {
-		list( $project, $lang ) = $wgConf->siteFromDB( $wiki );
-		if ( $kgCluster === 'dev' ) {
-			$vars[ 'wgCanonicalServer' ][ $wiki ] = 'http://' . $lang . '.wikipedia.krinkle.dev';
-			$vars[ 'wgScriptPath' ][ $wiki ] = '/w';
-		} elseif ( $kgCluster === 'no-ip' ) {
-			$vars[ 'wgCanonicalServer' ][ $wiki ] = $kgMainServer;
-			$vars[ 'wgScriptPath' ][ $wiki ] = '/' . $wiki;
-		}
-	}
-	return $vars;
-}
-
 if ( true ) {
 	error_reporting( -1 );
 
 	// Tools
-	$wgDebugToolbar = false;
+	$wgDebugToolbar = true;
 
 	// Types
 	$wgShowExceptionDetails = true;
@@ -150,6 +134,25 @@ if ( true ) {
 	// $wgResourceLoaderMaxage['versioned']['client'] = 1;
 	$wgResourceLoaderMaxage['unversioned']['server'] = 1;
 	$wgResourceLoaderMaxage['unversioned']['client'] = 1;
+}
+
+
+##
+## Database
+##
+
+if ( $wgDBname === 'sqlitewiki' ) {
+	$wgDBtype = 'sqlite';
+	$wgDBserver = '';
+	$wgDBuser = '';
+	$wgSQLiteDataDir = dirname( $IP ) . '/_data';
+} else {
+	$wgDBtype = 'mysql';
+	$wgDBserver = 'localhost';
+	$wgDBuser = 'root';
+	$wgDBpassword = 'root';
+	$wgDBTableOptions = 'ENGINE=InnoDB, DEFAULT CHARSET=binary';
+	$wgDBmysql5 = false;
 }
 
 
@@ -181,7 +184,7 @@ $wgConf->suffixes = array(
 $wgConf->wikis = array(
 	'alphawiki',
 	'betawiki',
-	'gammawiki',
+	'sqlitewiki',
 );
 
 $wgConf->settings = kfGetServerInfos() + array(
@@ -194,7 +197,7 @@ $wgLocalDatabases =& $wgConf->getLocalDatabases();
 
 if ( !in_array( $wgDBname, $wgLocalDatabases ) ) {
 	if ( php_sapi_name() === 'cli' ) {
-		echo "Error: Specify a wiki database.\n";
+		echo "Error: Unknown wiki '$wgDBname'.\n";
 	} else {
 		$mainServerHtml = htmlspecialchars( $kgMainServer );
 		$link = strlen( $_SERVER['REQUEST_URI'] ) > 1
@@ -282,6 +285,12 @@ if ( isset( $kfIncludes ) ) {
 	}
 }
 
+if ( isset( $kfExtensions ) ) {
+	foreach ( $kfExtensions as $ext ) {
+		ExtensionRegistry::getInstance()->load( "$EP/$ext/extension.json" );
+	}
+}
+
 
 ##
 ## Config
@@ -297,8 +306,6 @@ $wgGroupPermissions['debuglocal-' . $wgDBname]['edit'] = true;
 
 ## Uploads
 $wgUploadPath = "$wgScriptPath/images";
-
-$wgLogo = "$wgUploadPath/thumb/3/3f/VisualEditor-logo.local.png/135px-VisualEditor-logo.local.png";
 
 ## AbuseFilter
 $wgGroupPermissions['sysop']['abusefilter-modify'] = true;
@@ -361,7 +368,7 @@ $wgNamespacesWithSubpages[NS_TEMPLATE] = true;
 $wgActivityMonitorRCStreamUrl = 'http://stream.wikimedia.org:80/rc';
 
 ## VisualEditor
-$wgVisualEditorParsoidURL = 'http://localhost:8000/';
+$wgVisualEditorParsoidURL = 'http://localhost:8000';
 $wgVisualEditorParsoidPrefix = $wgDBname;
 
 $wgDefaultUserOptions['visualeditor-enable'] = 1;
@@ -372,6 +379,10 @@ $wgSpamBlacklistFiles = array( 'http://meta.wikimedia.org/w/index.php?title=Spam
 
 ## MaintenanceShell
 $wgGroupPermissions['developer']['maintenanceshell'] = true;
+
+## GlobalUserPage
+$wgGlobalUserPageAPIUrl = 'http://beta.wikipedia.krinkle.dev/w/api.php';
+$wgGlobalUserPageDBname = 'betawiki';
 
 ## Gadgets
 $wgGadgetEnableSharing = true;

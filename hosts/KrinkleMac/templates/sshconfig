@@ -1,8 +1,3 @@
-## Keys
-
-#IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
-#IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
-
 ## Preferences
 
 # http://stackoverflow.com/a/8660564/319266

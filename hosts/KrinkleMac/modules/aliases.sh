@@ -6,6 +6,7 @@ alias gogogerrit='git review -R'
 alias grabfromgerrit='git review -d'
 alias dogerritfixup='git remote rm gerrit 2> /dev/null; git remote rm origin && git review -s && git branch master -u origin/master'
 alias domakejenkinscommit='git remote update origin && git co -b jenkins -t origin/master && touch jenkins.js jenkins.css jenkins.php .jenkins && git add jenkins.js jenkins.css jenkins.php .jenkins && git commit -m "Sample commit for Jenkins"'
+alias doupdatemwext='EXTDIR=~/Development/mediawiki/extensions; cd $EXTDIR; for dir in $(ls); do echo "Next: $dir" && cd $dir && git checkout master -q && git pull -q; cd $EXTDIR; done'
 
 alias g='git'
 alias gi='git'
@@ -13,6 +14,8 @@ alias gir='git'
 alias got='git'
 alias gt='git'
 alias qgit='git'
+
+alias diff='colordiff'
 
 # http://ariejan.net/2011/11/08/fixing-a-slow-starting-terminal-or-iterm2-on-mac-os-x
 # https://discussions.apple.com/thread/2178316?start=0&tstart=0
@@ -26,7 +29,7 @@ alias doflushdns='sudo killall -HUP mDNSResponder'
 alias dormdsstore='find . -name ".DS_Store" -type f -exec rm {} \;'
 
 # Web server
-alias doapachereset='cd /var/log/httpd && rm -rf mw/* && sudo apachectl graceful && l . mw/'
+alias doapachereset='cd /var/log/httpd && rm -rf *_log mw/* && sudo apachectl graceful && l . mw/'
 
 # Parsoid
 alias doparsoid='cd ~/Development/mediawiki/services/parsoid && git remote update && git checkout origin/master && npm install && npm start'

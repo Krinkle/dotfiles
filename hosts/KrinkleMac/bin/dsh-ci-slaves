@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Example:
+# $ dsh-slaves 'echo -e "- node $(node --version)\n- npm v$(npm --version)"'
+cmd=$1
+
+if [[ "$cmd" == "" ]]; then
+	echo "Missing command parameter."
+	exit 1
+fi
+
+out=`bash -c "$cmd"`
+echo -e "Local output:\n$out\n"
+read -p "Continue? (y/n): > " choice
+if [[ $choice != "y" ]]; then
+	echo "Aborted."
+	exit 1
+else
+	dsh -r ssh --file $(dirname $0)/../dsh-ci-slaves.list -c -M -- "$cmd 2>&1" 2>/dev/null
+fi

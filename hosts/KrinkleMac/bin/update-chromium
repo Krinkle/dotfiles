@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# Update Chromium (on OS X) to the latest nightly build.
+# https://git.chromium.org/git/chromium.git
+
+
+app_dir='/Applications/Chromium.app'
+bin_dir="${app_dir}/Contents/MacOS"
+base_url='http://commondatastorage.googleapis.com/chromium-browser-continuous/Mac'
+build=$(curl -s -f ${base_url}/LAST_CHANGE)
+installed="$(/usr/libexec/PlistBuddy -c 'Print :SCMRevision' ${app_dir}/Contents/Info.plist | ack -o '(?<=#)\d+')"
+script=$(basename $0)
+
+notice () {
+    echo $(tput setaf 7)[$(tput setaf 4)${script}$(tput setaf 7)]$(tput sgr0) $@
+}
+
+do_upgrade () {
+    mkdir -p "${app_dir}"
+    curl -# -A "Mozilla/5.0" -L -e ";auto" "${base_url}/${build}/chrome-mac.zip" -o "chrome-${build}.zip"
+    mkdir -p ~/tmp
+    rm -rf ~/tmp/chrome-mac
+    unzip -o -q -x "chrome-${build}.zip" -d ~/tmp
+    pkill Chromium; sleep 2; pkill Chromium
+    rm -rf "$app_dir"
+    mv ~/tmp/chrome-mac/Chromium.app "/Applications"
+    rm "chrome-${build}.zip"
+}
+
+patch_for_debug() {
+    echo "#!/bin/sh
+    exec ${bin_dir}/Chromium --remote-debugging-port=9222 --disable-translate" > "${bin_dir}/ChromiumDebug"
+    chmod +x "${bin_dir}/ChromiumDebug"
+    /usr/libexec/PlistBuddy -c "Set :CFBundleExecutable ChromiumDebug" "${app_dir}/Contents/Info.plist"
+    /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$app_dir"
+}
+
+notice "Upgrading to ${build} (you have ${installed})..."
+do_upgrade && patch_for_debug >/dev/null 2>&1

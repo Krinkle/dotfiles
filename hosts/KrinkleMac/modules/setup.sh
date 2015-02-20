@@ -10,13 +10,13 @@ export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 export PATH=/usr/local/opt/ruby20/bin:$PATH
 
 # Bins: Homebrew's pear/pecl packages (e.g. phpunit)
-export PATH=/usr/local/opt/php54/bin:$PATH
+export PATH=/usr/local/opt/php56/bin:$PATH
 
 # Bins: Sublime Text (subl)
 export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
 
 # Bins: Tmp installs
-export PATH=/Users/krinkle/Development/tmp/bin:$PATH
+export PATH=$KDF_BASE_DIR/hosts/$KDF_HOST_TYPE/bin:$PATH
 
 # MediaWiki
 export MW_INSTALL_PATH="/Users/krinkle/Development/mediawiki/core"
@@ -27,7 +27,7 @@ export MW_SCRIPT_PATH="/w"
 # Local etc (symlinked to data of `brew install bash-completion`)
 source /usr/local/etc/bash_completion
 
-test -s /usr/local/etc/autojump.bash && . /usr/local/etc/autojump.bash
+[[ -s /usr/local/etc/profile.d/autojump.sh ]] && . /usr/local/etc/profile.d/autojump.sh
 
 __git_complete g _git
 __git_complete gi _git

@@ -35,12 +35,12 @@ function _dotfiles-host-init {
 		bash-completion
 		colordiff
 		git
+		hh
 		jq
 		mysql
 		node
 		phantomjs
-		php54
-		php54-xdebug
+		php56
 		phpmyadmin
 		pwgen
 		#ruby: JSDuck 5.3.4 has issues with Ruby 2.1.2
@@ -70,10 +70,10 @@ function _dotfiles-host-init {
 	sudo pip install git-review
 
 	echo "... post-install: php"
-	mkdir -p /usr/local/etc/php/5.4/conf.d
-	sudo mkdir -p /var/log/php && sudo chmod 777 /var/log/php
-	sudo mkdir -p /var/lib/php5 && sudo chmod 777 /var/lib/php5
-	test -f /usr/local/etc/php/5.4/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/KrinkleMac/php.ini /usr/local/etc/php/5.4/conf.d/krinkle.ini )
+	mkdir /usr/local/etc/php/5.6/conf.d
+	sudo chmod 777 /var/log/php
+	sudo chmod 777 /var/lib/php5
+	test -f /usr/local/etc/php/5.6/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/KrinkleMac/php.ini /usr/local/etc/php/5.6/conf.d/krinkle.ini )
 
 	echo "... post-install: git"
 	# Only change if not a symlink, or a symlink to the wrong place
@@ -117,10 +117,13 @@ function _dotfiles-host-init {
 	# echo "... checking dev directory tree"
 	# ~/Development
 	# ~/Development/tmp
-	# $ git clone --depth 2 ssh://krinkle@gerrit.wikimedia.org:29418/SRC.git DEST
+	# $ git clone ssh://gerrit.wikimedia.org:29418/SRC
 	# ~/Development/mediawiki/core
 	# ~/Development/mediawiki/skins/ Vector
 	# ~/Development/mediawiki/extensions/
+	# ~/Development/oojs
+	# ~/Development/oojs-ui
+	# ~/Development/unicodejs
 	# ~/Development/wikimedia
 	# ~/Development/wikimedia/integration/ config, jenkins-job-builder, docroot
 	# ~/Development/wikimedia/operations/ mediawiki-config, puppet
@@ -163,7 +166,7 @@ source $KDF_BASE_DIR/index.bash
 #
 # Apache
 #
-# $ brew install homebrew/apache/httpd22
+# $ brew install homebrew/apache/httpd24
 #
 # Disable built-in httpd from Mountain Lion
 # $ sudo /usr/sbin/apachectl stop
@@ -171,11 +174,11 @@ source $KDF_BASE_DIR/index.bash
 # $ sudo launchctl remove org.apache.httpd.plist
 #
 # Add httpd from Homebrew to launchctl and start it (follow Caveats from brew-install).
-# $ sudo ln -s /usr/local/var/apache2/log /var/log/httpd
+# $ sudo ln -s /usr/local/var/log/apache2 /var/log/httpd
 #
 # $ mkdir /usr/local/etc/apache2/2.2/other
-# $ echo 'Include /usr/local/etc/apache2/2.2/other/*.conf' >> /usr/local/etc/apache2/2.2/httpd.conf
-# $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/httpd.conf /usr/local/etc/apache2/2.2/other/krinkle.conf
+# $ echo 'Include /usr/local/etc/apache2/2.4/other/*.conf' >> /usr/local/etc/apache2/2.4/httpd.conf
+# $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/httpd.conf /usr/local/etc/apache2/2.4/other/krinkle.conf
 # $ doapachereset
 #
 # $ sudo nano /etc/hosts <<<TEXT
@@ -201,8 +204,6 @@ source $KDF_BASE_DIR/index.bash
 # MediaWiki
 #
 # Install
-# $ mkdir ~/Development
-# $ git clone mediawiki-core.git ~/Development/mediawiki/core
 # $ chmod 777 ~/Development/mediawiki/core/cache
 #
 # Configure
@@ -217,6 +218,13 @@ source $KDF_BASE_DIR/index.bash
 # Create alphawiki, betawiki
 # $ php .../mediawiki/core/maintenance/install.php ... alphawiki ...
 # $ php .../mediawiki/core/maintenance/install.php ... betawiki ...
+
+#
+# MediaWiki-Vagrant
+#
+# Configure
+# $ cd ~/Development/mediawiki/vagrant/puppet/hieradata
+# $ ln $KDF_BASE_DIR/hosts/KrinkleMac/mediawiki-vagrant.yaml vagrant-managed.yaml
 
 #
 # GUI Applications
@@ -251,7 +259,6 @@ source $KDF_BASE_DIR/index.bash
 # - SublimeLinter
 # - SublimeLinter-jscs
 # - SublimeLinter-jshint
-# - SublimeLinter-php
 # - Theme Soda
 # - TrailingSpaces
 # - rsub

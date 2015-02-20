@@ -6,3 +6,12 @@ genpass() {
     pwgen -Bs $1 1 | pbcopy | pbpaste
     echo "Has been copied to clipboard"
 }
+
+doclonegerrit() {
+	git clone ssh://gerrit.wikimedia.org:29418/$1 $2
+}
+
+doaddwmext() {
+	EXTDIR=~/Development/mediawiki/extensions;
+	cd $EXTDIR && doclonegerrit mediawiki/extensions/$1
+}

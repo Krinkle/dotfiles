@@ -9,6 +9,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 
 $kfIncludes = array(
 	#'$EP/Cite/Cite.php',
+	#'$EP/EventLogging/EventLogging.php',
 	#'$EP/Gadgets/Gadgets.php',
 	#'$EP/Interwiki/Interwiki.php',
 	#'$EP/MaintenanceShell/MaintenanceShell.php',

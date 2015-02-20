@@ -5,7 +5,8 @@
 			"folder_exclude_patterns":
 			[
 				"docs/js",
-				"docs/html"
+				"docs/html",
+				"vendor"
 			],
 			"name": "mediawiki",
 			"path": "/Users/krinkle/Development/mediawiki/core"
@@ -14,12 +15,10 @@
 			"folder_exclude_patterns":
 			[
 				"docs",
-				"test-coverage"
+				"test-coverage",
+				"vendor"
 			],
 			"path": "/Users/krinkle/Development/mediawiki/extensions/VisualEditor"
-		},
-		{
-			"path": "/Users/krinkle/Development/mediawiki/extensions/TemplateData"
 		},
 		{
 			"path": "/Users/krinkle/Development/wikimedia/integration"
@@ -30,12 +29,10 @@
 		{
 			"folder_exclude_patterns":
 			[
-				"docs"
+				"docs",
+				"vendor"
 			],
 			"path": "/Users/krinkle/Development/oojs-ui"
-		},
-		{
-			"path": "/Users/krinkle/Development/unicodejs"
 		}
 	]
 }

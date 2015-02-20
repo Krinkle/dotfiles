@@ -1,8 +1,6 @@
-# Sublime Text
 *.sublime-workspace
-
-# git-review (pip)
-hosts/KrinkleMac/config/git-review/latest-version
+/hosts/KrinkleMac/config/git-review/latest-version
+/hosts/KrinkleMac/config/git/gitk
 
 # bower (npm)
 hosts/KrinkleMac/config/configstore
