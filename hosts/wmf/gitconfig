@@ -7,13 +7,21 @@
 	p = add -p
 	ad = add
 	br = branch
+	clx = clean -dffx
 	co = checkout
 	comit = commit
+	ap = commit --amend
 	di = diff
 	ds = diff --staged
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
-	log-nice = log --graph --decorate --abbrev-commit --pretty=oneline
+	l = ! git lg -n25
 	pul = pull
 	pulll = pull
+	por = pull --rebase
+	hard = reset --hard
+	sh = show
+	sho = show
 	so = show
 	st = status -sb
+[gitreview]
+	remote = origin

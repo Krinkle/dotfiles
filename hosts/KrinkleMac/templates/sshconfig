@@ -32,9 +32,6 @@ Host gerrit.wikimedia.org
 Host *.wikimedia.org
     ProxyCommand ssh -a -W %h:%p bast1001.wikimedia.org
 
-Host *.pmtpa.wmnet
-    ProxyCommand ssh -a -W %h:%p bast1001.wikimedia.org
-
 Host *.eqiad.wmnet
     ProxyCommand ssh -a -W %h:%p bast1001.wikimedia.org
 
@@ -46,14 +43,21 @@ Host *.esams.wmnet
 
 ## jQuery
 
-Host *.jquery.com
+Host *.jquery.com *.jquery.net
     User krinkle
     IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
-    # rmate
-    RemoteForward 52698 localhost:52698
 
 ## GitHub
 
 Host github.com
     User krinkle
     IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
+
+## OpenStack
+
+Host review.openstack.org
+    User krinkle
+    IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
+
+# Add the following to host sections to support rmate
+# RemoteForward 52698 localhost:52698

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Update Chromium (on OS X) to the latest nightly build.
 # https://git.chromium.org/git/chromium.git

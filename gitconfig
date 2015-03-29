@@ -23,6 +23,9 @@
 	gerrit-config-co = ! git fetch origin refs/meta/config:refs/remotes/origin/meta/config && git checkout meta/config
 	gerrit-config-push = push origin meta/config:refs/meta/config
 	gerrit-config-review = push origin meta/config:refs/for/refs/meta/config
+	gerrit-dashboard-review = push origin dashboard:refs/for/refs/meta/dashboards/custom
+[gitreview]
+	remote = origin
 [core]
 	quotepath = false
 [push]

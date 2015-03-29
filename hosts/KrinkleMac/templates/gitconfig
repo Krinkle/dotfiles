@@ -6,3 +6,6 @@
 [core]
 	editor = subl -n -w
 	pager = less -x4
+[alias]
+	bisect-up = bisect bad
+	bisect-down = bisect good

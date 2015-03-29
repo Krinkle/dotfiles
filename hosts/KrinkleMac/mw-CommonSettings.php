@@ -2,7 +2,7 @@
 ## Project
 $wgMetaNamespace = 'Project';
 $wgLanguageCode = 'en';
-$wgLocaltimezone = 'Europe/Amsterdam';
+$wgLocaltimezone = 'Europe/London';
 $wgSitename = false;
 $kgMainServer = false;
 $kgCluster = false;
@@ -24,11 +24,13 @@ $wgWellFormedXml = false;
 $wgUseTidy = true;
 
 ## Media
-$wgEnableUploads = true;
 $wgUseInstantCommons = true;
+$wgEnableUploads = true;
+$wgFileCacheDepth = 0;
 
 ## Local environment
 $wgDiff3 = '/usr/bin/diff3';
+$wgShellLocale = 'en_US.UTF-8';
 $mwLogDir = '/var/log/mediawiki';
 
 
@@ -41,7 +43,7 @@ function kfGetMainServer() {
 	switch ( $kgCluster ) {
 		case 'dev':
 			return 'http://krinkle.dev';
-		case 'no-ip':
+		case 'no-wildcard':
 		default:
 			return $wgServer;
 	}
@@ -62,7 +64,7 @@ function kfGetServerInfos() {
 		if ( $kgCluster === 'dev' ) {
 			$vars[ 'wgCanonicalServer' ][ $wiki ] = 'http://' . $lang . '.wikipedia.krinkle.dev';
 			$vars[ 'wgScriptPath' ][ $wiki ] = '/w';
-		} elseif ( $kgCluster === 'no-ip' ) {
+		} elseif ( $kgCluster === 'no-wildcard' ) {
 			$vars[ 'wgCanonicalServer' ][ $wiki ] = $kgMainServer;
 			$vars[ 'wgScriptPath' ][ $wiki ] = '/' . $wiki;
 		}
@@ -87,9 +89,10 @@ if ( defined( 'MW_DB' ) ) {
 	if ( isset( $m[1] ) ) {
 		$wgDBname = $m[1] . 'wiki';
 
-	// No-IP Free doesn't have wildcard and uses subdirectories instead
+	// Wildcardless domains for use with No-IP or for external libraries that
+	// require hostname to be 'localhost' when testing (e.g. Google reCAPTCHA).
 	} else {
-		$kgCluster = 'no-ip';
+		$kgCluster = 'no-wildcard';
 		preg_match(
 			'#([^/]+)#',
 			$_SERVER['REQUEST_URI'],
@@ -107,7 +110,7 @@ if ( true ) {
 	error_reporting( -1 );
 
 	// Tools
-	$wgDebugToolbar = true;
+	$wgDebugToolbar = false;
 
 	// Types
 	$wgShowExceptionDetails = true;
@@ -128,8 +131,9 @@ if ( true ) {
 	#$wgDebugLogGroups['somegroup'] = "$mwLogDir/somegroup.log";
 
 	// ResourceLoader
+	$wgResourceLoaderStorageEnabled = false;
 	$wgResourceLoaderDebug = false;
-	$wgDebugRawPage = true; // wmbug.com/47960
+	$wgDebugRawPage = false; // wmbug.com/47960
 	// $wgResourceLoaderMaxage['versioned']['server'] = 1;
 	// $wgResourceLoaderMaxage['versioned']['client'] = 1;
 	$wgResourceLoaderMaxage['unversioned']['server'] = 1;
@@ -161,6 +165,7 @@ if ( $wgDBname === 'sqlitewiki' ) {
 ##
 
 if ( false ) {
+	$wgStatsdServer = 'localhost';
 
 	$wgProfiler['class'] = 'Profiler';
 
@@ -245,15 +250,15 @@ extract( $globals );
 ## Server paths
 ##
 
-$wgScriptExtension = '.php';
+$wgExtensionDirectory = dirname( $IP ) . '/extensions';
+$wgStyleDirectory = dirname( $IP ) . '/skins';
 $wgExtensionAssetsPath = '/extensions';
-$EP = dirname( $IP ) . '/extensions';
-$SP = $IP . '/skins';
+$wgStylePath = $wgLocalStylePath = '/skins';
 
 if ( php_sapi_name() === 'cli' ) {
 	// Sets $wgServer for CLI
 	switch ( $kgCluster ) {
-		case 'no-ip':
+		case 'no-wildcard':
 			$wgServer = 'http://wiki.krinkle.dev';
 			break;
 		case 'dev':
@@ -264,7 +269,7 @@ if ( php_sapi_name() === 'cli' ) {
 }
 
 switch ( $kgCluster ) {
-	case 'no-ip':
+	case 'no-wildcard':
 		$wgArticlePath = "/$wgDBname/wiki/$1";
 		$wgScriptPath = "/$wgDBname/w";
 		break;
@@ -279,7 +284,7 @@ if ( isset( $kfIncludes ) ) {
 	foreach ( $kfIncludes as $path ) {
 		require_once str_replace(
 			array( '$EP', '$SP' ),
-			array( $EP, $SP ),
+			array( $wgExtensionDirectory, $wgStyleDirectory ),
 			$path
 		);
 	}
@@ -287,7 +292,7 @@ if ( isset( $kfIncludes ) ) {
 
 if ( isset( $kfExtensions ) ) {
 	foreach ( $kfExtensions as $ext ) {
-		ExtensionRegistry::getInstance()->load( "$EP/$ext/extension.json" );
+		ExtensionRegistry::getInstance()->load( "$wgExtensionDirectory/$ext/extension.json" );
 	}
 }
 
@@ -326,15 +331,20 @@ $wgGroupPermissions['steward']['globalgrouppermissions'] = true;
 $wgGroupPermissions['steward']['globalgroupmembership'] = true;
 
 ## ConfirmEdit
-$wgCaptchaClass = 'FancyCaptcha';
-$wgCaptchaDirectory = "$wgCacheDirectory/captcha";
+#$wgCaptchaClass = 'ReCaptchaNoCaptcha';
+// https://www.google.com/recaptcha/admin
+#$wgReCaptchaSiteKey = '';
+#$wgReCaptchaSecretKey = '';
+
 $wgGroupPermissions['sysop']['skipcaptcha'] =
 $wgGroupPermissions['autoconfirmed']['skipcaptcha'] = false;
-if ( true ) {
-	$wgCaptchaTriggers['edit'] = true;
-}
-// $ sudo pip install pil
-// $ python captcha.py --wordlist /usr/share/dict/words --key {wgCaptchaSecret} --output {wgCaptchaDirectory} --font '/Library/Fonts/Arial Black.ttf'
+
+$wgCaptchaTriggers['edit'] =
+$wgCaptchaTriggers['create'] =
+$wgCaptchaTriggers['sendemail'] =
+$wgCaptchaTriggers['addurl'] =
+$wgCaptchaTriggers['createaccount'] =
+$wgCaptchaTriggers['badlogin'] = true;
 
 ## Testing
 $wgEnableJavaScriptTest = true;
@@ -347,6 +357,9 @@ $wgSpamRegex = '/thisisspam/i';
 $wgAllowUserJs = $wgAllowUserCss = true;
 $wgAllowUserCssPrefs = true;
 $wgUseSiteJs = $wgUseSiteCss = true;
+
+## Search
+$wgEnableCanonicalServerLink = true;
 
 ## EventLogging
 $wgEventLoggingFile = $mwLogDir . '/events.log';
@@ -391,9 +404,6 @@ $wgGroupPermissions['gadgetartists']['gadgets-edit'] = true;
 $wgGroupPermissions['gadgetmanagers']['gadgets-definition-create'] = true;
 $wgGroupPermissions['gadgetmanagers']['gadgets-definition-edit'] = true;
 $wgGroupPermissions['gadgetmanagers']['gadgets-definition-delete'] = true;
-
-## Naryam
-$wgNarayamEnabledByDefault = true;
 
 ## Interwiki
 $wgGroupPermissions['developer']['interwiki'] = true;

@@ -12,8 +12,23 @@ doclonegerrit() {
 }
 
 doaddwmext() {
-	EXTDIR=~/Development/mediawiki/extensions;
+	EXTDIR=~/Development/mediawiki/extensions
 	cd $EXTDIR && doclonegerrit mediawiki/extensions/$1 && cd $1
+}
+
+domwextforeach() {
+	EXTDIR=~/Development/mediawiki/extensions
+	cd $EXTDIR
+	for dir in $(ls); do
+		echo "Next: $dir"
+		cd $dir
+		bash -c "$1"
+		cd $EXTDIR
+	done
+}
+
+doupdatemwext() {
+	domwextforeach 'git checkout master -q && git pull -q'
 }
 
 # Shows possibly forgotten git stashes and branches
@@ -23,12 +38,13 @@ do-globalgitstatus() {
 		~/Development
 		~/Development/mediawiki
 		~/Development/mediawiki/extensions
+		~/Development/mediawiki/extensions/VisualEditor/lib
 		~/Development/wikimedia/integration
 		~/Development/wikimedia/operations
 	)
 	for repoGroup in "${repoGroups[@]}"; do
 		for repo in $repoGroup/*; do
-			if test -d "$repo/.git"; then
+			if test -e "$repo/.git"; then
 				#echo "... checking $repo"
 				cd $repo
 				branches=$(git branch)

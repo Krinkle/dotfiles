@@ -6,7 +6,6 @@ alias gogogerrit='git review -R'
 alias grabfromgerrit='git review -d'
 alias dogerritfixup='git remote rm gerrit 2> /dev/null; git remote rm origin && git review -s && git branch master -u origin/master'
 alias domakejenkinscommit='git remote update origin && git co -b jenkins -t origin/master && touch jenkins.js jenkins.css jenkins.php .jenkins && git add jenkins.js jenkins.css jenkins.php .jenkins && git commit -m "Sample commit for Jenkins"'
-alias doupdatemwext='EXTDIR=~/Development/mediawiki/extensions; cd $EXTDIR; for dir in $(ls); do echo "Next: $dir" && cd $dir && git checkout master -q && git pull -q; cd $EXTDIR; done'
 
 alias g='git'
 alias gi='git'
@@ -41,6 +40,6 @@ alias wget-magic-noindex='wget -m --no-parent --reject "index.html*"'
 alias wget-magic-filter='wget -m --no-parent -A'
 alias wget-magic-mkv='wget-magic-filter "*.mkv"'
 
-alias dotfiles-push='cd $KDF_BASE_DIR; git add -p && _dotfiles-prompt-choice "OK to push now?" && git commit -m "sync dotfiles" && git push origin HEAD; cd -'
+alias dotfiles-push='cd $KDF_BASE_DIR; git add -p && _dotfiles-prompt-choice "OK to push now?" && git commit -m "update dotfiles" && git push origin HEAD; cd -'
 
 alias domwfixup='cd ~/Development/mediawiki/core/skins && ln -s ../../skins/Vector . && ln -s ../../skins/MonoBook . && cd -'

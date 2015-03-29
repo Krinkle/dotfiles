@@ -180,6 +180,11 @@ source $KDF_BASE_DIR/index.bash
 # $ mkdir /usr/local/etc/apache2/2.4/other
 # $ echo 'Include /usr/local/etc/apache2/2.4/other/*.conf' >> /usr/local/etc/apache2/2.4/httpd.conf
 # $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/httpd.conf /usr/local/etc/apache2/2.4/other/krinkle.conf
+#
+# Change Listen 8080 to 80. Out config already adds Listen 80, but the point here
+# is to free up port 8080 for other applications.
+# $ sudo edit /usr/local/etc/apache2/2.4/httpd.conf
+#
 # $ doapachereset
 #
 # $ sudo nano /etc/hosts <<<TEXT
