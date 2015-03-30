@@ -12,6 +12,9 @@ export PATH=/usr/local/opt/ruby20/bin:$PATH
 # Bins: Homebrew's pear/pecl packages (e.g. phpunit)
 export PATH=/usr/local/opt/php56/bin:$PATH
 
+# Bins: Homebrew's coreutils (e.g. realpath)
+export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+
 # Bins: Sublime Text (subl)
 export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
 

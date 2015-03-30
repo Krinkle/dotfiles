@@ -34,6 +34,7 @@ function _dotfiles-host-init {
 		bash
 		bash-completion
 		colordiff
+		coreutils
 		git
 		hh
 		jq
@@ -176,7 +177,7 @@ source $KDF_BASE_DIR/index.bash
 # Add httpd from Homebrew to launchctl and start it (follow Caveats from brew-install).
 # $ sudo ln -s /usr/local/var/log/apache2 /var/log/httpd
 #
-# $ mkdir /usr/local/etc/apache2/2.2/other
+# $ mkdir /usr/local/etc/apache2/2.4/other
 # $ echo 'Include /usr/local/etc/apache2/2.4/other/*.conf' >> /usr/local/etc/apache2/2.4/httpd.conf
 # $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/httpd.conf /usr/local/etc/apache2/2.4/other/krinkle.conf
 # $ doapachereset
@@ -188,9 +189,12 @@ source $KDF_BASE_DIR/index.bash
 # 127.0.0.1 example.dev
 # 127.0.0.1 drive.krinkle.dev
 # 127.0.0.1 wiki.krinkle.dev
+# 127.0.0.1 wikipedia.krinkle.dev
 # 127.0.0.1 alpha.wikipedia.krinkle.dev
 # 127.0.0.1 beta.wikipedia.krinkle.dev
-# 127.0.0.1 omega.wikipedia.krinkle.dev
+#
+# # MediaWiki-Vagrant
+# 10.11.12.13 mediawiki.dev
 #
 # TEXT;
 

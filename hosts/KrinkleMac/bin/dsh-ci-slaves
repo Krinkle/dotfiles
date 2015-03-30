@@ -9,10 +9,14 @@ if [[ "$cmd" == "" ]]; then
 	exit 1
 fi
 
-out=`bash -c "$cmd"`
-echo -e "Local output:\n$out\n"
-read -p "Continue? (y/n): > " choice
-if [[ $choice != "y" ]]; then
+read -p "Test locally? (y/n): > " choice_local
+if [[ $choice_local == "y" ]]; then
+	out=`bash -c "$cmd"`
+	echo -e "Local output:\n$out\n"
+fi
+
+read -p "Send command? (y/n): > " choice_continue
+if [[ $choice_continue != "y" ]]; then
 	echo "Aborted."
 	exit 1
 else
