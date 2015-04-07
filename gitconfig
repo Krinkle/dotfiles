@@ -4,6 +4,7 @@
 	p = add -p
 	ad = add
 	br = branch
+	clx = clean -dffx
 	co = checkout
 	comit = commit
 	ap = commit --amend
@@ -13,6 +14,7 @@
 	l = ! git lg -n25
 	pul = pull
 	pulll = pull
+	por = pull --rebase
 	hard = reset --hard
 	sh = show
 	sho = show

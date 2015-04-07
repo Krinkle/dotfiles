@@ -13,5 +13,5 @@ doclonegerrit() {
 
 doaddwmext() {
 	EXTDIR=~/Development/mediawiki/extensions;
-	cd $EXTDIR && doclonegerrit mediawiki/extensions/$1
+	cd $EXTDIR && doclonegerrit mediawiki/extensions/$1 && cd $1
 }

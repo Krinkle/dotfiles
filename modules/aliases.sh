@@ -1,11 +1,7 @@
-if [ "$UNAME" == "Linux" -o "$UNAME" == "SunOS" ]
-then
-	# Ubuntu (Linux), Solaris (SunOS)
-	alias ls='ls --color=auto'
-else
-	# Mac (Darwin)
-    alias ls='ls -G'
-fi
+# Ubuntu (Linux), Solaris (SunOS)
+# On Mac (Darwin), this should be `ls -G`. However coreutils is installed
+# from Homebrew, so 'which ls' != '/bin/ls' on Mac.
+alias ls='ls --color=auto'
 
 alias ll='ls -ahlF'
 alias l='ll'
