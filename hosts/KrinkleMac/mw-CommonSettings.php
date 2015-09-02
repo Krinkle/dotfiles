@@ -1,85 +1,20 @@
 <?php
-## Project
-$wgMetaNamespace = 'Project';
-$wgLanguageCode = 'en';
-$wgLocaltimezone = 'Europe/London';
-$wgSitename = false;
-$kgMainServer = false;
+##
+## Prepare site config
+##
+$wgPortalServer = false;
 $kgCluster = false;
+$kgLogDir = '/var/log/mediawiki';
 
-$wgShowHostnames = true;
-
-## Database settings
-$wgDBname = false;
-
-## Caching
-$wgMainCacheType = CACHE_ANYTHING;
-$wgCacheDirectory = $IP . '/cache';
-$wgUseLocalMessageCache = true;
-$wgInvalidateCacheOnLocalSettingsChange = false;
-
-## Output
-$wgUseGzip = true;
-$wgWellFormedXml = false;
-$wgUseTidy = true;
-
-## Media
-$wgUseInstantCommons = true;
-$wgEnableUploads = true;
-$wgFileCacheDepth = 0;
-
-## Local environment
-$wgDiff3 = '/usr/bin/diff3';
-$wgShellLocale = 'en_US.UTF-8';
-$mwLogDir = '/var/log/mediawiki';
-
-
-##
-## Wiki ID
-##
-
-function kfGetMainServer() {
-	global $kgCluster, $wgServer;
-	switch ( $kgCluster ) {
-		case 'dev':
-			return 'http://krinkle.dev';
-		case 'no-wildcard':
-		default:
-			return $wgServer;
-	}
-}
-
-/**
- * Call after $wgConf->wikis is set.
- */
-function kfGetServerInfos() {
-	global $kgCluster, $wgConf, $kgMainServer;
-
-	$vars = array(
-		'wgCanonicalServer' => array(),
-		'wgScriptPath' => array(),
-	);
-	foreach ( $wgConf->wikis as $wiki ) {
-		list( $project, $lang ) = $wgConf->siteFromDB( $wiki );
-		if ( $kgCluster === 'dev' ) {
-			$vars[ 'wgCanonicalServer' ][ $wiki ] = 'http://' . $lang . '.wikipedia.krinkle.dev';
-			$vars[ 'wgScriptPath' ][ $wiki ] = '/w';
-		} elseif ( $kgCluster === 'no-wildcard' ) {
-			$vars[ 'wgCanonicalServer' ][ $wiki ] = $kgMainServer;
-			$vars[ 'wgScriptPath' ][ $wiki ] = '/' . $wiki;
-		}
-	}
-	return $vars;
-}
-
+// Extract wgDBname and kgCluster
 if ( defined( 'MW_DB' ) ) {
+	$kgCluster = 'dev';
 	$wgDBname = MW_DB;
-	$kgCluster = 'dev';
 } elseif ( getenv( 'MW_DB' ) !== false ) {
+	$kgCluster = 'dev';
 	$wgDBname = getenv( 'MW_DB' );
-	$kgCluster = 'dev';
 } elseif ( isset( $_SERVER['HTTP_HOST'] ) ) {
-	$kgCluster = 'dev';
+	// Example: http://alpha.wikipedia.krinkle.dev/w
 	$m = null;
 	preg_match(
 		'/(.+?)\.(wikipedia)\.krinkle\.dev/',
@@ -87,59 +22,70 @@ if ( defined( 'MW_DB' ) ) {
 		$m
 	);
 	if ( isset( $m[1] ) ) {
+		$kgCluster = 'dev';
 		$wgDBname = $m[1] . 'wiki';
 
-	// Wildcardless domains for use with No-IP or for external libraries that
-	// require hostname to be 'localhost' when testing (e.g. Google reCAPTCHA).
 	} else {
-		$kgCluster = 'no-wildcard';
-		preg_match(
-			'#([^/]+)#',
-			$_SERVER['REQUEST_URI'],
-			$m
-		);
+		// When wildcard domains can't be used (e.g. No-IP, or libraries
+		// that require hostname to be 'localhost' such as Google reCAPTCHA)
+		// Example: http://localhost/alphawiki/w
+		$m = null;
+		preg_match( '#([^/]+)#', $_SERVER['REQUEST_URI'], $m );
 		if ( isset( $m[1] ) ) {
+			$kgCluster = 'no-wildcard';
 			$wgDBname = $m[1];
 		}
 	}
 }
 
-$kgMainServer = kfGetMainServer();
+$wgPortalServer = $kgCluster === 'dev' ? 'http://krinkle.dev' : $wgServer;
+
+// Must be called after setting $wgConf->wikis
+function kfGetServerInfos() {
+	global $kgCluster, $wgConf;
+	$vars = array();
+	foreach ( $wgConf->wikis as $dbname ) {
+		if ( $kgCluster === 'dev' ) {
+			$vars[ 'wgCanonicalServer' ][ $dbname ] = 'http://$lang.wikipedia.krinkle.dev';
+			$vars[ 'wgScriptPath' ][ $dbname ] = '/w';
+			$vars[ 'wgArticlePath' ][ $dbname ] = '/wiki/$1';
+		} elseif ( $kgCluster === 'no-wildcard' ) {
+			$vars[ 'wgCanonicalServer' ][ $dbname ] = false;
+			$vars[ 'wgScriptPath' ][ $dbname ] = "/$dbname/w";
+			$vars[ 'wgArticlePath' ][ $dbname ] = "/$dbname/wiki/$1";
+		}
+	}
+	return $vars;
+}
+
+##
+## Debug
+##
 
 if ( true ) {
 	error_reporting( -1 );
 
-	// Tools
-	$wgDebugToolbar = false;
-
-	// Types
+	$wgShowHostnames = true;
 	$wgShowExceptionDetails = true;
-	#$wgDebugRedirects = false;
 	$wgShowSQLErrors = true;
+	#$wgDebugRedirects = false;
 	#$wgDebugDumpSql = true;
 	#$wgMemCachedDebug = false;
 
+	// Tools
+	$wgDebugToolbar = false;
+
 	// Log files
-	$wgDebugLogFile = "$mwLogDir/debug-{$wgDBname}.log";
-	$wgDBerrorLog = "$mwLogDir/dberror.log";
-	$wgRateLimitLog = "$mwLogDir/ratelimit.log";
-	$wgDebugLogGroups['resourceloader'] = "$mwLogDir/resourceloader.log";
-	$wgDebugLogGroups['exception'] = "$mwLogDir/exception.log";
-	$wgDebugLogGroups['exception-json'] = "$mwLogDir/exception.json";
-	$wgDebugLogGroups['error'] = "$mwLogDir/error.log";
-	$wgDebugLogGroups['error-json'] = "$mwLogDir/error.json";
-	#$wgDebugLogGroups['somegroup'] = "$mwLogDir/somegroup.log";
-
-	// ResourceLoader
-	$wgResourceLoaderStorageEnabled = false;
-	$wgResourceLoaderDebug = false;
-	$wgDebugRawPage = false; // wmbug.com/47960
-	// $wgResourceLoaderMaxage['versioned']['server'] = 1;
-	// $wgResourceLoaderMaxage['versioned']['client'] = 1;
-	$wgResourceLoaderMaxage['unversioned']['server'] = 1;
-	$wgResourceLoaderMaxage['unversioned']['client'] = 1;
+	$wgDebugLogFile = "$kgLogDir/debug-{$wgDBname}.log";
+	$wgDBerrorLog = "$kgLogDir/dberror.log";
+	$wgRateLimitLog = "$kgLogDir/ratelimit.log";
+	$wgDebugLogGroups['resourceloader'] = "$kgLogDir/resourceloader.log";
+	$wgDebugLogGroups['exception'] = "$kgLogDir/exception.log";
+	$wgDebugLogGroups['exception-json'] = "$kgLogDir/exception.json";
+	$wgDebugLogGroups['error'] = "$kgLogDir/error.log";
+	$wgDebugLogGroups['error-json'] = "$kgLogDir/error.json";
+	#$wgDebugLogGroups['somegroup'] = "$kgLogDir/somegroup.log";
 }
-
 
 ##
 ## Database
@@ -156,34 +102,28 @@ if ( $wgDBname === 'sqlitewiki' ) {
 	$wgDBuser = 'root';
 	$wgDBpassword = 'root';
 	$wgDBTableOptions = 'ENGINE=InnoDB, DEFAULT CHARSET=binary';
-	$wgDBmysql5 = false;
 }
-
 
 ##
 ## Profiler
 ##
 
-if ( false ) {
-	$wgStatsdServer = 'localhost';
+// $wgStatsdServer = 'localhost';
 
-	$wgProfiler['class'] = 'Profiler';
+// // See profileinfo.php
+// $wgEnableProfileInfo = true;
 
-	# maintenance/archives/patch-profiling.sql
-	$wgProfileToDatabase = true;
-
-	# profileinfo.php
-	$wgEnableProfileInfo = true;
-}
-
+// // See StartProfiler.php
+// $wgProfiler['class'] = 'ProfilerXhprof';
+// $wgProfiler['output'] = array( 'ProfilerOutputDb' );
+// $wgProfiler['sampling'] = 1;
 
 ##
-## Wiki config
+## Site config
 ##
 
 $wgConf->suffixes = array(
-	// 'wikipedia',
-	'wiki',
+	'wikipedia' => 'wiki',
 );
 
 $wgConf->wikis = array(
@@ -195,18 +135,26 @@ $wgConf->wikis = array(
 $wgConf->settings = kfGetServerInfos() + array(
 	'wgSitename' => array(
 		'default' => '$lang.$Project',
-	)
+	),
+	'wgMetaNamespace' => array(
+		'default' => 'Project',
+	),
+	'wgLanguageCode' => array(
+		'default' => 'en',
+	),
+	'wgLocaltimezone' => array(
+		'default' => 'Europe/London',
+	),
 );
 
 $wgLocalDatabases =& $wgConf->getLocalDatabases();
-
 if ( !in_array( $wgDBname, $wgLocalDatabases ) ) {
 	if ( php_sapi_name() === 'cli' ) {
 		echo "Error: Unknown wiki '$wgDBname'.\n";
 	} else {
-		$mainServerHtml = htmlspecialchars( $kgMainServer );
+		$portalServerHtml = htmlspecialchars( $wgPortalServer );
 		$link = strlen( $_SERVER['REQUEST_URI'] ) > 1
-			? "<p style=\"text-align: right;\"><a href=\"{$mainServerHtml}\">&raquo; Go to root domain</a></p>"
+			? "<p style=\"text-align: right;\"><a href=\"{$portalServerHtml}\">&raquo; Go to root domain</a></p>"
 			: ''
 		;
 		echo <<<HTML
@@ -226,59 +174,33 @@ a:hover { text-decoration: underline; }
 em { font-style: normal; color: #777; }
 </style>
 <h1>Domain not configured</h1>
-<p>This domain points to the Krinkle Dev server, but is not configured in Apache.<br><em>That’s all we know.</em></p>
+<p>This domain points to the Krinkle Dev server, but is not recognised there.<br><em>That’s all we know.</em></p>
 $link
 </script>
 </html>
 HTML;
 	}
-
 	exit( 1 );
 }
 
 list( $project, $lang ) = $wgConf->siteFromDB( $wgDBname );
 
-$dbSuffix = 'wiki';
-$globals = $wgConf->getAll( $wgDBname, $dbSuffix, array(
+$globals = $wgConf->getAll( $wgDBname, 'wiki', array(
 	'lang' => $lang,
-	'project' => $project,
 	'Project' => ucfirst( $project ),
 ));
 extract( $globals );
 
+// Set $wgServer for CLI
+if ( php_sapi_name() === 'cli' ) {
+	$wgServer = "http://$lang.$project.krinkle.dev";
+}
+
 ##
-## Server paths
+## Load extensions
 ##
 
 $wgExtensionDirectory = dirname( $IP ) . '/extensions';
-$wgStyleDirectory = dirname( $IP ) . '/skins';
-$wgExtensionAssetsPath = '/extensions';
-$wgStylePath = $wgLocalStylePath = '/skins';
-
-if ( php_sapi_name() === 'cli' ) {
-	// Sets $wgServer for CLI
-	switch ( $kgCluster ) {
-		case 'no-wildcard':
-			$wgServer = 'http://wiki.krinkle.dev';
-			break;
-		case 'dev':
-		default:
-			$wgServer = "http://$lang.$project.krinkle.dev";
-			break;
-	}
-}
-
-switch ( $kgCluster ) {
-	case 'no-wildcard':
-		$wgArticlePath = "/$wgDBname/wiki/$1";
-		$wgScriptPath = "/$wgDBname/w";
-		break;
-	case 'dev':
-	default:
-		$wgArticlePath = '/wiki/$1';
-		$wgScriptPath = '/w';
-}
-
 
 if ( isset( $kfIncludes ) ) {
 	foreach ( $kfIncludes as $path ) {
@@ -291,26 +213,51 @@ if ( isset( $kfIncludes ) ) {
 }
 
 if ( isset( $kfExtensions ) ) {
-	foreach ( $kfExtensions as $ext ) {
-		ExtensionRegistry::getInstance()->load( "$wgExtensionDirectory/$ext/extension.json" );
-	}
+	wfLoadExtensions( $kfExtensions );
 }
 
+if ( isset( $kfSkins ) ) {
+	wfLoadSkins( $kfSkins );
+}
 
 ##
 ## Config
 ##
 
-unset( $wgGroupPermissions['developer'] );
-
 ## User rights
+unset( $wgGroupPermissions['developer'] );
 $wgGroupPermissions['bureaucrat']['userrights-interwiki'] = true;
 
 // Example user group for testing cross-wiki user rights
 $wgGroupPermissions['debuglocal-' . $wgDBname]['edit'] = true;
 
-## Uploads
+## Caching
+$wgMainCacheType = CACHE_DB;
+$wgCacheDirectory = $IP . '/cache';
+$wgUseLocalMessageCache = true;
+$wgInvalidateCacheOnLocalSettingsChange = false;
+
+## Media
+$wgUseInstantCommons = true;
+$wgEnableUploads = true;
+$wgFileCacheDepth = 0;
 $wgUploadPath = "$wgScriptPath/images";
+
+## Output
+$wgUseGzip = true;
+$wgWellFormedXml = false;
+$wgUseTidy = true;
+
+## Server environment
+$wgDiff3 = '/usr/bin/diff3';
+$wgShellLocale = 'en_US.UTF-8';
+
+## ResourceLoader
+$wgResourceLoaderMaxage['unversioned']['server'] =
+$wgResourceLoaderMaxage['unversioned']['server'] =
+$wgResourceLoaderMaxage['versioned']['server'] =
+$wgResourceLoaderMaxage['versioned']['client'] = 1;
+$wgResourceLoaderStorageEnabled = false;
 
 ## AbuseFilter
 $wgGroupPermissions['sysop']['abusefilter-modify'] = true;
@@ -362,7 +309,7 @@ $wgUseSiteJs = $wgUseSiteCss = true;
 $wgEnableCanonicalServerLink = true;
 
 ## EventLogging
-$wgEventLoggingFile = $mwLogDir . '/events.log';
+$wgEventLoggingFile = "$kgLogDir/events.log";
 $wgEventLoggingDBname = 'alphawiki';
 $wgEventLoggingBaseUri = 'http://localhost:8080/event.gif';
 $wgEventLoggingSchemaApiUri = 'http://meta.wikimedia.org/w/api.php';
@@ -388,7 +335,7 @@ $wgDefaultUserOptions['visualeditor-enable'] = 1;
 $wgDefaultUserOptions['visualeditor-enable-experimental'] = 1;
 
 ## SpamBlacklist
-$wgSpamBlacklistFiles = array( 'http://meta.wikimedia.org/w/index.php?title=Spam_blacklist&action=raw&sb_ver=1' );
+$wgSpamBlacklistFiles = array( 'https://meta.wikimedia.org/w/index.php?title=Spam_blacklist&action=raw&sb_ver=1' );
 
 ## MaintenanceShell
 $wgGroupPermissions['developer']['maintenanceshell'] = true;
@@ -409,8 +356,7 @@ $wgGroupPermissions['gadgetmanagers']['gadgets-definition-delete'] = true;
 $wgGroupPermissions['developer']['interwiki'] = true;
 
 ## Scribunto
-$wgScribuntoEngineConf['luastandalone']['errorFile'] = "$mwLogDir/lua-error.log";
-
+$wgScribuntoEngineConf['luastandalone']['errorFile'] = "$kgLogDir/lua-error.log";
 $wgScribuntoEngineConf['luastandalone']['luaPath'] = '/usr/local/bin/lua';
 $wgScribuntoDefaultEngine = 'luastandalone';
 
