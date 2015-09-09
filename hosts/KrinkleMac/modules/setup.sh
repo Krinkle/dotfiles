@@ -23,7 +23,7 @@ export PATH=$KDF_BASE_DIR/hosts/$KDF_HOST_TYPE/bin:$PATH
 
 # MediaWiki
 export MW_INSTALL_PATH="/Users/krinkle/Development/mediawiki/core"
-export MW_DB="betawiki"
+export MW_DB="alphawiki"
 export MW_SERVER="http://alpha.wikipedia.krinkle.dev"
 export MW_SCRIPT_PATH="/w"
 

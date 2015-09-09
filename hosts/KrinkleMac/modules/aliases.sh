@@ -28,7 +28,7 @@ alias doflushdns='sudo killall -HUP mDNSResponder'
 alias dormdsstore='find . -name ".DS_Store" -type f -exec rm {} \;'
 
 # Web server
-alias doapachereset='cd /var/log/httpd && rm -rf *_log mw/* && sudo httpd -k graceful && l . mw/'
+alias doapachereset='cd /var/log/httpd && rm -rf *_log mw/* && sudo httpd -k restart && l . mw/'
 
 # Parsoid
 alias doparsoid='cd ~/Development/mediawiki/services/parsoid && git remote update && git checkout origin/master && npm install && npm start'
@@ -41,5 +41,3 @@ alias wget-magic-filter='wget -m --no-parent -A'
 alias wget-magic-mkv='wget-magic-filter "*.mkv"'
 
 alias dotfiles-push='cd $KDF_BASE_DIR; git add -p && _dotfiles-prompt-choice "OK to push now?" && git commit -m "update dotfiles" && git push origin HEAD; cd -'
-
-alias domwfixup='cd ~/Development/mediawiki/core/skins && ln -s ../../skins/Vector . && ln -s ../../skins/MonoBook . && cd -'

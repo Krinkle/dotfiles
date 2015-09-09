@@ -17,8 +17,7 @@ git clone git@github.com:Krinkle/dotfiles.git ~/.krinkle.dotfiles && ~/.krinkle.
 # Bastion
 git clone git://github.com/Krinkle/dotfiles.git ~/.krinkle.dotfiles && ~/.krinkle.dotfiles/bin/init-wmf
 
-# Elsewhere
-git clone krinkle@bast1001:.krinkle.dotfiles ~/.krinkle.dotfiles && ~/.krinkle.dotfiles/bin/init-wmf
+# Elsewhere (copy manually)
 ```
 
 ## Screenshots

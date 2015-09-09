@@ -120,8 +120,8 @@ function _dotfiles-host-init {
 	# ~/Development/tmp
 	# $ git clone ssh://gerrit.wikimedia.org:29418/SRC
 	# ~/Development/mediawiki/core
-	# ~/Development/mediawiki/skins/ Vector
-	# ~/Development/mediawiki/extensions/
+	# ~/Development/mediawiki/core/skins/ Vector
+	# ~/Development/mediawiki/core/extensions/
 	# ~/Development/oojs
 	# ~/Development/oojs-ui
 	# ~/Development/unicodejs
@@ -220,6 +220,8 @@ source $KDF_BASE_DIR/index.bash
 # $ ln -s /var/log/mediawiki /var/log/httpd/mw
 # $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/mw-CommonSettings.php ~/Development/mediawiki/core/CommonSettings.php
 # $ edit ~/Development/mediawiki/core/.git/info/exclude # Add CommonSettings.php
+# $ edit ~/Development/mediawiki/core/.git/info/exclude # Add skins/*
+# $ edit ~/Development/mediawiki/core/.git/info/exclude # Add extensions/*
 # $ cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/mw-LocalSettings.php ~/Development/mediawiki/core/LocalSettings.php
 #
 # Database:

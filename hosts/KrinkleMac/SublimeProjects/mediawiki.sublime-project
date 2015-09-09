@@ -4,21 +4,13 @@
 		{
 			"folder_exclude_patterns":
 			[
+				"docs/output",
 				"docs/js",
 				"docs/html",
 				"vendor"
 			],
 			"name": "mediawiki",
 			"path": "/Users/krinkle/Development/mediawiki/core"
-		},
-		{
-			"folder_exclude_patterns":
-			[
-				"docs",
-				"test-coverage",
-				"vendor"
-			],
-			"path": "/Users/krinkle/Development/mediawiki/extensions/VisualEditor"
 		},
 		{
 			"path": "/Users/krinkle/Development/wikimedia/integration"

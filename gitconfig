@@ -19,6 +19,7 @@
 	sh = show
 	sho = show
 	so = show
+	pem = ! git checkout master && git br -D
 	st = status -sb
 	gerrit-config-co = ! git fetch origin refs/meta/config:refs/remotes/origin/meta/config && git checkout meta/config
 	gerrit-config-push = push origin meta/config:refs/meta/config

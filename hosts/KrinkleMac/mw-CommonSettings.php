@@ -78,7 +78,7 @@ if ( true ) {
 	// Log files
 	$wgDebugLogFile = "$kgLogDir/debug-{$wgDBname}.log";
 	$wgDBerrorLog = "$kgLogDir/dberror.log";
-	$wgRateLimitLog = "$kgLogDir/ratelimit.log";
+	$wgDebugLogGroups['ratelimit'] = "$kgLogDir/ratelimit.log";
 	$wgDebugLogGroups['resourceloader'] = "$kgLogDir/resourceloader.log";
 	$wgDebugLogGroups['exception'] = "$kgLogDir/exception.log";
 	$wgDebugLogGroups['exception-json'] = "$kgLogDir/exception.json";
@@ -110,13 +110,9 @@ if ( $wgDBname === 'sqlitewiki' ) {
 
 // $wgStatsdServer = 'localhost';
 
-// // See profileinfo.php
-// $wgEnableProfileInfo = true;
+// See also StartProfiler.php
+# $wgEnableProfileInfo = true;
 
-// // See StartProfiler.php
-// $wgProfiler['class'] = 'ProfilerXhprof';
-// $wgProfiler['output'] = array( 'ProfilerOutputDb' );
-// $wgProfiler['sampling'] = 1;
 
 ##
 ## Site config
@@ -197,42 +193,22 @@ if ( php_sapi_name() === 'cli' ) {
 }
 
 ##
-## Load extensions
-##
-
-$wgExtensionDirectory = dirname( $IP ) . '/extensions';
-
-if ( isset( $kfIncludes ) ) {
-	foreach ( $kfIncludes as $path ) {
-		require_once str_replace(
-			array( '$EP', '$SP' ),
-			array( $wgExtensionDirectory, $wgStyleDirectory ),
-			$path
-		);
-	}
-}
-
-if ( isset( $kfExtensions ) ) {
-	wfLoadExtensions( $kfExtensions );
-}
-
-if ( isset( $kfSkins ) ) {
-	wfLoadSkins( $kfSkins );
-}
-
-##
 ## Config
 ##
 
 ## User rights
 unset( $wgGroupPermissions['developer'] );
+$wgGroupPermissions['sysop']['deletelogentry'] = true;
+$wgGroupPermissions['sysop']['deleterevision'] = true;
 $wgGroupPermissions['bureaucrat']['userrights-interwiki'] = true;
 
 // Example user group for testing cross-wiki user rights
 $wgGroupPermissions['debuglocal-' . $wgDBname]['edit'] = true;
 
 ## Caching
-$wgMainCacheType = CACHE_DB;
+$wgMainCacheType = CACHE_ACCEL;
+$wgParserCacheType = CACHE_DB;
+$wgMessageCacheType = CACHE_ACCEL;
 $wgCacheDirectory = $IP . '/cache';
 $wgUseLocalMessageCache = true;
 $wgInvalidateCacheOnLocalSettingsChange = false;
@@ -253,11 +229,9 @@ $wgDiff3 = '/usr/bin/diff3';
 $wgShellLocale = 'en_US.UTF-8';
 
 ## ResourceLoader
-$wgResourceLoaderMaxage['unversioned']['server'] =
-$wgResourceLoaderMaxage['unversioned']['server'] =
-$wgResourceLoaderMaxage['versioned']['server'] =
-$wgResourceLoaderMaxage['versioned']['client'] = 1;
 $wgResourceLoaderStorageEnabled = false;
+$wgLegacyJavaScriptGlobals = false;
+$wgIncludeLegacyJavaScript = false;
 
 ## AbuseFilter
 $wgGroupPermissions['sysop']['abusefilter-modify'] = true;
@@ -295,7 +269,6 @@ $wgCaptchaTriggers['badlogin'] = true;
 
 ## Testing
 $wgEnableJavaScriptTest = true;
-$wgLegacyJavaScriptGlobals = false;
 
 ## Spam
 $wgSpamRegex = '/thisisspam/i';
@@ -311,8 +284,11 @@ $wgEnableCanonicalServerLink = true;
 ## EventLogging
 $wgEventLoggingFile = "$kgLogDir/events.log";
 $wgEventLoggingDBname = 'alphawiki';
-$wgEventLoggingBaseUri = 'http://localhost:8080/event.gif';
-$wgEventLoggingSchemaApiUri = 'http://meta.wikimedia.org/w/api.php';
+$wgEventLoggingBaseUri = 'http://localhost/beacon/event';
+$wgEventLoggingSchemaApiUri = 'https://meta.wikimedia.org/w/api.php';
+
+## WikimediaEvents
+$wgWMEStatsdBaseUri = 'http://localhost/beacon/statsv';
 
 ## Rights
 $wgGroupPermissions['*']['edit'] = true;
@@ -328,11 +304,12 @@ $wgNamespacesWithSubpages[NS_TEMPLATE] = true;
 $wgActivityMonitorRCStreamUrl = 'http://stream.wikimedia.org:80/rc';
 
 ## VisualEditor
-$wgVisualEditorParsoidURL = 'http://localhost:8000';
-$wgVisualEditorParsoidPrefix = $wgDBname;
-
+$wgVirtualRestConfig['modules']['parsoid'] = array(
+	'url' => 'http://localhost:8000',
+);
+$wgVisualEditorUseSingleEditTab = true;
 $wgDefaultUserOptions['visualeditor-enable'] = 1;
-$wgDefaultUserOptions['visualeditor-enable-experimental'] = 1;
+$wgHiddenPrefs[] = 'visualeditor-enable';
 
 ## SpamBlacklist
 $wgSpamBlacklistFiles = array( 'https://meta.wikimedia.org/w/index.php?title=Spam_blacklist&action=raw&sb_ver=1' );

@@ -12,12 +12,12 @@ doclonegerrit() {
 }
 
 doaddwmext() {
-	EXTDIR=~/Development/mediawiki/extensions
+	EXTDIR=~/Development/mediawiki/core/extensions
 	cd $EXTDIR && doclonegerrit mediawiki/extensions/$1 && cd $1
 }
 
 domwextforeach() {
-	EXTDIR=~/Development/mediawiki/extensions
+	EXTDIR=~/Development/mediawiki/core/extensions
 	cd $EXTDIR
 	for dir in $(ls); do
 		echo "Next: $dir"
@@ -37,8 +37,8 @@ do-globalgitstatus() {
 	repoGroups=(
 		~/Development
 		~/Development/mediawiki
-		~/Development/mediawiki/extensions
-		~/Development/mediawiki/extensions/VisualEditor/lib
+		~/Development/mediawiki/core/extensions
+		~/Development/mediawiki/core/extensions/VisualEditor/lib
 		~/Development/wikimedia/integration
 		~/Development/wikimedia/operations
 	)

@@ -7,57 +7,53 @@ ServerAliveInterval 30
 ## https://wikitech.wikimedia.org/wiki/Help:Access#ProxyCommand
 
 Host bastion.wmflabs.org tools-login.wmflabs.org
-    User krinkle
-    IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
     ProxyCommand none
     ControlMaster auto
 
-Host *.eqiad.wmflabs
+Host *.wmflabs.org *.wmflabs
+    User krinkle
+    IdentityFile ~/.ssh/id_rsa_wla
     ProxyCommand ssh -a -W %h:%p bastion.wmflabs.org
 
-## Wikimedia Production
-## https://wikitech.wikimedia.org/wiki/Managing_Multiple_SSH_Agents
+## Wikimedia Gerrit
 
-Host fenari.wikimedia.org bast1001.wikimedia.org iron.wikimedia.org bast4001.wikimedia.org hooft.esams.wikimedia.org
+Host gerrit.wikimedia.org
+    ProxyCommand none
     User krinkle
-    IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
+    IdentityFile ~/.ssh/id_rsa_grr
+
+## Wikimedia Production
+## https://wikitech.wikimedia.org/wiki/SSH_access
+
+Host bast1001.wikimedia.org bast2001.wikimedia.org bast3001.wikimedia.org bast4001.wikimedia.org
     ProxyCommand none
     ControlMaster auto
 
-Host gerrit.wikimedia.org
+Host *.wikimedia.org *.wmnet
     User krinkle
-    IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
-    ProxyCommand none
-
-Host *.wikimedia.org
-    ProxyCommand ssh -a -W %h:%p bast1001.wikimedia.org
-
-Host *.eqiad.wmnet
-    ProxyCommand ssh -a -W %h:%p bast1001.wikimedia.org
-
-Host *.ulsfo.wmnet
-    ProxyCommand ssh -a -W %h:%p bast4001.wikimedia.org
-
-Host *.esams.wmnet
-    ProxyCommand ssh -a -W %h:%p hooft.esams.wikimedia.org
+    IdentityFile ~/.ssh/id_rsa_wm
+    ProxyCommand ssh -a -W %h:%p bast3001.wikimedia.org
 
 ## jQuery
 
 Host *.jquery.com *.jquery.net
     User krinkle
-    IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
+    IdentityFile ~/.ssh/id_rsa_jq
 
 ## GitHub
 
 Host github.com
     User krinkle
-    IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
+    IdentityFile ~/.ssh/id_rsa_gh
 
 ## OpenStack
 
 Host review.openstack.org
     User krinkle
-    IdentityFile ~/.ssh/id_rsa_INSERT_LABEL
+    IdentityFile ~/.ssh/id_rsa_stack
 
-# Add the following to host sections to support rmate
-# RemoteForward 52698 localhost:52698
+## Antagonist
+
+Host timotijhof.net
+    User debXXXXXXX
+    IdentityFile ~/.ssh/id_rsa_XXXXXXX

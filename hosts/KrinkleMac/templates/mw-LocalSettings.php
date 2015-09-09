@@ -4,30 +4,22 @@
  * https://www.mediawiki.org/wiki/Manual:Configuration_settings
  */
 
-$kfIncludes = array(
-	// '$EP/CentralNotice/CentralNotice.php',
-	// '$EP/EventLogging/EventLogging.php',
-	// '$EP/Gadgets/Gadgets.php',
-	// '$EP/Interwiki/Interwiki.php',
-	// '$EP/MaintenanceShell/MaintenanceShell.php',
-	// '$EP/MobileFrontend/MobileFrontend.php',
-	// '$EP/VisualEditor/VisualEditor.php',
-	// '$EP/VisualEditor/VisualEditor.php',
-	// '$EP/WikiEditor/WikiEditor.php',
-	// '$EP/WikimediaEvents/WikimediaEvents.php',
+require_once "$IP/extensions/EventLogging/EventLogging.php";
 
-	'$SP/Vector/Vector.php',
-	// '$SP/MonoBook/MonoBook.php',
-);
+wfLoadExtension( 'WikimediaEvents' );
+wfLoadExtension( 'BetaFeatures' );
+wfLoadExtension( 'Cite' );
+wfLoadExtension( 'cldr' );
+wfLoadExtension( 'GlobalCssJs' );
+wfLoadExtension( 'Interwiki' );
+wfLoadExtension( 'ParserFunctions' );
+wfLoadExtension( 'SyntaxHighlight_GeSHi' );
+wfLoadExtension( 'TemplateData' );
+wfLoadExtension( 'VisualEditor' );
+wfLoadExtension( 'WikiEditor' );
 
-$kfExtensions = array(
-	'Cite',
-	'GlobalCssJs',
-	'ParserFunctions',
-	'WikiEditor',
-	'TemplateData',
-	'SyntaxHighlight_GeSHi',
-);
+wfLoadSkin( 'Vector' );
+wfLoadSkin( 'MonoBook' );
 
 // Include symlinked settings from Krinkle Dotfiles
 require_once __DIR__ . '/CommonSettings.php';
@@ -38,5 +30,8 @@ $wgUpgradeKey = '***';
 $wgCaptchaSecret = '***';
 
 // Misc toggles
-#$wgResourceLoaderStorageEnabled = false;
+#$wgReadOnly = 'Testing read-only mode.';
+#$wgResourceLoaderStorageEnabled = true;
+#$wgLegacyJavaScriptGlobals = true;
 #$wgUseInstantCommons = false;
+#$wgWellFormedXml = true;
