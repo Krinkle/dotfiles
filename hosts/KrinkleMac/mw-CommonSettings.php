@@ -206,7 +206,7 @@ $wgGroupPermissions['bureaucrat']['userrights-interwiki'] = true;
 $wgGroupPermissions['debuglocal-' . $wgDBname]['edit'] = true;
 
 ## Caching
-$wgMainCacheType = CACHE_ACCEL;
+$wgMainCacheType = CACHE_DB;
 $wgParserCacheType = CACHE_DB;
 $wgMessageCacheType = CACHE_ACCEL;
 $wgCacheDirectory = $IP . '/cache';
@@ -231,7 +231,6 @@ $wgShellLocale = 'en_US.UTF-8';
 ## ResourceLoader
 $wgResourceLoaderStorageEnabled = false;
 $wgLegacyJavaScriptGlobals = false;
-$wgIncludeLegacyJavaScript = false;
 
 ## AbuseFilter
 $wgGroupPermissions['sysop']['abusefilter-modify'] = true;

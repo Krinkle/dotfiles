@@ -36,15 +36,15 @@ function _dotfiles-host-init {
 		colordiff
 		coreutils
 		git
+		# https://www.mediawiki.org/wiki/Gerrit/git-review#OS_X
+		git-review
 		hh
 		jq
 		mysql
 		node
-		phantomjs
 		php56
-		phpmyadmin
 		pwgen
-		#ruby: JSDuck 5.3.4 has issues with Ruby 2.1.2
+		# ruby: JSDuck 5 requires 2.1+
 		ruby20
 		watch
 		wget
@@ -65,15 +65,8 @@ function _dotfiles-host-init {
 	echo "... ensure RubyGems packages"
 	gem install jsduck
 
-	echo "... ensure pip packages"
-	sudo easy_install pip
-	sudo pip install -U setuptools # http://stackoverflow.com/a/26259756/319266 - always good, though added for OS X <= 10.7
-	sudo pip install git-review
-
 	echo "... post-install: php"
-	mkdir /usr/local/etc/php/5.6/conf.d
-	sudo chmod 777 /var/log/php
-	sudo chmod 777 /var/lib/php5
+	mkdir -p /usr/local/etc/php/5.6/conf.d
 	test -f /usr/local/etc/php/5.6/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/KrinkleMac/php.ini /usr/local/etc/php/5.6/conf.d/krinkle.ini )
 
 	echo "... post-install: git"
@@ -113,21 +106,6 @@ function _dotfiles-host-init {
 		echo "linking .config"
 		ln -s $tmpDest $tmpPath
 	fi
-
-
-	# echo "... checking dev directory tree"
-	# ~/Development
-	# ~/Development/tmp
-	# $ git clone ssh://gerrit.wikimedia.org:29418/SRC
-	# ~/Development/mediawiki/core
-	# ~/Development/mediawiki/core/skins/ Vector
-	# ~/Development/mediawiki/core/extensions/
-	# ~/Development/oojs
-	# ~/Development/oojs-ui
-	# ~/Development/unicodejs
-	# ~/Development/wikimedia
-	# ~/Development/wikimedia/integration/ config, jenkins-job-builder, docroot
-	# ~/Development/wikimedia/operations/ mediawiki-config, puppet
 }
 
 _dotfiles-host-init
@@ -137,105 +115,102 @@ source $KDF_BASE_DIR/index.bash
 #
 # SSH Key
 #
-# https://help.github.com/articles/generating-ssh-keys
 # $ cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/sshconfig ~/.ssh/config
 #
-# Generate different keys (for GitHub, Wikimedia Labs LDAP etc.)
-# and submit them to those organisations.
-# $ cd $KDF_BASE_DIR
-# $ git remote rm origin
-# $ git remote add origin git@...
-# $ git pull origin master -u
-
+# https://help.github.com/articles/generating-ssh-keys
 
 #
 # Terminal
 #
-# On "Ubuntu 12.04.2 LTS" (.wmnet) tput gives 'tput: unknown terminal "screen.rxvt"'
-#
-# Preferences > Advanced > Emulation > Declare as: xterm
+# Preferences
+# - Profile: Pro
+# - Cursor: Vertical Bar
+# - Blink cursor: Enabled
+# - Font: Menlo Regular 12pt
+# - Pointer High-contrast beam: Disabled
 
 #
-# Sytem
+# System Preferences
 #
-# Preferences > Mission Control
-# * Closing an app can refocus an app in a different space
-#   http://apple.stackexchange.com/a/44801
-#   [_] When switching to an application, switch to a space with open windows for the application
-
+# Mission Control
+# http://apple.stackexchange.com/a/44801
+# * (disabled) Automatically rearrange Spaces based on most recent use
+#
+# Keyboard -> Shortcuts -> Mission Control
+# These interfere with Sublime selection expansion shortcuts (Shift^↑ and Shift^↓)
+# * (disabled) Mission Control - "^↑"
+# * (disabled) Application Windows - "^↓"
 
 #
 # Apache
 #
-# $ brew install homebrew/apache/httpd24
+# $ brew install homebrew/apache/httpd24 --with-privileged-ports
 #
 # Disable built-in httpd from Mountain Lion
 # $ sudo /usr/sbin/apachectl stop
 # $ sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist
 # $ sudo launchctl remove org.apache.httpd.plist
 #
-# Add httpd from Homebrew to launchctl and start it (follow Caveats from brew-install).
-# $ sudo ln -s /usr/local/var/log/apache2 /var/log/httpd
-#
 # $ mkdir /usr/local/etc/apache2/2.4/other
 # $ echo 'Include /usr/local/etc/apache2/2.4/other/*.conf' >> /usr/local/etc/apache2/2.4/httpd.conf
 # $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/httpd.conf /usr/local/etc/apache2/2.4/other/krinkle.conf
 #
-# Change Listen 8080 to 80. Out config already adds Listen 80, but the point here
-# is to free up port 8080 for other applications.
-# $ sudo edit /usr/local/etc/apache2/2.4/httpd.conf
-#
 # $ doapachereset
 #
 # $ sudo nano /etc/hosts <<<TEXT
-#
 # 127.0.0.1 krinkle.dev
-# 127.0.0.1 krinkle.com
-# 127.0.0.1 example.dev
-# 127.0.0.1 drive.krinkle.dev
 # 127.0.0.1 wiki.krinkle.dev
 # 127.0.0.1 wikipedia.krinkle.dev
 # 127.0.0.1 alpha.wikipedia.krinkle.dev
 # 127.0.0.1 beta.wikipedia.krinkle.dev
 #
-# # MediaWiki-Vagrant
-# 10.11.12.13 mediawiki.dev
-#
 # TEXT;
 
 #
-# MySQL
+# Development
 #
-# (brew-install)
-# $ mysqladmin -u root password
-
+# ## Code
 #
-# MediaWiki
+# $ mkdir -p ~/Development
+# $ cd ~/Development
+# $ doclonegerrit mediawiki/vagrant mediawiki-vagrant
+# $ doclonegerrit oojs/core oojs
+# $ doclonegerrit oojs/ui oojs-ui
+# $ doclonegerrit unicodejs
+# $ doclonegerrit integration/config wikimedia/integration/config
+# $ doclonegerrit operations/mediawiki-config wikimedia/operations/mediawiki-config
+# $ doclonegerrit operations/puppet wikimedia/operations/puppet/
 #
-# Install
-# $ chmod 777 ~/Development/mediawiki/core/cache
+# ## https://www.mediawiki.org/wiki/MediaWiki-Vagrant
 #
-# Configure
-# $ sudo mkdir /var/log/mediawiki && sudo chmod 777 /var/log/mediawiki
-# $ ln -s /var/log/mediawiki /var/log/httpd/mw
-# $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/mw-CommonSettings.php ~/Development/mediawiki/core/CommonSettings.php
-# $ edit ~/Development/mediawiki/core/.git/info/exclude # Add CommonSettings.php
-# $ edit ~/Development/mediawiki/core/.git/info/exclude # Add skins/*
-# $ edit ~/Development/mediawiki/core/.git/info/exclude # Add extensions/*
-# $ cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/mw-LocalSettings.php ~/Development/mediawiki/core/LocalSettings.php
+# - VirtualBox
+# - Vagrant
+# - Run:
+# $ cd mediawiki-vagrant
+# $ ./setup.sh
+# $ vagrant up
+# $ sudo nano /etc/hosts <<<TEXT
 #
-# Database:
-# $ open 'http://localhost/phpmyadmin'
-# Create alphawiki, betawiki
-# $ php .../mediawiki/core/maintenance/install.php ... alphawiki ...
-# $ php .../mediawiki/core/maintenance/install.php ... betawiki ...
-
+# # For offline use
+# 127.0.0.1 dev.wiki.local.wmftest.net
 #
-# MediaWiki-Vagrant
+# TEXT;
 #
-# Configure
-# $ cd ~/Development/mediawiki/vagrant/puppet/hieradata
-# $ ln $KDF_BASE_DIR/hosts/KrinkleMac/mediawiki-vagrant.yaml vagrant-managed.yaml
+# ## Sequel Pro
+#
+# Type: SSH
+# Name: MediaWiki-Vagrant
+# [
+# 	MySQL Host: 127.0.0.1
+# 	Username: root
+# 	Password: vagrant
+# ]
+# [
+# 	SSH Host: 127.0.0.1
+# 	SSH Port: 2222
+# 	SSH User: vagrant
+# 	SSH Key: ~/.vagrant.d/insecure_private_key
+# ]
 
 #
 # GUI Applications
@@ -243,23 +218,25 @@ source $KDF_BASE_DIR/index.bash
 ## Applications
 # Install via App Store:
 # - Aperture
-# - CloudApp
+# - OmniFocus
 # - Simplenote
 # - The Unarchiver
-# - Wunderlist
 # Install:
 # - coconutBattery
 # - Firefox
 # - FirefoxAurora
+# - Flux
 # - Google Chrome
 # - Google Chrome Canary
-# - Image Optim
+# - ImageOptim
 # - LimeChat
 # - MySQLWorkbench
 # - OpenOffice
 # - Opera
 # - Sequel Pro
 # - Sublime Text 3
+# - Vagrant
+# - VirtualBox
 # - VLC
 #
 ## Sublime Text 3
@@ -272,32 +249,4 @@ source $KDF_BASE_DIR/index.bash
 # - SublimeLinter-jshint
 # - Theme Soda
 # - TrailingSpaces
-# - rsub
-#
-## rsub
-# - http://www.danieldemmel.me/blog/2012/09/02/setting-up-rmate-with-sublime-text-for-remote-file-editing-over-ssh/
-# - http://pogidude.com/2013/how-to-edit-a-remote-file-over-ssh-using-sublime-text-and-rmate/
-# - http://aurora.github.io/rmate/
-#
-# 1. Install rsub in Sublime Text 3 via Package Control
-# 2. Add `RemoteForward 52698 localhost:52698` to a host in sshconfig
-# 3. On remote server, install command rmate:
-#    curl https://raw.githubusercontent.com/aurora/rmate/ea116b5ef619cb8/rmate > ~/bin/rmate
-#
-# To edit:
-# 1. ssh example.org
-# 2. rmate foo.txt
-#    (sends signal over tunnel to plugin in sublime)
-# 3. File opens in local editor and saves back through the tunnel
-#    when you save as usual!
-#
-### LimeChat
-## Plugins:
-## - https://github.com/Krinkle/limechat-theme-colloquy
-#
-
-#
-# Bash programs
-#
-# - dotcs-hangouts-log-reader
 #
