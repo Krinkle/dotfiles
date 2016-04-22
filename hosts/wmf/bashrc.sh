@@ -9,12 +9,14 @@ export KDF_CANONICAL_HOST="$( hostname -f 2>/dev/null )"
 
 ## setup
 
+shopt -s autocd >/dev/null 2>&1
+shopt -s checkwinsize >/dev/null 2>&1
 shopt -s globstar >/dev/null 2>&1
 shopt -s histappend >/dev/null 2>&1
 shopt -s hostcomplete >/dev/null 2>&1
 shopt -s interactive_comments >/dev/null 2>&1
-shopt -u mailwarn >/dev/null 2>&1
 shopt -s no_empty_cmd_completion >/dev/null 2>&1
+shopt -u mailwarn >/dev/null 2>&1
 
 test -f /etc/bash_completion && . /etc/bash_completion
 
@@ -22,10 +24,14 @@ test -f /etc/bash_completion && . /etc/bash_completion
 : ${UNAME=$(uname)}
 
 export HISTCONTROL=ignorespace:erasedups
-export HISTSIZE=1000
-export HISTFILESIZE=2000
-
-export PATH=$PATH:$HOME/bin
+export HISTSIZE=50000
+export HISTFILESIZE=50000
+export PATH="${HOME}/bin:${PATH}"
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US"
+export LC_COLLATE="C"
+export EDITOR=vim
+export GREP_OPTIONS='--color=auto'
 
 if [ -x /usr/bin/dircolors ]
 then
@@ -43,10 +49,7 @@ CLR_MAGENTA=`tput setaf 5`
 CLR_CYAN=`tput setaf 6`
 CLR_WHITE=`tput setaf 7`
 
-export EDITOR=vim
-export GREP_OPTIONS='--color=auto'
-
-PROMPT_COMMAND="_dotfiles-ps1-setup; _dotfiles_wmf_setscreentitle"
+PROMPT_COMMAND="_dotfiles-ps1-setup; _dotfiles_wmf_setscreentitle; $PROMPT_COMMAND"
 
 ## functions
 
@@ -124,18 +127,16 @@ function _dotfiles_wmf_setscreentitle() {
 ## aliases
 
 alias ls='ls --color=auto'
-alias ll='ls -ahlF'
+alias ll='ls -halF'
 alias l='ll'
 alias gir='git'
-alias got='git'
 alias ..='cd ..'
 alias ...='cd ../..'
-alias -- -='cd -'
-#alias jsonhint='jshint --extra-ext .json'
 alias dsize='du -hs'
-#alias wanip='dig +short myip.opendns.com @resolver1.opendns.com'
 
 if which ack-grep > /dev/null 2>&1
 then
 	alias ack=ack-grep
 fi
+
+alias mwexpand="sed -r 's/wik/.wik/' | sed -r 's/ /.org/' | sed -r 's/wiki.org/wikipedia.org/' | sed 's/_/-/'"

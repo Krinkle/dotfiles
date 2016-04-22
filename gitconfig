@@ -1,5 +1,7 @@
 [color]
 	ui = auto
+[diff]
+	compactionHeuristic = 1
 [alias]
 	p = add -p
 	ad = add
@@ -25,6 +27,8 @@
 	gerrit-config-push = push origin meta/config:refs/meta/config
 	gerrit-config-review = push origin meta/config:refs/for/refs/meta/config
 	gerrit-dashboard-review = push origin dashboard:refs/for/refs/meta/dashboards/custom
+	bisect-up = bisect bad
+	bisect-down = bisect good
 [gitreview]
 	remote = origin
 [core]

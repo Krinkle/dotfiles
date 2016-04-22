@@ -34,13 +34,13 @@ function _dotfiles-host-init {
 		bash
 		bash-completion
 		colordiff
+		composer
 		coreutils
 		git
 		# https://www.mediawiki.org/wiki/Gerrit/git-review#OS_X
 		git-review
 		hh
 		jq
-		mysql
 		node
 		php56
 		pwgen
@@ -60,7 +60,7 @@ function _dotfiles-host-init {
 	brew cleanup
 
 	echo "... ensure npm packages"
-	npm install -g grunt-cli jshint jscs
+	npm install -g grunt-cli jshint jscs speed-test
 
 	echo "... ensure RubyGems packages"
 	gem install jsduck
@@ -142,31 +142,6 @@ source $KDF_BASE_DIR/index.bash
 # * (disabled) Application Windows - "^↓"
 
 #
-# Apache
-#
-# $ brew install homebrew/apache/httpd24 --with-privileged-ports
-#
-# Disable built-in httpd from Mountain Lion
-# $ sudo /usr/sbin/apachectl stop
-# $ sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist
-# $ sudo launchctl remove org.apache.httpd.plist
-#
-# $ mkdir /usr/local/etc/apache2/2.4/other
-# $ echo 'Include /usr/local/etc/apache2/2.4/other/*.conf' >> /usr/local/etc/apache2/2.4/httpd.conf
-# $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/httpd.conf /usr/local/etc/apache2/2.4/other/krinkle.conf
-#
-# $ doapachereset
-#
-# $ sudo nano /etc/hosts <<<TEXT
-# 127.0.0.1 krinkle.dev
-# 127.0.0.1 wiki.krinkle.dev
-# 127.0.0.1 wikipedia.krinkle.dev
-# 127.0.0.1 alpha.wikipedia.krinkle.dev
-# 127.0.0.1 beta.wikipedia.krinkle.dev
-#
-# TEXT;
-
-#
 # Development
 #
 # ## Code
@@ -217,8 +192,8 @@ source $KDF_BASE_DIR/index.bash
 #
 ## Applications
 # Install via App Store:
-# - Aperture
 # - OmniFocus
+# - Pixelmator
 # - Simplenote
 # - The Unarchiver
 # Install:
@@ -233,6 +208,7 @@ source $KDF_BASE_DIR/index.bash
 # - MySQLWorkbench
 # - OpenOffice
 # - Opera
+# - Safari Technology Preview
 # - Sequel Pro
 # - Sublime Text 3
 # - Vagrant
@@ -244,6 +220,7 @@ source $KDF_BASE_DIR/index.bash
 # - https://packagecontrol.io/installation
 # - DocBlockr
 # - LESS
+# - Puppet
 # - SublimeLinter
 # - SublimeLinter-jscs
 # - SublimeLinter-jshint

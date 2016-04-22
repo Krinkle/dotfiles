@@ -2,29 +2,13 @@
 	"folders":
 	[
 		{
+			"path": "/Users/krinkle/Development/mediawiki-vagrant/mediawiki",
 			"folder_exclude_patterns":
 			[
 				"docs/output",
 				"docs/js",
-				"docs/html",
-				"vendor"
-			],
-			"name": "mediawiki",
-			"path": "/Users/krinkle/Development/mediawiki/core"
-		},
-		{
-			"path": "/Users/krinkle/Development/wikimedia/integration"
-		},
-		{
-			"path": "/Users/krinkle/Development/oojs"
-		},
-		{
-			"folder_exclude_patterns":
-			[
-				"docs",
-				"vendor"
-			],
-			"path": "/Users/krinkle/Development/oojs-ui"
+				"docs/html"
+			]
 		}
 	]
 }

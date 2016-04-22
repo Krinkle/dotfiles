@@ -1,9 +1,2 @@
 *.sublime-workspace
-/hosts/KrinkleMac/config/git-review/latest-version
-/hosts/KrinkleMac/config/git/gitk
-
-# bower (npm)
-hosts/KrinkleMac/config/configstore
-
-# hub (brew)
-hosts/KrinkleMac/config/hub
+/hosts/KrinkleMac/config/

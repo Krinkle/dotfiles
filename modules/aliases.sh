@@ -1,14 +1,17 @@
 # Ubuntu (Linux), Solaris (SunOS)
-# On Mac (Darwin), this should be `ls -G`. However coreutils is installed
-# from Homebrew, so 'which ls' != '/bin/ls' on Mac.
+# Mac (Darwin) normally needs `ls -G` instead of `ls --color`.
+# However, KrinkleMac has GNU coreutils installed via Homebrew.
 alias ls='ls --color=auto'
 
-alias ll='ls -ahlF'
+alias ll='ls -halF'
 alias l='ll'
+
+alias g='git'
+alias gi='git'
+alias gir='git'
 
 alias ..='cd ..'
 alias ...='cd ../..'
-alias -- -='cd -'
 
 alias nit='npm install && npm test'
 alias jsonhint='jshint --extra-ext .json'

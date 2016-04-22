@@ -1,6 +1,6 @@
 genpass() {
 	if [ -z $1 ]; then
-		echo "usage: genpasswd <length>"
+		echo "usage: ${FUNCNAME[0]} <length>"
 		return 1
 	fi
     pwgen -Bs $1 1 | pbcopy | pbpaste
@@ -8,16 +8,24 @@ genpass() {
 }
 
 doclonegerrit() {
+	if [ -z $1 ]; then
+		echo "usage: ${FUNCNAME[0]} <name>"
+		return 1
+	fi
 	git clone ssh://gerrit.wikimedia.org:29418/$1 $2
 }
 
 doaddwmext() {
-	EXTDIR=~/Development/mediawiki/core/extensions
+	if [ -z $1 ]; then
+		echo "usage: ${FUNCNAME[0]} <name>"
+		return 1
+	fi
+	EXTDIR=~/Development/mediawiki-vagrant/mediawiki/extensions
 	cd $EXTDIR && doclonegerrit mediawiki/extensions/$1 && cd $1
 }
 
 domwextforeach() {
-	EXTDIR=~/Development/mediawiki/core/extensions
+	EXTDIR=~/Development/mediawiki-vagrant/mediawiki/extensions
 	cd $EXTDIR
 	for dir in $(ls); do
 		echo "Next: $dir"
@@ -34,18 +42,22 @@ doupdatemwext() {
 # Shows possibly forgotten git stashes and branches
 do-globalgitstatus() {
 	cwd=$PWD
+	base=~/Development
 	repoGroups=(
-		~/Development
-		~/Development/mediawiki
-		~/Development/mediawiki/core/extensions
-		~/Development/mediawiki/core/extensions/VisualEditor/lib
+		$base
+		~/Development/mediawiki-vagrant/mediawiki
+		~/Development/mediawiki-vagrant/mediawiki/extensions
+		~/Development/mediawiki-vagrant/mediawiki/extensions/VisualEditor/lib
+		~/Development/wikimedia
 		~/Development/wikimedia/integration
 		~/Development/wikimedia/operations
 	)
 	for repoGroup in "${repoGroups[@]}"; do
-		for repo in $repoGroup/*; do
+		repos=( $repoGroup )
+		repos+=( $repoGroup/*/ )
+		for repo in "${repos[@]}"; do
+			#echo "... checking $repo"
 			if test -e "$repo/.git"; then
-				#echo "... checking $repo"
 				cd $repo
 				branches=$(git branch)
 				branchCount=$(echo "$branches" | wc -l)
@@ -60,7 +72,7 @@ do-globalgitstatus() {
 				content=$(printf '%s\n' "${content[@]}")
 				if test -n "$content"; then
 					echo
-					echo ".../$(basename $repoGroup)/${CLR_BOLD}$(basename $repo)$CLR_NONE"
+					echo "${repoGroup#$base/}/${CLR_BOLD}$(basename $repo)$CLR_NONE"
 					printf '%s\n' "${content[@]}"
 				fi
 			fi

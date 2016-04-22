@@ -5,7 +5,10 @@
 	email = krinklemail@gmail.com
 [core]
 	editor = subl -n -w
-	pager = less -x4
-[alias]
-	bisect-up = bisect bad
-	bisect-down = bisect good
+	pager = diff-highlight | less -x4
+[interactive]
+	diffFilter = diff-highlight
+[url "ssh://gerrit.wikimedia.org:29418/"]
+	insteadOf = https://gerrit.wikimedia.org/r/p/
+[pull]
+	rebase = true
