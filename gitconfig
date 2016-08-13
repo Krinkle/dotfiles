@@ -21,12 +21,14 @@
 	sh = show
 	sho = show
 	so = show
+	lg-prefix = "!f() { git log --no-merges --oneline $1 | cut -d' ' -f2 | grep ':' | sort | uniq -c | sort -rn; }; f"
 	pem = ! git checkout master && git br -D
 	st = status -sb
 	gerrit-config-co = ! git fetch origin refs/meta/config:refs/remotes/origin/meta/config && git checkout meta/config
 	gerrit-config-push = push origin meta/config:refs/meta/config
 	gerrit-config-review = push origin meta/config:refs/for/refs/meta/config
-	gerrit-dashboard-review = push origin dashboard:refs/for/refs/meta/dashboards/custom
+	gerrit-dashboard-co = ! git fetch origin refs/meta/dashboards/custom:refs/remotes/origin/meta/dashboards/custom && git checkout meta/dashboards/custom
+	gerrit-dashboard-review = push origin HEAD:refs/for/refs/meta/dashboards/custom
 	bisect-up = bisect bad
 	bisect-down = bisect good
 [gitreview]

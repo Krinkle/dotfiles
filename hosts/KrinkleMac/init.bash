@@ -156,6 +156,20 @@ source $KDF_BASE_DIR/index.bash
 # $ doclonegerrit operations/mediawiki-config wikimedia/operations/mediawiki-config
 # $ doclonegerrit operations/puppet wikimedia/operations/puppet/
 #
+# ## Apache
+#
+# # HOTFIX: https://github.com/Homebrew/homebrew-apache/issues/75
+# $ ln -s /usr/local/Cellar/apr/1.5.2_1 /usr/local/Cellar/apr/1.5.2
+#
+# $ brew install homebrew/apache/httpd24 --with-privileged-ports
+# ==> Caveats:
+#     - `sudo brew services start homebrew/apache/httpd24`
+#
+# $ mkdir /usr/local/etc/apache2/2.4/other
+# $ echo 'Include /usr/local/etc/apache2/2.4/other/*.conf' >> /usr/local/etc/apache2/2.4/httpd.conf
+# $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/httpd.conf /usr/local/etc/apache2/2.4/other/krinkle.conf
+# $ sudo brew services restart httpd24
+#
 # ## https://www.mediawiki.org/wiki/MediaWiki-Vagrant
 #
 # - VirtualBox

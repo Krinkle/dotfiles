@@ -2,13 +2,13 @@
 	"folders":
 	[
 		{
-			"path": "/Users/krinkle/Development/mediawiki-vagrant/mediawiki",
 			"folder_exclude_patterns":
 			[
-				"docs/output",
-				"docs/js",
-				"docs/html"
-			]
+				"mediawiki/docs/output",
+				"mediawiki/docs/js",
+				"mediawiki/docs/html"
+			],
+			"path": "/Users/krinkle/Development/mediawiki-vagrant"
 		}
 	]
 }

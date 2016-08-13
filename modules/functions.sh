@@ -8,8 +8,16 @@ function _dotfiles-prompt-choice() {
 	return 1
 }
 
-function _dotfiles-ps1-exit_code() {
-	[[ $1 != 0 ]] && echo "\[$CLR_RED\]$1\[$CLR_NONE\] "
+function _dotfiles-ps1-exit() {
+	local text=""
+	if [[ $1 != 0 ]]; then
+		text="${text}${CLR_RED}$1${CLR_NONE}${timetext} "
+	fi
+	if [[ "$KDF_timer_show" != "0" ]]; then
+		text="${text}${KDF_timer_show}s "
+	fi
+	echo "$text"
+
 }
 
 # MacOSX default PS1: '\h:\W \u\$'
@@ -38,11 +46,31 @@ function _dotfiles-ps1-setup() {
 	fi
 
 	if [[ -n $supportcolor ]]; then
-		PS1="\[$CLR_WHITE\][\$(date +%H:%M\ %Z)] \[$clr_user\]\u\[$CLR_WHITE\] at \[$clr_host\]$host\[$CLR_WHITE\] in \[$CLR_YELLOW\]\w\$(_dotfiles-git-ps1)\[$CLR_NONE\]\n$(_dotfiles-ps1-exit_code $ec)$prompt "
+		PS1="\[$CLR_WHITE\][\$(date +%H:%M\ %Z)] \[$clr_user\]\u\[$CLR_WHITE\] at \[$clr_host\]$host\[$CLR_WHITE\] in \[$CLR_YELLOW\]\w\$(_dotfiles-git-ps1)\[$CLR_NONE\]\n\$(_dotfiles-ps1-exit $ec)$prompt "
 	else
 		PS1="[\$(date +%H:%M\ %Z)] \u@$host:\w$prompt "
 	fi
 }
+
+#
+# Last command run-time measuring
+#
+# http://jakemccrary.com/blog/2015/05/03/put-the-last-commands-run-time-in-your-bash-prompt/
+#
+# Installation:
+# > trap '_dotfiles-timer-start' DEBUG
+# > PROMPT_COMMAND="$PROMPT_COMMAND; _dotfiles-timer-stop"
+# > PS1='[${KDF_timer_show}s] [\w]$ "
+
+function _dotfiles-timer-start() {
+	export KDF_timer=${KDF_timer:-$SECONDS}
+}
+
+function _dotfiles-timer-stop() {
+	export KDF_timer_show=$(($SECONDS - $KDF_timer))
+	unset KDF_timer
+}
+
 
 #
 # Git status

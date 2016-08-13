@@ -1,14 +1,14 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-
 #
 # Set up
 #
 
 #export KDF_BASE_DIR=~/.krinkle.dotfiles
 export KDF_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $KDF_BASE_DIR/modules/setup.sh
+source $KDF_BASE_DIR/modules/functions.sh
+source $KDF_BASE_DIR/modules/aliases.sh
 
 #
 # Variables
@@ -35,13 +35,12 @@ fi
 # Includes
 #
 
-source $KDF_BASE_DIR/modules/functions.sh
-source $KDF_BASE_DIR/modules/aliases.sh
-
 if [ -n "$KDF_HOST_TYPE" ]
 then
-	files="setup functions aliases"
+	files="functions aliases setup"
 	for f in $files; do
 		[[ -s $KDF_BASE_DIR/hosts/$KDF_HOST_TYPE/modules/$f.sh ]] && . $KDF_BASE_DIR/hosts/$KDF_HOST_TYPE/modules/$f.sh
 	done
 fi
+
+source $KDF_BASE_DIR/modules/setup.sh

@@ -12,6 +12,7 @@ shopt -s interactive_comments >/dev/null 2>&1
 shopt -s no_empty_cmd_completion >/dev/null 2>&1
 shopt -u mailwarn >/dev/null 2>&1
 
+# Install: Bash autocompletion
 test -f /etc/bash_completion && . /etc/bash_completion
 
 #
@@ -65,3 +66,13 @@ CLR_WHITE=`tput setaf 7`
 #
 
 PROMPT_COMMAND="_dotfiles-ps1-setup; $PROMPT_COMMAND"
+
+#
+# Install: Last command run-time (see functions.sh)
+#
+trap '_dotfiles-timer-start' DEBUG
+
+# NOTE: This must be the very last thing in PROMPT_COMMAND
+# As such, this setup.sh file is the last file the loads
+# in index.bash.
+PROMPT_COMMAND="$PROMPT_COMMAND; _dotfiles-timer-stop"

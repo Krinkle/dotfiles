@@ -28,6 +28,11 @@ export PATH=$KDF_BASE_DIR/hosts/$KDF_HOST_TYPE/bin:$PATH
 # Bins: Git contrib: diff-highlight
 export PATH=/usr/local/opt/git/share/git-core/contrib/diff-highlight:$PATH
 
+# Bins: Jenkins Job Builder
+# http://docs.openstack.org/infra/jenkins-job-builder/installation.html
+# https://www.mediawiki.org/wiki/Continuous_integration/Jenkins_job_builder
+export PATH=/Users/krinkle/Development/wikimedia/integration/jenkins-job-builder/.venv/bin/:$PATH
+
 # Local etc (symlinked to data of `brew install bash-completion`)
 source /usr/local/etc/bash_completion
 
@@ -38,3 +43,10 @@ source /Users/krinkle/Development/wikimedia/arcanist/resources/shell/bash-comple
 
 __git_complete gi _git
 __git_complete gir _git
+
+#
+# MediaWiki
+#
+
+export MW_SERVER='http://localhost:8080'
+export MW_SCRIPT_PATH='/w'
