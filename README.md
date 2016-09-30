@@ -45,3 +45,4 @@ Tabs inside GNU Screen over ssh ([config](https://github.com/Krinkle/dotfiles/bl
 * [@cowboy](https://github.com/cowboy) ([cowboy/dotfiles](https://github.com/cowboy/dotfiles))
 * [@rtomayko](https://github.com/rtomayko) ([rtomayko/dotfiles](https://github.com/rtomayko/dotfiles))
 * [@catrope](https://github.com/catrope)
+* [@jakemcc](https://github.com/jakemcc) ([Last command run-time in prompt](http://jakemccrary.com/blog/2015/05/03/put-the-last-commands-run-time-in-your-bash-prompt/))
