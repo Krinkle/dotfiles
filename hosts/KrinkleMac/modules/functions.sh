@@ -3,7 +3,7 @@ genpass() {
 		echo "usage: ${FUNCNAME[0]} <length>"
 		return 1
 	fi
-    pwgen -Bs $1 1 | pbcopy | pbpaste
+    pwgen -Bs $1 1 | tee >(pbcopy)
     echo "Has been copied to clipboard"
 }
 
