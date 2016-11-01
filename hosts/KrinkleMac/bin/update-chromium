@@ -1,14 +1,18 @@
-#!/bin/bash
+#!/bin/bash -ue
 
 # Update Chromium (on OS X) to the latest nightly build.
 # https://git.chromium.org/git/chromium.git
 
-
 app_dir='/Applications/Chromium.app'
 bin_dir="${app_dir}/Contents/MacOS"
+tmp_dir=${TMPDIR:-~/tmp}
+# Release channels:
+# - "snapshots" (compiles without errors)
+# - "continous" (compiles and passes automated tests)
+# See https://groups.google.com/a/chromium.org/forum/#!topic/chromium-discuss/9AK9NME1rIc
 base_url='http://commondatastorage.googleapis.com/chromium-browser-continuous/Mac'
 build=$(curl -s -f ${base_url}/LAST_CHANGE)
-installed="$(/usr/libexec/PlistBuddy -c 'Print :SCMRevision' ${app_dir}/Contents/Info.plist | ack -o '(?<=#)\d+')"
+installed=$(echo `/usr/libexec/PlistBuddy -c 'Print :SCMRevision' ${app_dir}/Contents/Info.plist | ack -o '(?<=#)\d+'`)
 script=$(basename $0)
 
 notice () {
@@ -16,15 +20,14 @@ notice () {
 }
 
 do_upgrade () {
-    mkdir -p "${app_dir}"
-    curl -# -A "Mozilla/5.0" -L -e ";auto" "${base_url}/${build}/chrome-mac.zip" -o "chrome-${build}.zip"
-    mkdir -p ~/tmp
-    rm -rf ~/tmp/chrome-mac
-    unzip -o -q -x "chrome-${build}.zip" -d ~/tmp
+    mkdir -p "$tmp_dir"
+    curl -L -# -o "${tmp_dir}/chrome-${build}.zip" "${base_url}/${build}/chrome-mac.zip"
+    rm -rf "${tmp_dir}/chrome-mac"
+    unzip -o -q -x "${tmp_dir}/chrome-${build}.zip" -d "${tmp_dir}"
     pkill Chromium; sleep 2; pkill Chromium
     rm -rf "$app_dir"
-    mv ~/tmp/chrome-mac/Chromium.app "/Applications"
-    rm "chrome-${build}.zip"
+    mv "${tmp_dir}/chrome-mac/Chromium.app" "/Applications"
+    rm -rf "${tmp_dir}/chrome-mac" "chrome-${build}.zip"
 }
 
 patch_for_debug() {
@@ -35,5 +38,9 @@ patch_for_debug() {
     /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$app_dir"
 }
 
-notice "Upgrading to ${build} (you have ${installed})..."
-do_upgrade && patch_for_debug >/dev/null 2>&1
+if [ "$installed" = "$build" ]; then
+    notice "Latest version $installed already installed"
+else
+    notice "Upgrading to $build (you have ${installed})..."
+    do_upgrade && patch_for_debug >/dev/null 2>&1
+fi
