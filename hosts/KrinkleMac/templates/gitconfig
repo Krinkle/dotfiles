@@ -3,6 +3,7 @@
 [user]
 	name = Timo Tijhof
 	email = krinklemail@gmail.com
+	signingkey = 5533ED7DA3C2EB92
 [core]
 	editor = subl -n -w
 	pager = diff-highlight | less -x4

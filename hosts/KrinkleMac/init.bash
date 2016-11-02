@@ -24,7 +24,7 @@ function _dotfiles-host-init {
 		fi
 	fi
 
-	echo "... ensure of Homebrew packages"
+	echo "... ensure Homebrew packages"
 	brew tap homebrew/dupes
 	brew tap homebrew/versions
 	brew tap homebrew/homebrew-php
@@ -39,10 +39,10 @@ function _dotfiles-host-init {
 		git
 		# https://www.mediawiki.org/wiki/Gerrit/git-review#OS_X
 		git-review
+		gnupg2
 		hh
 		jq
 		node
-		php56
 		pwgen
 		# ruby: JSDuck 5 requires 2.1+
 		ruby20
@@ -53,10 +53,17 @@ function _dotfiles-host-init {
 		brew upgrade $f || brew install $f
 		if [[ $? != 0 ]]
 		then
-			echo "$CLR_RED>> ERROR$CLR_NONE: Problems installing package '$f'"
+			echo "$CLR_RED>> ERROR$CLR_NONE: Failed to install '$f'"
 			exit 1
 		fi
 	done
+	# https://github.com/Homebrew/homebrew-php/issues/3714
+	brew upgrade php56 --with-apache || brew install php56 --with-apache
+	if [[ $? != 0 ]]
+	then
+		echo "$CLR_RED>> ERROR$CLR_NONE: Failed to install 'php56'"
+		exit 1
+	fi
 	brew cleanup
 
 	echo "... ensure npm packages"
@@ -228,6 +235,11 @@ source $KDF_BASE_DIR/index.bash
 # - Vagrant
 # - VirtualBox
 # - VLC
+# Misc:
+# - Network Link Conditioner
+#    http://nshipster.com/network-link-conditioner/
+#    https://developer.apple.com/download/more/?q=Additional%20Tools
+#    pgk/Hardware/Network Link Conditioner.prefPane
 #
 ## Sublime Text 3
 # Plugins:

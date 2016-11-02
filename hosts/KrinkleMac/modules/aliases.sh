@@ -23,3 +23,8 @@ alias doflushdns='sudo killall -HUP mDNSResponder'
 alias dormdsstore='find . -name ".DS_Store" -type f -exec rm {} \;'
 
 alias dotfiles-push='cd $KDF_BASE_DIR; git add -p && _dotfiles-prompt-choice "OK to push now?" && git commit -m "update dotfiles" && git push origin HEAD; cd -'
+
+# https://help.github.com/articles/generating-a-new-gpg-key/
+# https://help.github.com/articles/adding-a-new-gpg-key-to-your-github-account/
+# https://help.github.com/articles/telling-git-about-your-gpg-key/
+alias dolistgpg='gpg --list-secret-keys --keyid-format LONG'

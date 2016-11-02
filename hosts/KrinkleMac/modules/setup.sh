@@ -45,6 +45,11 @@ __git_complete gi _git
 __git_complete gir _git
 
 #
+# GnuPG
+#
+export GPG_TTY=$(tty)
+
+#
 # MediaWiki
 #
 
