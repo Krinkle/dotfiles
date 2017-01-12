@@ -8,13 +8,10 @@ function _dotfiles-prompt-choice() {
 	return 1
 }
 
-function _dotfiles-ps1-exit() {
+function _dotfiles-ps1-time() {
 	local text=""
-	if [[ $1 != 0 ]]; then
-		text="${text}${CLR_RED}$1${CLR_NONE}${timetext} "
-	fi
 	if [[ "$KDF_timer_show" != "0" ]]; then
-		text="${text}${KDF_timer_show}s "
+		text="${KDF_timer_show}s "
 	fi
 	echo "$text"
 
@@ -41,12 +38,16 @@ function _dotfiles-ps1-setup() {
 		prompt="#"
 	fi
 
+	if [[ $ec != 0 ]]; then
+		prompt="\[$CLR_RED\]$ec\[$CLR_NONE\] $prompt"
+	fi
+
 	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 		supportcolor=1
 	fi
 
 	if [[ -n $supportcolor ]]; then
-		PS1="\[$CLR_WHITE\][\$(date +%H:%M\ %Z)] \[$clr_user\]\u\[$CLR_WHITE\] at \[$clr_host\]$host\[$CLR_WHITE\] in \[$CLR_YELLOW\]\w\$(_dotfiles-git-ps1)\[$CLR_NONE\]\n\$(_dotfiles-ps1-exit $ec)$prompt "
+		PS1="\[$CLR_WHITE\][\$(date +%H:%M\ %Z)] \[$clr_user\]\u\[$CLR_WHITE\] at \[$clr_host\]$host\[$CLR_WHITE\] in \[$CLR_YELLOW\]\w\$(_dotfiles-git-ps1)\[$CLR_NONE\]\n\$(_dotfiles-ps1-time)$prompt "
 	else
 		PS1="[\$(date +%H:%M\ %Z)] \u@$host:\w$prompt "
 	fi
@@ -107,7 +108,7 @@ function _dotfiles-git-ps1() {
 	fi
 
 	branch="`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`"
-	echo -en "${CLR_GITST_BR} ($branch$indicator${CLR_GITST_BR})"
+	echo -n "${CLR_GITST_BR} ($branch$indicator${CLR_GITST_BR})"
 }
 
 # Courtesy of @tstarling

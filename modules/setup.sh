@@ -65,11 +65,7 @@ CLR_WHITE=`tput setaf 7`
 # Setup functions
 #
 
-if [ -n "$KDF_HOST_TYPE" ]; then
-	PROMPT_COMMAND="_dotfiles-ps1-setup"
-else
-	PROMPT_COMMAND="_dotfiles-ps1-setup; $PROMPT_COMMAND"
-fi
+PROMPT_COMMAND="_dotfiles-ps1-setup; $PROMPT_COMMAND"
 
 #
 # Install: Last command run-time (see functions.sh)
