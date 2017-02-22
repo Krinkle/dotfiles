@@ -9,9 +9,12 @@ tmp_dir=${TMPDIR:-~/tmp}
 # Release channels:
 # - "snapshots" (compiles without errors)
 # - "continous" (compiles and passes automated tests)
-# See https://groups.google.com/a/chromium.org/forum/#!topic/chromium-discuss/9AK9NME1rIc
-base_url='http://commondatastorage.googleapis.com/chromium-browser-continuous/Mac'
-build=$(curl -s -f ${base_url}/LAST_CHANGE)
+# See https://www.chromium.org/getting-involved/download-chromium
+snapshots_url() {
+    base_url='https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac'
+    echo "$base_url${1//\//%2F}?alt=media"
+}
+build=$(curl -s -f "$(snapshots_url '/LAST_CHANGE')")
 installed=$(echo `/usr/libexec/PlistBuddy -c 'Print :SCMRevision' ${app_dir}/Contents/Info.plist | ack -o '(?<=#)\d+'`)
 script=$(basename $0)
 
@@ -21,7 +24,7 @@ notice () {
 
 do_upgrade () {
     mkdir -p "$tmp_dir"
-    curl -L -# -o "${tmp_dir}/chrome-${build}.zip" "${base_url}/${build}/chrome-mac.zip"
+    curl -L -# -o "${tmp_dir}/chrome-${build}.zip" "$(snapshots_url "/${build}/chrome-mac.zip")"
     rm -rf "${tmp_dir}/chrome-mac"
     unzip -o -q -x "${tmp_dir}/chrome-${build}.zip" -d "${tmp_dir}"
     pkill Chromium; sleep 2; pkill Chromium
