@@ -18,6 +18,8 @@
 	pulll = pull
 	por = pull --rebase
 	hard = reset --hard
+	rockon = reset --hard origin/master
+	prodon = reset --hard origin/production
 	sh = show
 	sho = show
 	so = show
@@ -37,3 +39,5 @@
 	quotepath = false
 [push]
 	default = matching
+[pull]
+	rebase = true

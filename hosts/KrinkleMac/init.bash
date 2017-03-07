@@ -44,8 +44,7 @@ function _dotfiles-host-init {
 		jq
 		node
 		pwgen
-		# ruby: JSDuck 5 requires 2.1+
-		ruby20
+		ruby
 		watch
 		wget
 	)

@@ -7,8 +7,7 @@ export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
 # Bins: Homebrew's gem packages (e.g. jsduck)
 # http://stackoverflow.com/a/14138490/319266
-export PATH=/usr/local/lib/ruby/gems/2.0.0/bin:$PATH
-export PATH=/usr/local/opt/ruby20/bin:$PATH
+export PATH=/usr/local/lib/ruby/gems/2.4.0/bin:$PATH
 
 # Bins: Homebrew's pear/pecl packages (e.g. phpunit)
 export PATH=/usr/local/opt/php56/bin:$PATH
@@ -31,7 +30,7 @@ export PATH=/usr/local/opt/git/share/git-core/contrib/diff-highlight:$PATH
 # Bins: Jenkins Job Builder
 # http://docs.openstack.org/infra/jenkins-job-builder/installation.html
 # https://www.mediawiki.org/wiki/Continuous_integration/Jenkins_job_builder
-export PATH=/Users/krinkle/Development/wikimedia/integration/jenkins-job-builder/.venv/bin/:$PATH
+alias jenkins-jobs=/Users/krinkle/Development/wikimedia/integration/jenkins-job-builder/.venv/bin/jenkins-jobs
 
 # Local etc (symlinked to data of `brew install bash-completion`)
 source /usr/local/etc/bash_completion
@@ -53,5 +52,5 @@ export GPG_TTY=$(tty)
 # MediaWiki
 #
 
-export MW_SERVER='http://localhost:8080'
+export MW_SERVER='http://dev.wiki.local.wmftest.net:8080'
 export MW_SCRIPT_PATH='/w'

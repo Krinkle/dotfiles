@@ -10,3 +10,9 @@
 	ds = diff --staged
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
 	l = ! git lg -n25
+	pul = pull
+	pulll = pull
+	sh = show
+	sho = show
+	so = show
+	st = status -sb

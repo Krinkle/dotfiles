@@ -12,7 +12,7 @@ doclonegerrit() {
 		echo "usage: ${FUNCNAME[0]} <name>"
 		return 1
 	fi
-	git clone ssh://gerrit.wikimedia.org:29418/$1 $2
+	git clone https://gerrit.wikimedia.org/r/p/$1 $2
 }
 
 doaddwmext() {
@@ -28,6 +28,9 @@ domwextforeach() {
 	EXTDIR=~/Development/mediawiki-vagrant/mediawiki/extensions
 	cd $EXTDIR
 	for dir in $(ls); do
+		if [[ "$dir" == "README" ]]; then
+			continue
+		fi
 		echo "Next: $dir"
 		cd $dir
 		bash -c "$1"

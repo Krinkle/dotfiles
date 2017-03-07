@@ -6,7 +6,7 @@
 			[
 				"mediawiki/docs/output",
 				"mediawiki/docs/js",
-				"mediawiki/docs/js",
+				"mediawiki/tests/coverage",
 				"VisualEditor/docs"
 			],
 			"path": "/Users/krinkle/Development/mediawiki-vagrant"
