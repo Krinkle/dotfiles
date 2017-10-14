@@ -25,8 +25,6 @@ function _dotfiles-host-init {
 	fi
 
 	echo "... ensure Homebrew packages"
-	brew tap homebrew/dupes
-	brew tap homebrew/versions
 	brew tap homebrew/homebrew-php
 	formulas=(
 		ack
@@ -66,7 +64,7 @@ function _dotfiles-host-init {
 	brew cleanup
 
 	echo "... ensure npm packages"
-	npm install -g grunt-cli jshint jscs speed-test
+	npm install -g fast-cli
 
 	echo "... ensure RubyGems packages"
 	gem install jsduck

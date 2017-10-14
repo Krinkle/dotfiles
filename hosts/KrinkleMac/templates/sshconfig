@@ -3,6 +3,10 @@
 # http://stackoverflow.com/a/8660564/319266
 ServerAliveInterval 30
 
+# https://developer.apple.com/library/content/technotes/tn2449/_index.html
+# OpenSSH will no longer load keys into ssh-agent automatically.
+AddKeysToAgent yes
+
 ## Wikimedia Labs
 ## https://wikitech.wikimedia.org/wiki/Help:Access#ProxyCommand
 
@@ -11,9 +15,9 @@ Host bastion.wmflabs.org tools-login.wmflabs.org
     ControlMaster auto
 
 Host *.wmflabs.org *.wmflabs
+    ProxyCommand ssh -a -W %h:%p bastion.wmflabs.org
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wla
-    ProxyCommand ssh -a -W %h:%p bastion.wmflabs.org
 
 ## Wikimedia Gerrit
 
@@ -21,39 +25,55 @@ Host gerrit.wikimedia.org
     ProxyCommand none
     User krinkle
     IdentityFile ~/.ssh/id_rsa_grr
+    IdentitiesOnly yes
+
+Host phabricator.wikimedia.org git-ssh.wikimedia.org
+    ProxyCommand none
+    IdentityFile ~/.ssh/id_rsa_grr
+    IdentitiesOnly yes
 
 ## Wikimedia Production
 ## https://wikitech.wikimedia.org/wiki/SSH_access
 
-Host bast1001.wikimedia.org bast2001.wikimedia.org bast3001.wikimedia.org bast4001.wikimedia.org
+Host bast1001.wikimedia.org bast2001.wikimedia.org bast3001.wikimedia.org bast3002.wikimedia.org bast4001.wikimedia.org
     ProxyCommand none
     ControlMaster auto
 
 Host *.wikimedia.org *.wmnet
+    ProxyCommand ssh -a -W %h:%p bast3002.wikimedia.org
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wm
-    ProxyCommand ssh -a -W %h:%p bast3001.wikimedia.org
+    IdentitiesOnly yes
 
 ## jQuery
 
 Host *.jquery.com *.jquery.net
     User krinkle
     IdentityFile ~/.ssh/id_rsa_jq
+    IdentitiesOnly yes
 
 ## GitHub
 
 Host github.com
     User krinkle
     IdentityFile ~/.ssh/id_rsa_gh
+    IdentitiesOnly yes
+
+Host gist.github.com
+    User krinkle
+    IdentityFile ~/.ssh/id_rsa_gh
+    IdentitiesOnly yes
 
 ## OpenStack
 
 Host review.openstack.org
-    User krinkle
+    User krinklemail
     IdentityFile ~/.ssh/id_rsa_stack
+    IdentitiesOnly yes
 
 ## Antagonist
 
 Host timotijhof.net
     User debXXXXXXX
     IdentityFile ~/.ssh/id_rsa_XXXXXXX
+    IdentitiesOnly yes
