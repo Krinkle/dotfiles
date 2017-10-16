@@ -12,7 +12,7 @@ doclonegerrit() {
 		echo "usage: ${FUNCNAME[0]} <name>"
 		return 1
 	fi
-	git clone https://gerrit.wikimedia.org/r/p/$1 $2
+	git clone https://gerrit.wikimedia.org/r/$1 $2
 }
 
 doaddwmext() {
@@ -20,12 +20,12 @@ doaddwmext() {
 		echo "usage: ${FUNCNAME[0]} <name>"
 		return 1
 	fi
-	EXTDIR=~/Development/mediawiki-vagrant/mediawiki/extensions
+	EXTDIR=~/Development/mediawiki/extensions
 	cd $EXTDIR && doclonegerrit mediawiki/extensions/$1 && cd $1
 }
 
 domwextforeach() {
-	EXTDIR=~/Development/mediawiki-vagrant/mediawiki/extensions
+	EXTDIR=~/Development/mediawiki/extensions
 	cd $EXTDIR
 	for dir in $(ls); do
 		if [[ "$dir" == "README" ]]; then
@@ -48,7 +48,10 @@ do-globalgitstatus() {
 	base=~/Development
 	repoGroups=(
 		$base
+		~/Development/mediawiki/skins
+		~/Development/mediawiki/extensions
 		~/Development/mediawiki-vagrant/mediawiki
+		~/Development/mediawiki-vagrant/mediawiki/skins
 		~/Development/mediawiki-vagrant/mediawiki/extensions
 		~/Development/mediawiki-vagrant/mediawiki/extensions/VisualEditor/lib
 		~/Development/wikimedia
@@ -62,7 +65,7 @@ do-globalgitstatus() {
 			#echo "... checking $repo"
 			if test -e "$repo/.git"; then
 				cd $repo
-				branches=$(git branch)
+				branches=$(git branch | grep -vE 'gh-pages|puppet-stage')
 				branchCount=$(echo "$branches" | wc -l)
 				stash=$(git stash list)
 				content=()

@@ -1,4 +1,4 @@
-## Preferences
+## General
 
 # http://stackoverflow.com/a/8660564/319266
 ServerAliveInterval 30
@@ -40,7 +40,7 @@ Host bast1001.wikimedia.org bast2001.wikimedia.org bast3001.wikimedia.org bast30
     ControlMaster auto
 
 Host *.wikimedia.org *.wmnet
-    ProxyCommand ssh -a -W %h:%p bast3002.wikimedia.org
+    ProxyCommand ssh -a -W %h:%p bast4001.wikimedia.org
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wm
     IdentitiesOnly yes
@@ -74,6 +74,13 @@ Host review.openstack.org
 ## Antagonist
 
 Host timotijhof.net
-    User debXXXXXXX
-    IdentityFile ~/.ssh/id_rsa_XXXXXXX
+    User deb35044
+    IdentityFile ~/.ssh/id_rsa_santagio
+    IdentitiesOnly yes
+
+## GitLab
+
+Host gitlab.com
+    User Krinkle1
+    IdentityFile ~/.ssh/id_rsa_gla
     IdentitiesOnly yes

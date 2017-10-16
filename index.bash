@@ -1,11 +1,17 @@
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
-
 #
 # Set up
 #
+# Load order:
+# - modules/functions.sh
+# - modules/aliases.sh
+# - (set KDF_ vars)
+# - If interactive:
+#   - hosts/$HOST_TYPE/modules/functions.sh
+#   - hosts/$HOST_TYPE/modules/aliases.sh
+#   - hosts/$HOST_TYPE/modules/setup.sh
+#   - modules/setup.sh
 
-#export KDF_BASE_DIR=~/.krinkle.dotfiles
+# Effectively the same as: `export KDF_BASE_DIR=~/.krinkle.dotfiles`
 export KDF_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $KDF_BASE_DIR/modules/functions.sh
 source $KDF_BASE_DIR/modules/aliases.sh
@@ -34,6 +40,9 @@ fi
 #
 # Includes
 #
+
+# If not running interactively, stop here
+[ -z "$PS1" ] && return
 
 if [ -n "$KDF_HOST_TYPE" ]
 then

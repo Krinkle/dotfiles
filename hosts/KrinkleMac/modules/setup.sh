@@ -9,9 +9,6 @@ export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 # http://stackoverflow.com/a/14138490/319266
 export PATH=/usr/local/lib/ruby/gems/2.4.0/bin:$PATH
 
-# Bins: Homebrew's pear/pecl packages (e.g. phpunit)
-export PATH=/usr/local/opt/php56/bin:$PATH
-
 # Bins: Homebrew's coreutils (e.g. realpath)
 export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 
@@ -52,5 +49,5 @@ export GPG_TTY=$(tty)
 # MediaWiki
 #
 
-export MW_SERVER='http://dev.wiki.local.wmftest.net:8080'
-export MW_SCRIPT_PATH='/w'
+export MW_SERVER='http://default.web.mw.localhost:8080'
+export MW_SCRIPT_PATH='/mediawiki'

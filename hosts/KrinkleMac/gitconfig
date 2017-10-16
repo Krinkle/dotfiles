@@ -7,9 +7,12 @@
 [core]
 	editor = subl -n -w
 	pager = diff-highlight | less -x4
+	excludesfile = /Users/krinkle/.config/git/ignore
 [interactive]
 	diffFilter = diff-highlight
 [url "ssh://gerrit.wikimedia.org:29418/"]
 	insteadOf = https://gerrit.wikimedia.org/r/p/
+[url "ssh://gerrit.wikimedia.org:29418/"]
+	insteadOf = https://gerrit.wikimedia.org/r/
 [remote "origin"]
 	fetch = +refs/heads/*:refs/remotes/origin/*

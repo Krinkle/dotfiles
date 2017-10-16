@@ -41,8 +41,6 @@ export EDITOR=vim
 # See also gitconfig/core.pager
 export LESSCHARSET=utf-8
 
-export GREP_OPTIONS='--color=auto'
-
 #
 # Colors
 #

@@ -10,7 +10,8 @@
 		".git",
 		"CVS",
 		"node_modules",
-		"vendor"
+		"vendor",
+		"docs/coverage"
 	],
 	"font_size": 14,
 	"ignored_packages":

@@ -17,6 +17,59 @@ function _dotfiles-ps1-time() {
 
 }
 
+function _dotfiles-ensure-link {
+	if [ -z $2 ]; then
+		echo "usage: ${FUNCNAME[0]} <link-path> <link-dest>"
+		return 1
+	fi
+	local path=$1
+	local dest=$2
+	local name="$(basename $dest)"
+	local backup_dest="$HOME/.dotfiles.backup"
+	local suffix
+	# Do nothing if the path is already a link to the same destination.
+	if [[ ! -L $path || "$(readlink $path)" != $dest ]]; then
+		if [[ -e $path ]]; then
+			if [[ -L $path ]]; then
+				# Remove existing link with different destination.
+				rm "$path"
+			else
+				# Create backup of existing non-link (file or directory).
+				echo "... moving existing $name to ~/.dotfiles.backup"
+				suffix=".$(date +%Y-%m-%dT%H%I%S).$RANDOM.bak"
+				mv "$path" "$backup_dest/${name}${suffix}"
+			fi
+		fi
+		echo "... linking $name"
+		ln -s "$dest" "$path"
+	fi
+}
+
+function _dotfiles-ensure-copy {
+	if [ -z $2 ]; then
+		echo "usage: ${FUNCNAME[0]} <src> <dest>"
+		return 1
+	fi
+	local src=$1
+	local dest=$2
+	local name="$(basename $src)"
+	local backup_dest="$HOME/.dotfiles.backup"
+	local suffix
+	if [[ -e $dest ]]; then
+		if [[ -L $dest ]]; then
+			# Remove link (without backup)
+			rm "$dest"
+		else
+			# Create backup of non-link (file or directory).
+			echo "... moving existing $name to ~/.dotfiles.backup"
+			suffix=".$(date +%Y-%m-%dT%H%I%S).$RANDOM.bak"
+			mv "$dest" "$backup_dest/${name}${suffix}"
+		fi
+	fi
+	echo "... copying $name"
+	cp "$src" "$dest"
+}
+
 # MacOSX default PS1: '\h:\W \u\$'
 function _dotfiles-ps1-setup() {
 	local ec="$?"
@@ -72,7 +125,6 @@ function _dotfiles-timer-stop() {
 	unset KDF_timer
 }
 
-
 #
 # Git status
 # Based on the "official" git-completion.bash
@@ -115,6 +167,59 @@ function _dotfiles-git-ps1() {
 function genpass() {
 	tr -cd [:alnum:] < /dev/urandom | head -c10
 	echo
+}
+
+# Source:
+# http://coopology.com/2013/10/using-ps-to-output-human-readable-memory-usage-for-each-process-using-awk/
+# Example usage:
+# $ ps u | awk_ps_format
+function awk_ps_format() {
+	awk '{
+for ( x=1 ; x<=4 ; x++ ) { printf("%s\t",$x) }
+for ( x=5 ; x<=6 ; x++ ) {  if (NR>1) { printf("%13.2fMb\t",hr=$x/1024) }
+else { printf("\t%s\t",$x)  }
+}
+for ( x=7 ; x<=10 ; x++ ) { printf("%s\t",$x) }
+for ( x=11 ; x<=NF ; x++ ) { printf("%s ",$x) }
+print ""
+}'
+}
+
+# Example usage:
+# $ ps_filter mycommand
+function ps_filter() {
+	local pattern="$1"
+	local res=`ps aux`
+	echo "$res" | awk_ps_format | head -1
+	echo "$res" | awk_ps_format | grep "$pattern" | grep -vE 'nohup|grep'
+}
+
+# Abstraction for essentially the following:
+# $ sudo tail -n100 -f /var/log/syslog | grep --line-buffered CVNBot.exe | sed 's/#012/\n\t/g'
+# Explanation:
+#
+# - Read last N lines from syslog.
+# - Follow in real-time.
+# - Filter for a specific pattern.
+# - Ensure grep flushes each line so that sed can filter.
+# - Use sed to expand the single-line compressed traces from log4net.
+#
+# Usage:
+# $ syslog_filter [-n N=100] <pattern>
+function syslog_filter() {
+	if [ -z $1 ]; then
+		echo "usage: ${FUNCNAME[0]} [-n NUM] <pattern>"
+		return 1
+	fi
+
+	local lines=100
+	if [[ "$1" == "-n" ]]; then
+		lines="$2"
+		shift
+		shift
+	fi
+
+	sudo tail -n"$lines" -f /var/log/syslog | grep --line-buffered "$1" | sed 's/#012/\n\t/g'
 }
 
 function dotfiles-pull() {

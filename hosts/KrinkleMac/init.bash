@@ -45,6 +45,7 @@ function _dotfiles-host-init {
 		ruby
 		watch
 		wget
+		httpd
 	)
 	for f in "${formulas[@]}"; do
 		brew upgrade $f || brew install $f
@@ -54,13 +55,21 @@ function _dotfiles-host-init {
 			exit 1
 		fi
 	done
-	# https://github.com/Homebrew/homebrew-php/issues/3714
-	brew upgrade php56 --with-apache || brew install php56 --with-apache
+	# After 'httpd' above
+	brew upgrade php71 --with-httpd || brew install php71 --with-httpd
 	if [[ $? != 0 ]]
 	then
-		echo "$CLR_RED>> ERROR$CLR_NONE: Failed to install 'php56'"
+		echo "$CLR_RED>> ERROR$CLR_NONE: Failed to install 'php'"
 		exit 1
 	fi
+	# After 'php' above
+	brew upgrade php71-xdebug || brew install php71-xdebug
+	if [[ $? != 0 ]]
+	then
+		echo "$CLR_RED>> ERROR$CLR_NONE: Failed to install 'php-xdebug'"
+		exit 1
+	fi
+
 	brew cleanup
 
 	echo "... ensure npm packages"
@@ -70,19 +79,13 @@ function _dotfiles-host-init {
 	gem install jsduck
 
 	echo "... post-install: php"
-	mkdir -p /usr/local/etc/php/5.6/conf.d
-	test -f /usr/local/etc/php/5.6/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/KrinkleMac/php.ini /usr/local/etc/php/5.6/conf.d/krinkle.ini )
+	test -f /usr/local/etc/php/7.1/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/KrinkleMac/php.ini /usr/local/etc/php/7.1/conf.d/krinkle.ini )
 
 	echo "... post-install: git"
-	# Only change if not a symlink, or a symlink to the wrong place
-	tmpPath=~/.gitconfig
-	tmpDest=$KDF_BASE_DIR/hosts/KrinkleMac/templates/gitconfig
-	if [[ ! -L $tmpPath || "$(readlink $tmpPath)" != $tmpDest ]]
-	then
-		test ! -f $tmpPath || rm $tmpPath
-		echo "linking .gitconfig"
-		ln -s $tmpDest $tmpPath
-	fi
+	_dotfiles-ensure-link ~/.gitconfig $KDF_BASE_DIR/hosts/KrinkleMac/gitconfig
+
+	echo "... post-install: ssh"
+	_dotfiles-ensure-link ~/.ssh/config $KDF_BASE_DIR/hosts/KrinkleMac/sshconfig
 
 	echo "... check Sublime Text"
 	if [ -z "$(which subl)" ]
@@ -93,23 +96,13 @@ function _dotfiles-host-init {
 	fi
 
 	echo "... post-install: Sublime Text"
-	tmpPath=~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings
+	tmpPath=$HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings
 	tmpDest=$KDF_BASE_DIR/hosts/KrinkleMac/SublimePreferences.json
-	if [[ ! -L "$tmpPath" || $(readlink "$tmpPath") != $tmpDest ]]
-	then
-		test ! -f "$tmpPath" || rm "$tmpPath"
-		echo "linking SublimePreferences.json"
-		ln -s "$tmpDest" "$tmpPath"
-	fi
+	_dotfiles-ensure-link "$tmpPath" "$tmpDest"
 
-	tmpPath=~/.config
+	tmpPath=$HOME/.config
 	tmpDest=$KDF_BASE_DIR/hosts/KrinkleMac/config
-	if [[ ! -L $tmpPath || "$(readlink $tmpPath)" != $tmpDest ]]
-	then
-		test ! -f $tmpPath || rm $tmpPath
-		echo "linking .config"
-		ln -s $tmpDest $tmpPath
-	fi
+	_dotfiles-ensure-link "$tmpPath" "$tmpDest"
 }
 
 _dotfiles-host-init
@@ -118,8 +111,6 @@ source $KDF_BASE_DIR/index.bash
 
 #
 # SSH Key
-#
-# $ cp $KDF_BASE_DIR/hosts/KrinkleMac/templates/sshconfig ~/.ssh/config
 #
 # https://help.github.com/articles/generating-ssh-keys
 
@@ -159,42 +150,28 @@ source $KDF_BASE_DIR/index.bash
 #
 # $ mkdir -p ~/Development
 # $ cd ~/Development
-# $ doclonegerrit mediawiki/vagrant mediawiki-vagrant
+# $ doclonegerrit mediawiki
 # $ doclonegerrit oojs/core oojs
 # $ doclonegerrit oojs/ui oojs-ui
-# $ doclonegerrit unicodejs
 # $ doclonegerrit integration/config wikimedia/integration/config
 # $ doclonegerrit operations/mediawiki-config wikimedia/operations/mediawiki-config
-# $ doclonegerrit operations/puppet wikimedia/operations/puppet/
+# $ doclonegerrit operations/puppet wikimedia/operations/puppet
 #
 # ## Apache
 #
-# # HOTFIX: https://github.com/Homebrew/homebrew-apache/issues/75
-# $ ln -s /usr/local/Cellar/apr/1.5.2_1 /usr/local/Cellar/apr/1.5.2
 #
-# $ brew install homebrew/apache/httpd24 --with-privileged-ports
-# ==> Caveats:
-#     - `sudo brew services start homebrew/apache/httpd24`
+# # Change `Listen 8080` to `Listen 8000`
+# $ edit /usr/local/etc/httpd/httpd.conf
 #
-# $ mkdir /usr/local/etc/apache2/2.4/other
-# $ echo 'Include /usr/local/etc/apache2/2.4/other/*.conf' >> /usr/local/etc/apache2/2.4/httpd.conf
-# $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/httpd.conf /usr/local/etc/apache2/2.4/other/krinkle.conf
-# $ sudo brew services restart httpd24
+# # Load custom config
+# $ mkdir /usr/local/etc/httpd/other
+# $ echo 'Include /usr/local/etc/httpd/other/*.conf' >> /usr/local/etc/httpd/httpd.conf
+# $ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/httpd.conf /usr/local/etc/httpd/other/krinkle.conf
 #
-# ## https://www.mediawiki.org/wiki/MediaWiki-Vagrant
 #
-# - VirtualBox
-# - Vagrant
-# - Run:
-# $ cd mediawiki-vagrant
-# $ ./setup.sh
-# $ vagrant up
-# $ sudo nano /etc/hosts <<<TEXT
+# ## MediaWiki-Vagrant
 #
-# # For offline use
-# 127.0.0.1 dev.wiki.local.wmftest.net
-#
-# TEXT;
+# https://www.mediawiki.org/wiki/MediaWiki-Vagrant
 #
 # ## Sequel Pro
 #
@@ -222,38 +199,39 @@ source $KDF_BASE_DIR/index.bash
 # - Simplenote
 # - The Unarchiver
 # Install:
+# - Atom
 # - coconutBattery
+# - Docker
 # - Firefox
-# - FirefoxAurora
-# - Flux
+# - FirefoxDeveloperEdition
 # - Google Chrome
 # - Google Chrome Canary
 # - ImageOptim
-# - LimeChat
 # - MySQLWorkbench
 # - OpenOffice
 # - Opera
 # - Safari Technology Preview
 # - Sequel Pro
-# - Sublime Text 3
-# - Vagrant
+# - Sublime Textd
 # - VirtualBox
 # - VLC
-# Misc:
-# - Network Link Conditioner
-#    http://nshipster.com/network-link-conditioner/
-#    https://developer.apple.com/download/more/?q=Additional%20Tools
-#    pgk/Hardware/Network Link Conditioner.prefPane
 #
-## Sublime Text 3
+## Sublime Text
 # Plugins:
 # - https://packagecontrol.io/installation
 # - DocBlockr
 # - LESS
 # - Puppet
 # - SublimeLinter
-# - SublimeLinter-jscs
-# - SublimeLinter-jshint
-# - Theme Soda
+# - SublimeLinter-contrib-eslint
+# - Theme - Soda
 # - TrailingSpaces
+#
+## Atom
+# Community Packages:
+# - minimap
+# - highlight-selected
+# - minimap-highlight-selected
+# Community Themes:
+# - monokai
 #

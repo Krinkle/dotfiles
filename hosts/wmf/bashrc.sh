@@ -31,7 +31,6 @@ export LC_ALL="en_US.UTF-8"
 export LANG="en_US"
 export LC_COLLATE="C"
 export EDITOR=vim
-export GREP_OPTIONS='--color=auto'
 
 if [ -x /usr/bin/dircolors ]
 then
@@ -127,6 +126,7 @@ function _dotfiles_wmf_setscreentitle() {
 ## aliases
 
 alias ls='ls --color=auto'
+alias grep='grep --color=auto'
 alias ll='ls -halF'
 alias l='ll'
 alias gir='git'
@@ -138,5 +138,3 @@ if which ack-grep > /dev/null 2>&1
 then
 	alias ack=ack-grep
 fi
-
-alias mwexpand="sed -r 's/wik/.wik/' | sed -r 's/ /.org/' | sed -r 's/wiki.org/wikipedia.org/' | sed 's/_/-/'"
