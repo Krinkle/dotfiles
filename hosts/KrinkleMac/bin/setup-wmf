@@ -14,7 +14,7 @@ fi
 host=$1
 dir=$(dirname $0)/../../wmf
 
-setup() {
+function setup {
 	from=$1
 	to=$2
 	if [ ! -e "$from" -o ! -r "$from" ]; then

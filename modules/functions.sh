@@ -1,4 +1,4 @@
-function _dotfiles-prompt-choice() {
+function _dotfiles-prompt-choice {
 	read -p "$1 (y/n): > " choice
 	case "$choice" in
 		y|Y)
@@ -8,7 +8,7 @@ function _dotfiles-prompt-choice() {
 	return 1
 }
 
-function _dotfiles-ps1-time() {
+function _dotfiles-ps1-time {
 	local text=""
 	if [[ "$KDF_timer_show" != "0" ]]; then
 		text="${KDF_timer_show}s "
@@ -71,7 +71,7 @@ function _dotfiles-ensure-copy {
 }
 
 # MacOSX default PS1: '\h:\W \u\$'
-function _dotfiles-ps1-setup() {
+function _dotfiles-ps1-setup {
 	local ec="$?"
 	local host="$KDF_CANONICAL_HOST"
 	local clr_user="$CLR_CYAN"
@@ -116,11 +116,11 @@ function _dotfiles-ps1-setup() {
 # > PROMPT_COMMAND="$PROMPT_COMMAND; _dotfiles-timer-stop"
 # > PS1='[${KDF_timer_show}s] [\w]$ "
 
-function _dotfiles-timer-start() {
+function _dotfiles-timer-start {
 	export KDF_timer=${KDF_timer:-$SECONDS}
 }
 
-function _dotfiles-timer-stop() {
+function _dotfiles-timer-stop {
 	export KDF_timer_show=$(($SECONDS - $KDF_timer))
 	unset KDF_timer
 }
@@ -130,7 +130,7 @@ function _dotfiles-timer-stop() {
 # Based on the "official" git-completion.bash
 # But more simplified and with colors.
 #
-function _dotfiles-git-ps1() {
+function _dotfiles-git-ps1 {
 	local st_staged=0
 	local st_unstaged=0
 	local st_untracked=0
@@ -164,7 +164,7 @@ function _dotfiles-git-ps1() {
 }
 
 # Courtesy of @tstarling
-function genpass() {
+function genpass {
 	tr -cd [:alnum:] < /dev/urandom | head -c10
 	echo
 }
@@ -173,7 +173,7 @@ function genpass() {
 # http://coopology.com/2013/10/using-ps-to-output-human-readable-memory-usage-for-each-process-using-awk/
 # Example usage:
 # $ ps u | awk_ps_format
-function awk_ps_format() {
+function awk_ps_format {
 	awk '{
 for ( x=1 ; x<=4 ; x++ ) { printf("%s\t",$x) }
 for ( x=5 ; x<=6 ; x++ ) {  if (NR>1) { printf("%13.2fMb\t",hr=$x/1024) }
@@ -187,7 +187,7 @@ print ""
 
 # Example usage:
 # $ ps_filter mycommand
-function ps_filter() {
+function ps_filter {
 	local pattern="$1"
 	local res=`ps aux`
 	echo "$res" | awk_ps_format | head -1
@@ -206,7 +206,7 @@ function ps_filter() {
 #
 # Usage:
 # $ syslog_filter [-n N=100] <pattern>
-function syslog_filter() {
+function syslog_filter {
 	if [ -z $1 ]; then
 		echo "usage: ${FUNCNAME[0]} [-n NUM] <pattern>"
 		return 1
@@ -222,7 +222,7 @@ function syslog_filter() {
 	sudo tail -n"$lines" -f /var/log/syslog | grep --line-buffered "$1" | sed 's/#012/\n\t/g'
 }
 
-function dotfiles-pull() {
+function dotfiles-pull {
 	cd $KDF_BASE_DIR
 
 	git fetch origin

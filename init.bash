@@ -3,7 +3,7 @@
 # Load the 'functions', 'aliases' and 'setup' modules.
 source $(dirname $0)/index.bash
 
-function _dotfiles-init() {
+function _dotfiles-init {
 	local src="$HOME/.krinkle.dotfiles"
 	local backup_dest="$HOME/.dotfiles.backup"
 

@@ -1,4 +1,5 @@
-genpass() {
+# Replaces generic from /modules/functions.sh
+function genpass {
 	if [ -z $1 ]; then
 		echo "usage: ${FUNCNAME[0]} <length>"
 		return 1
@@ -7,7 +8,7 @@ genpass() {
     echo "Has been copied to clipboard"
 }
 
-doclonegerrit() {
+function doclonegerrit {
 	if [ -z $1 ]; then
 		echo "usage: ${FUNCNAME[0]} <name>"
 		return 1
@@ -15,7 +16,7 @@ doclonegerrit() {
 	git clone https://gerrit.wikimedia.org/r/$1 $2
 }
 
-doaddwmext() {
+function doaddwmext {
 	if [ -z $1 ]; then
 		echo "usage: ${FUNCNAME[0]} <name>"
 		return 1
@@ -24,7 +25,7 @@ doaddwmext() {
 	cd $EXTDIR && doclonegerrit mediawiki/extensions/$1 && cd $1
 }
 
-domwextforeach() {
+function domwextforeach {
 	EXTDIR=~/Development/mediawiki/extensions
 	cd $EXTDIR
 	for dir in $(ls); do
@@ -38,12 +39,12 @@ domwextforeach() {
 	done
 }
 
-doupdatemwext() {
+function doupdatemwext {
 	domwextforeach 'git checkout master -q && git pull -q'
 }
 
 # Shows possibly forgotten git stashes and branches
-do-globalgitstatus() {
+function do-globalgitstatus {
 	cwd=$PWD
 	base=~/Development
 	repoGroups=(

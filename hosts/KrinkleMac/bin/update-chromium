@@ -10,7 +10,7 @@ tmp_dir=${TMPDIR:-~/tmp}
 # - "snapshots" (compiles without errors)
 # - "continous" (compiles and passes automated tests)
 # See https://www.chromium.org/getting-involved/download-chromium
-snapshots_url() {
+function snapshots_url {
     base_url='https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac'
     echo "$base_url${1//\//%2F}?alt=media"
 }
@@ -18,11 +18,11 @@ build=$(curl -s -f "$(snapshots_url '/LAST_CHANGE')")
 installed=$(echo `/usr/libexec/PlistBuddy -c 'Print :SCMRevision' ${app_dir}/Contents/Info.plist | ack -o '(?<=#)\d+'`)
 script=$(basename $0)
 
-notice () {
+function notice {
     echo $(tput setaf 7)[$(tput setaf 4)${script}$(tput setaf 7)]$(tput sgr0) $@
 }
 
-do_upgrade () {
+function do_upgrade {
     mkdir -p "$tmp_dir"
     curl -L -# -o "${tmp_dir}/chrome-${build}.zip" "$(snapshots_url "/${build}/chrome-mac.zip")"
     rm -rf "${tmp_dir}/chrome-mac"
@@ -33,7 +33,7 @@ do_upgrade () {
     rm -rf "${tmp_dir}/chrome-mac" "chrome-${build}.zip"
 }
 
-patch_for_debug() {
+function patch_for_debug {
     echo "#!/bin/sh
     exec ${bin_dir}/Chromium --remote-debugging-port=9222 --disable-translate" > "${bin_dir}/ChromiumDebug"
     chmod +x "${bin_dir}/ChromiumDebug"
