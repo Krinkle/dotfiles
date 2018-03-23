@@ -51,10 +51,7 @@ function do-globalgitstatus {
 		$base
 		~/Development/mediawiki/skins
 		~/Development/mediawiki/extensions
-		~/Development/mediawiki-vagrant/mediawiki
-		~/Development/mediawiki-vagrant/mediawiki/skins
-		~/Development/mediawiki-vagrant/mediawiki/extensions
-		~/Development/mediawiki-vagrant/mediawiki/extensions/VisualEditor/lib
+		~/Development/mediawiki/extensions/VisualEditor/lib
 		~/Development/wikimedia
 		~/Development/wikimedia/integration
 		~/Development/wikimedia/operations

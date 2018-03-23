@@ -56,17 +56,10 @@ function _dotfiles-host-init {
 		fi
 	done
 	# After 'httpd' above
-	brew upgrade php71 --with-httpd || brew install php71 --with-httpd
+	brew upgrade php@7.2 --with-httpd || brew install php@7.2 --with-httpd
 	if [[ $? != 0 ]]
 	then
 		echo "$CLR_RED>> ERROR$CLR_NONE: Failed to install 'php'"
-		exit 1
-	fi
-	# After 'php' above
-	brew upgrade php71-xdebug || brew install php71-xdebug
-	if [[ $? != 0 ]]
-	then
-		echo "$CLR_RED>> ERROR$CLR_NONE: Failed to install 'php-xdebug'"
 		exit 1
 	fi
 
@@ -78,8 +71,11 @@ function _dotfiles-host-init {
 	echo "... ensure RubyGems packages"
 	gem install jsduck
 
+	echo "... ensure PHP PECL packages"
+	pecl install apcu xdebug apcu_bc
+
 	echo "... post-install: php"
-	test -f /usr/local/etc/php/7.1/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/KrinkleMac/php.ini /usr/local/etc/php/7.1/conf.d/krinkle.ini )
+	test -f /usr/local/etc/php/7.2/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/KrinkleMac/php.ini /usr/local/etc/php/7.2/conf.d/krinkle.ini )
 
 	echo "... post-install: git"
 	_dotfiles-ensure-link ~/.gitconfig $KDF_BASE_DIR/hosts/KrinkleMac/gitconfig

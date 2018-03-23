@@ -12,6 +12,9 @@ export PATH=/usr/local/lib/ruby/gems/2.4.0/bin:$PATH
 # Bins: Homebrew's coreutils (e.g. realpath)
 export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 
+# Bins: Homebrew's PHP
+export PATH=/usr/local/opt/php@7.2/bin:$PATH
+
 # Bins: Sublime Text (subl)
 export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
 
@@ -51,3 +54,5 @@ export GPG_TTY=$(tty)
 
 export MW_SERVER='http://default.web.mw.localhost:8080'
 export MW_SCRIPT_PATH='/mediawiki'
+export MEDIAWIKI_USER='Admin'
+export MEDIAWIKI_PASSWORD='adminpass'
