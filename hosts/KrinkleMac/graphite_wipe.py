@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import sys
 reload(sys)
@@ -35,16 +36,16 @@ extended_props = {
 def graphite_wipe(m_name, m_type, start, end):
     assert m_type in supported_metric_types
     m_value = 0
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect(graphite_addr)
     for ts in range(start, end, 60):
         logging.debug(datetime.fromtimestamp(ts))
         for sub in extended_props[m_type]:
             # Note: Without the \n this doesn't work!
             message = '%s.%s %d %d\n' % (m_name, sub, m_value, ts)
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect(graphite_addr)
             s.sendall(message.encode('utf-8'))
-            s.close()
-            logging.debug(message)
+            # logging.debug(message)
+    s.close()
 
 def get_time(str):
     try:
