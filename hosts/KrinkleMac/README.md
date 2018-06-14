@@ -55,7 +55,7 @@ $ doclonegerrit operations/puppet wikimedia/operations/puppet
 ### Apache
 
 Reserve port 8080 for mediawiki-docker-dev (or MediaWiki-Vagrant).
-Switch generic localhost for misc ~/Development stuff to port 8000.
+Move the local Apache to port 8000, for serving `~/Development`.
 
 ```
 # Change `Listen 8080` to `Listen 8000`
@@ -123,3 +123,4 @@ Community Packages:
 * minimap
 * highlight-selected
 * minimap-highlight-selected
+* linter-eslint

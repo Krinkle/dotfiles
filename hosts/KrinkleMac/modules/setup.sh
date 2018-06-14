@@ -5,18 +5,17 @@
 # Bins: Homebrew and manually installed programs
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
-# Bins: Homebrew's gem packages (e.g. jsduck)
-# http://stackoverflow.com/a/14138490/319266
-export PATH=/usr/local/lib/ruby/gems/2.4.0/bin:$PATH
+# Bins: Homebrew's ruby
+export PATH=/usr/local/opt/ruby/bin:$PATH
 
 # Bins: Homebrew's coreutils (e.g. realpath)
 export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 
 # Bins: Homebrew's PHP
-export PATH=/usr/local/opt/php@7.2/bin:$PATH
+export PATH=/usr/local/opt/php@7.1/bin:$PATH
 
 # Bins: Sublime Text (subl)
-export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
+export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
 
 # Bins: Composer global
 export PATH=$HOME/.composer/vendor/bin:$PATH
@@ -35,11 +34,9 @@ alias jenkins-jobs=/Users/krinkle/Development/wikimedia/integration/jenkins-job-
 # Local etc (symlinked to data of `brew install bash-completion`)
 source /usr/local/etc/bash_completion
 
-# Phabricator Arcanist
-source /Users/krinkle/Development/wikimedia/arcanist/resources/shell/bash-completion
-
 [[ -s /usr/local/etc/profile.d/autojump.sh ]] && . /usr/local/etc/profile.d/autojump.sh
 
+__git_complete g _git
 __git_complete gi _git
 __git_complete gir _git
 

@@ -17,14 +17,15 @@ alias gir='git'
 alias ..='cd ..'
 alias ...='cd ../..'
 
-alias nit='npm install && npm test'
-alias jsonhint='jshint --extra-ext .json'
+alias nit='npm install-test'
 alias dsize='du -hs'
 
 # http://unix.stackexchange.com/a/81699/37512
-# dig @ns1.google.com -t txt o-o.myaddr.l.google.com +short
-# dig @ns1-1.akamaitech.net whoami.akamai.net +short
-alias wanip='dig @resolver1.opendns.com myip.opendns.com +short'
+# dig @resolver1.opendns.com ANY myip.opendns.com +short # Both IPv6 and IPv4
+# dig @ns1.google.com TXT o-o.myaddr.l.google.com +short # Only IPv4
+# dig @ns1-1.akamaitech.net ANY whoami.akamai.net +short # Only IPv4
+alias wanip='dig @resolver1.opendns.com ANY myip.opendns.com +short'
+alias wanip4='dig @resolver1.opendns.com ANY myip.opendns.com +short -4'
 
 alias cvnlog='for dir in `ls -d /srv/cvn/services/cvnbot/* | sort -V`; do name=$(basename "$dir"); echo; echo "# $name"; (sudo cat /var/log/syslog | grep $name | tail -n10); done;'
 

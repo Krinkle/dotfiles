@@ -21,6 +21,7 @@ alias doflushdns='sudo killall -HUP mDNSResponder'
 
 # https://snipt.net/Yannick/delete-recursively-a-file-ds_store-thumbsdb-desktopini-etc/
 alias dormdsstore='find . -name ".DS_Store" -type f -exec rm {} \;'
+alias dormnodedirs='find . -name "node_modules" -type d -print -exec rm -rf {} \; 2>/dev/null'
 
 alias dotfiles-push='cd $KDF_BASE_DIR; git add -p && _dotfiles-prompt-choice "OK to push now?" && git commit -m "update dotfiles" && git push origin HEAD; cd -'
 

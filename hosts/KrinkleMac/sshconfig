@@ -25,26 +25,25 @@ Host *.wmflabs.org *.wmflabs
 
 ## Wikimedia Gerrit
 
-Host gerrit.wikimedia.org
+Host gerrit.wikimedia.org git-ssh.wikimedia.org
     ProxyCommand none
+    ControlMaster auto
     User krinkle
     IdentityFile ~/.ssh/id_rsa_grr
     IdentitiesOnly yes
 
-Host phabricator.wikimedia.org git-ssh.wikimedia.org
-    ProxyCommand none
-    IdentityFile ~/.ssh/id_rsa_grr
-    IdentitiesOnly yes
-
 ## Wikimedia Production
-## https://wikitech.wikimedia.org/wiki/SSH_access
+## https://wikitech.wikimedia.org/wiki/Production_shell_access#SSH_configuration
 
 Host bast1002.wikimedia.org bast2001.wikimedia.org bast3002.wikimedia.org bast4002.wikimedia.org bast5001.wikimedia.org
     ProxyCommand none
     ControlMaster auto
+    User krinkle
+    IdentityFile ~/.ssh/id_rsa_wm
+    IdentitiesOnly yes
 
-Host *.wikimedia.org *.wmnet
-    ProxyCommand ssh -a -W %h:%p bast3002.wikimedia.org
+Host *.wikimedia.org *.wmnet !gerrit.wikimedia.org !git-ssh.wikimedia.org
+    ProxyCommand ssh -a -W %h:%p bast4002.wikimedia.org
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wm
     IdentitiesOnly yes
@@ -68,13 +67,6 @@ Host gist.github.com
     IdentityFile ~/.ssh/id_rsa_gh
     IdentitiesOnly yes
 
-## OpenStack
-
-Host review.openstack.org
-    User krinklemail
-    IdentityFile ~/.ssh/id_rsa_stack
-    IdentitiesOnly yes
-
 ## Antagonist
 
 Host timotijhof.net
@@ -83,13 +75,6 @@ Host timotijhof.net
     IdentitiesOnly yes
     # IPv4
     AddressFamily inet
-
-## GitLab
-
-Host gitlab.com
-    User Krinkle1
-    IdentityFile ~/.ssh/id_rsa_gla
-    IdentitiesOnly yes
 
 ## Phacility
 

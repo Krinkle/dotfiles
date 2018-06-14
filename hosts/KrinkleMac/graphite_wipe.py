@@ -17,7 +17,7 @@ graphite_addr = ('graphite-in.eqiad.wmnet', 2003)
 supported_metric_types = ('c', 'ms')
 extended_props = {
     'c': ('count', 'lower', 'mean', 'rate', 'sum', 'upper'),
-    'ms': ('count', 'mean', 'p50', 'p95', 'p999', 'sample_rate',
+    'ms': ('count', 'mean', 'p50', 'p95', 'sample_rate',
            'upper', 'lower', 'median', 'p75', 'p99', 'rate')
 }
 
