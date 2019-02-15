@@ -44,12 +44,25 @@ These interfere with Sublime Text selection expansion shortcuts (`Shift ctrl ↑
 ```
 $ mkdir -p ~/Development
 $ cd ~/Development
-$ doclonegerrit mediawiki
-$ doclonegerrit oojs/core oojs
-$ doclonegerrit oojs/ui oojs-ui
-$ doclonegerrit integration/config wikimedia/integration/config
-$ doclonegerrit operations/mediawiki-config wikimedia/operations/mediawiki-config
-$ doclonegerrit operations/puppet wikimedia/operations/puppet
+doclonegerrit mediawiki
+doclonegerrit oojs/core oojs
+doclonegerrit oojs/ui oojs-ui
+doclonegerrit integration/config wikimedia/integration/config
+doclonegerrit operations/mediawiki-config wikimedia/operations-mediawiki-config
+doclonegerrit operations/puppet wikimedia/puppet
+
+$ cd ~/Development/mediawiki/skins
+doclonegerrit mediawiki/skins/Vector
+
+$ cd ~/Development/mediawiki/extensions
+doaddwmext CategoryTree
+doaddwmext Cite
+doaddwmext examples
+doaddwmext Interwiki
+doaddwmext NavigationTiming
+doaddwmext ParserFunctions
+doaddwmext TemplateData
+doaddwmext WikimediaEvents
 ```
 
 ### Apache
@@ -75,10 +88,12 @@ See <https://www.mediawiki.org/wiki/MediaWiki-Vagrant>.
 
 #### Install via App Store
 
-* OmniFocus
 * Pixelmator
 * Simplenote
+* Skitch
 * The Unarchiver
+* Time Out
+* Wunderlist
 
 #### Install others
 
@@ -120,7 +135,8 @@ Community Themes:
 
 Community Packages:
 
-* minimap
-* highlight-selected
-* minimap-highlight-selected
 * linter-eslint
+* minimap
+* minimap-highlight-selected
+* highlight-selected
+* sort-lines
