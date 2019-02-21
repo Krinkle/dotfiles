@@ -10,7 +10,7 @@ AddKeysToAgent yes
 ## Wikimedia Labs
 ## https://wikitech.wikimedia.org/wiki/Help:Access#ProxyCommand
 
-Host primary.bastion.wmflabs.org tools-login.wmflabs.org
+Host primary.bastion.wmflabs.org tools-login.wmflabs.org login-stretch.tools.wmflabs.org
     ProxyCommand none
     ControlMaster auto
     User krinkle
