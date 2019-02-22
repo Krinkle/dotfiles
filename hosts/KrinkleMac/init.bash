@@ -91,6 +91,11 @@ function _dotfiles-host-init {
 		exit 1
 	fi
 
+	echo "... post-install: Atom"
+	tmpPath=$HOME/.atom/styles.less
+	tmpDest=$KDF_BASE_DIR/hosts/KrinkleMac/atom.styles.less
+	_dotfiles-ensure-link "$tmpPath" "$tmpDest"
+
 	echo "... post-install: Sublime Text"
 	tmpPath=$HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings
 	tmpDest=$KDF_BASE_DIR/hosts/KrinkleMac/SublimePreferences.json

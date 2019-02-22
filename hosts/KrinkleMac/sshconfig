@@ -43,7 +43,7 @@ Host bast1002.wikimedia.org bast2001.wikimedia.org bast3002.wikimedia.org bast40
     IdentitiesOnly yes
 
 Host *.wikimedia.org *.wmnet !gerrit.wikimedia.org !git-ssh.wikimedia.org
-    ProxyCommand ssh -a -W %h:%p bast4002.wikimedia.org
+    ProxyCommand ssh -a -W %h:%p bast3002.wikimedia.org
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wm
     IdentitiesOnly yes

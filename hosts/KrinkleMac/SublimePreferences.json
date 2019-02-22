@@ -11,6 +11,7 @@
 		"CVS",
 		"node_modules",
 		"vendor",
+		".sass-cache",
 		"docs/coverage"
 	],
 	"font_size": 14,

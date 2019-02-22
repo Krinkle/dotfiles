@@ -37,6 +37,7 @@ function _dotfiles-ensure-link {
 				# Create backup of existing non-link (file or directory).
 				echo "... moving existing $name to ~/.dotfiles.backup"
 				suffix=".$(date +%Y-%m-%dT%H%I%S).$RANDOM.bak"
+				mkdir -p "$backup_dest"
 				mv "$path" "$backup_dest/${name}${suffix}"
 			fi
 		fi

@@ -5,9 +5,8 @@ source $(dirname $0)/index.bash
 
 function _dotfiles-init {
 	local src="$HOME/.krinkle.dotfiles"
-	local backup_dest="$HOME/.dotfiles.backup"
 
-	local file_links="ackrc jshintrc"
+	local file_links="ackrc"
 	local file_templates="bashrc bash_profile gitconfig"
 
 	echo "$(tput smul)$(tput bold)Home directory$(tput sgr0)"

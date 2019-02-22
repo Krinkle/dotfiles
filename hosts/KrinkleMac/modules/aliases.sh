@@ -1,5 +1,5 @@
 # Version control
-alias dogitcommit='git commit -F ~/Development/tmp/COMMIT.txt'
+alias dogitcommit='git commit -F ~/Documents/Temp/COMMIT.txt'
 alias gogogerrit='git review -R'
 alias grabfromgerrit='git review -d'
 

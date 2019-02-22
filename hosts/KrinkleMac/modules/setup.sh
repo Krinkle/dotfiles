@@ -26,11 +26,6 @@ export PATH=$KDF_BASE_DIR/hosts/$KDF_HOST_TYPE/bin:$PATH
 # Bins: Git contrib: diff-highlight
 export PATH=/usr/local/opt/git/share/git-core/contrib/diff-highlight:$PATH
 
-# Bins: Jenkins Job Builder
-# http://docs.openstack.org/infra/jenkins-job-builder/installation.html
-# https://www.mediawiki.org/wiki/Continuous_integration/Jenkins_job_builder
-alias jenkins-jobs=/Users/krinkle/Development/wikimedia/integration/jenkins-job-builder/.venv/bin/jenkins-jobs
-
 # Local etc (symlinked to data of `brew install bash-completion`)
 source /usr/local/etc/bash_completion
 
