@@ -5,7 +5,8 @@
 
 [ -z "$PS1" ] && return
 
-export KDF_CANONICAL_HOST="$( hostname -f 2>/dev/null )"
+export KDF_PS1_HOST_NAME="$( hostname -f 2>/dev/null )"
+export KDF_PS1_HOST_COLOR=`tput setaf 2` # CLR_GREEN
 
 ## setup
 
@@ -19,9 +20,6 @@ shopt -s no_empty_cmd_completion >/dev/null 2>&1
 shopt -u mailwarn >/dev/null 2>&1
 
 test -f /etc/bash_completion && . /etc/bash_completion
-
-: ${HOME=~}
-: ${UNAME=$(uname)}
 
 export HISTCONTROL=ignorespace:erasedups
 export HISTSIZE=50000
@@ -47,8 +45,6 @@ CLR_BLUE=`tput setaf 4`
 CLR_MAGENTA=`tput setaf 5`
 CLR_CYAN=`tput setaf 6`
 CLR_WHITE=`tput setaf 7`
-
-PROMPT_COMMAND="_dotfiles-ps1-setup; _dotfiles_wmf_setscreentitle; $PROMPT_COMMAND"
 
 ## functions
 
@@ -89,14 +85,11 @@ function _dotfiles-git-ps1() {
 
 function _dotfiles-ps1-setup() {
 	local ec="$?"
-	local host="$KDF_CANONICAL_HOST"
+	local host="$KDF_PS1_HOST_NAME"
 	local clr_user="$CLR_CYAN"
-	local clr_host="$CLR_CYAN"
+	local clr_host="$KDF_PS1_HOST_COLOR"
 	local prompt="\$"
 	local supportcolor
-
-	# elif echo $KDF_CANONICAL_HOST | grep -q -E '\.wikimedia\.org|\.wmnet'; then
-	clr_host="$CLR_GREEN"
 
 	if [ "$LOGNAME" = "root" ]; then
 		clr_user="$CLR_RED"
@@ -117,11 +110,17 @@ function _dotfiles-ps1-setup() {
 ## functions-wmf
 
 function _dotfiles_wmf_setscreentitle() {
-	if [ "$TERM" == "screen" ]
+	if [[ "$TERM" == "screen."* ]]
 	then
+		# Set screen title to name of current working directory.
+		# This is shown in the blue status bar.
+		# This normally defaults to the shell name, e.g. "bash".
 		echo -ne "\033k$(basename $PWD)$\033\\"
 	fi
 }
+
+
+PROMPT_COMMAND="_dotfiles-ps1-setup; _dotfiles_wmf_setscreentitle;"
 
 ## aliases
 

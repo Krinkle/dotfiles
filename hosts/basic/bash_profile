@@ -1,3 +1,5 @@
+# The installer will copy this file instead of linking it, to allow local modification.
+
 # bash_profile is ran by a login-shell.
 # Example: Starting shell (e.g. locally or through ssh).
 

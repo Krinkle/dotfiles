@@ -1,0 +1,4 @@
+# The installer will copy this file instead of linking it, to allow local modification.
+
+[include]
+	path = ~/.krinkle.dotfiles/gitconfig

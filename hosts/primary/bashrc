@@ -1,0 +1,10 @@
+# The installer will copy this file instead of linking it, to allow local modification.
+
+# bashrc is ran by a nonlogin-shell.
+# Example: Open new window in an existing shell.
+
+source ~/.krinkle.dotfiles/hosts/primary/index.bash
+
+# Local settings
+export KDF_PS1_HOST_NAME="KrinkleMac"
+export KDF_PS1_HOST_COLOR="$CLR_MAGENTA"

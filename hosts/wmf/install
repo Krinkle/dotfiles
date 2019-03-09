@@ -1,0 +1,25 @@
+#!/bin/bash -eu
+
+target="${1:-}"
+
+if [ -z "$target" ]; then
+	echo "usage: ./install <scp_target>"
+	return 1
+fi
+
+function _dotfiles-upload {
+	local src=$1
+	local dest=$2
+	local name="$(basename $src)"
+	echo "... uploading $name"
+	scp -q "$src" "$target:$dest"
+}
+
+cd $(dirname $0)
+_dotfiles-upload bash_profile .bash_profile
+_dotfiles-upload bashrc .bashrc
+_dotfiles-upload gitconfig .gitconfig
+_dotfiles-upload screenrc .screenrc
+
+echo
+echo "$(tput setaf 2)>>$(tput sgr0) Installation complete!"

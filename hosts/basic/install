@@ -1,0 +1,17 @@
+#!/bin/bash -eu
+
+source $(dirname $0)/index.bash
+
+echo "$(tput smul)$(tput bold)Home directory$(tput sgr0)"
+echo
+
+_dotfiles-ensure-copy "$(dirname $0)/bashrc" "$HOME/.bashrc"
+_dotfiles-ensure-copy "$(dirname $0)/bash_profile" "$HOME/.bash_profile"
+_dotfiles-ensure-copy "$(dirname $0)/gitconfig" "$HOME/.gitconfig"
+
+echo "$(tput setaf 2)>>$(tput sgr0) Home directory ready"
+echo
+echo "$(tput setaf 2)>>$(tput sgr0) Installation complete!"
+
+# Re-source after install
+source $(dirname $0)/index.bash

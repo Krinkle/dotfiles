@@ -1,6 +1,13 @@
-# KrinkleMac
+# Krinkle Dotfiles: Primary workstation
 
-Aside from the automatic provisions from [init](./init.bash), there are additional setups and workflows documented below.
+See the **[install](./install#blob-path)** file for the automated provisions.
+
+Additional setups and workflows documented below.
+
+## Screenshots
+
+<img height="444" alt="Screenshot of the Terminal app" src="https://user-images.githubusercontent.com/156867/53701021-b59e3300-3df0-11e9-8132-d0a85e9f80c9.png">
+<img height="380" alt="Screenshot of Git prompt" src="https://i.imgur.com/AGJ9uz1.png">
 
 ## SSH Key
 
@@ -57,7 +64,7 @@ $ edit /usr/local/etc/httpd/httpd.conf
 # Load custom config
 $ mkdir /usr/local/etc/httpd/other
 $ echo 'Include /usr/local/etc/httpd/other/*.conf' >> /usr/local/etc/httpd/httpd.conf
-$ ln -s $KDF_BASE_DIR/hosts/KrinkleMac/httpd.conf /usr/local/etc/httpd/other/krinkle.conf
+$ ln -s $KDF_BASE_DIR/hosts/primary/httpd.conf /usr/local/etc/httpd/other/krinkle.conf
 ```
 
 ## Applications

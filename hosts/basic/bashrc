@@ -1,0 +1,6 @@
+# The installer will copy this file instead of linking it, to allow local modification.
+
+# bashrc is ran by a nonlogin-shell.
+# Example: Open new window in an existing shell.
+
+source ~/.krinkle.dotfiles/hosts/basic/index.bash

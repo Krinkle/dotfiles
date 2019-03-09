@@ -1,3 +1,20 @@
+# Overview:
+#
+# 1. Functions
+# 2. Aliases
+# 3. Setup
+
+# -------------------------------------------------
+# § 1. Functions
+# -------------------------------------------------
+
+# Dependency-free version
+function genpass {
+	# Courtesy of @tstarling
+	tr -cd [:alnum:] < /dev/urandom | head -c10
+	echo
+}
+
 function _dotfiles-prompt-choice {
 	read -p "$1 (y/n): > " choice
 	case "$choice" in
@@ -14,7 +31,6 @@ function _dotfiles-ps1-time {
 		text="${KDF_timer_show}s "
 	fi
 	echo "$text"
-
 }
 
 function _dotfiles-ensure-link {
@@ -28,18 +44,17 @@ function _dotfiles-ensure-link {
 	local backup_dest="$HOME/.dotfiles.backup"
 	local suffix
 	# Do nothing if the path is already a link to the same destination.
-	if [[ ! -L $path || "$(readlink $path)" != $dest ]]; then
-		if [[ -e $path ]]; then
-			if [[ -L $path ]]; then
-				# Remove existing link with different destination.
-				rm "$path"
-			else
-				# Create backup of existing non-link (file or directory).
-				echo "... moving existing $name to ~/.dotfiles.backup"
-				suffix=".$(date +%Y-%m-%dT%H%I%S).$RANDOM.bak"
-				mkdir -p "$backup_dest"
-				mv "$path" "$backup_dest/${name}${suffix}"
-			fi
+	if [[ ! -L "$path" || "$(readlink $path)" != "$dest" ]]; then
+		if [ -L "$path" ]; then
+			# Remove existing link with different destination.
+			rm "$path"
+		fi
+		if [ -e "$path" ]; then
+			# Create backup of existing non-link (file or directory).
+			echo "... moving existing $name to ~/.dotfiles.backup"
+			suffix=".$(date +%Y-%m-%dT%H%I%S).$RANDOM.bak"
+			mkdir -p "$backup_dest"
+			mv "$path" "$backup_dest/${name}${suffix}"
 		fi
 		echo "... linking $name"
 		ln -s "$dest" "$path"
@@ -64,28 +79,21 @@ function _dotfiles-ensure-copy {
 			# Create backup of non-link (file or directory).
 			echo "... moving existing $name to ~/.dotfiles.backup"
 			suffix=".$(date +%Y-%m-%dT%H%I%S).$RANDOM.bak"
+			mkdir -p "$backup_dest"
 			mv "$dest" "$backup_dest/${name}${suffix}"
 		fi
 	fi
-	echo "... copying $name"
+	echo "... copying $name template"
 	cp "$src" "$dest"
 }
 
-# MacOSX default PS1: '\h:\W \u\$'
 function _dotfiles-ps1-setup {
 	local ec="$?"
-	local host="$KDF_CANONICAL_HOST"
+	local host="$KDF_PS1_HOST_NAME"
 	local clr_user="$CLR_CYAN"
-	local clr_host="$CLR_CYAN"
+	local clr_host="$KDF_PS1_HOST_COLOR"
 	local prompt="\$"
 	local supportcolor
-
-	if [ "$KDF_HOST_TYPE" = "KrinkleMac" ]; then
-		clr_host="$CLR_MAGENTA"
-		host="KrinkleMac"
-	elif echo $KDF_CANONICAL_HOST | grep -q -E '\.wikimedia\.org|\.wmnet'; then
-		clr_host="$CLR_GREEN"
-	fi
 
 	if [ "$LOGNAME" = "root" ]; then
 		clr_user="$CLR_RED"
@@ -107,7 +115,6 @@ function _dotfiles-ps1-setup {
 	fi
 }
 
-#
 # Last command run-time measuring
 #
 # http://jakemccrary.com/blog/2015/05/03/put-the-last-commands-run-time-in-your-bash-prompt/
@@ -126,8 +133,8 @@ function _dotfiles-timer-stop {
 	unset KDF_timer
 }
 
-#
 # Git status
+#
 # Based on the "official" git-completion.bash
 # But more simplified and with colors.
 #
@@ -164,16 +171,11 @@ function _dotfiles-git-ps1 {
 	echo -n "${CLR_GITST_BR} ($branch$indicator${CLR_GITST_BR})"
 }
 
-# Courtesy of @tstarling
-function genpass {
-	tr -cd [:alnum:] < /dev/urandom | head -c10
-	echo
-}
-
-# Source:
-# http://coopology.com/2013/10/using-ps-to-output-human-readable-memory-usage-for-each-process-using-awk/
+# Source: http://coopology.com/2013/10/using-ps-to-output-human-readable-memory-usage-for-each-process-using-awk/
+#
 # Example usage:
 # $ ps u | awk_ps_format
+#
 function awk_ps_format {
 	awk '{
 for ( x=1 ; x<=4 ; x++ ) { printf("%s\t",$x) }
@@ -188,6 +190,7 @@ print ""
 
 # Example usage:
 # $ ps_filter mycommand
+#
 function ps_filter {
 	local pattern="$1"
 	local res=`ps aux`
@@ -197,6 +200,7 @@ function ps_filter {
 
 # Abstraction for essentially the following:
 # $ sudo tail -n100 -f /var/log/syslog | grep --line-buffered CVNBot.exe | sed 's/#012/\n\t/g'
+#
 # Explanation:
 #
 # - Read last N lines from syslog.
@@ -207,6 +211,7 @@ function ps_filter {
 #
 # Usage:
 # $ syslog_filter [-n N=100] <pattern>
+#
 function syslog_filter {
 	if [ -z $1 ]; then
 		echo "usage: ${FUNCNAME[0]} [-n NUM] <pattern>"
@@ -241,3 +246,118 @@ function dotfiles-pull {
 		return 1
 	fi
 }
+
+# -------------------------------------------------
+# § 2. Aliases
+# -------------------------------------------------
+
+# Enable 'ls' colors by default.
+# For Ubuntu/Debian/Solaris: 'ls --color'
+# For macOS (Darwin): 'ls -G', but I install GNU coreutils via Homebrew,
+# which means 'ls --color' will work there just as well.
+alias ls='ls --color=auto'
+
+alias grep='grep --color=auto'
+alias ll='ls -halF'
+alias l='ll'
+alias lchmod='stat -c "%a %n"'
+
+alias g='git'
+alias gi='git'
+alias gir='git'
+
+alias ..='cd ..'
+alias ...='cd ../..'
+
+alias nit='npm install-test'
+alias dsize='du -hs'
+
+# http://unix.stackexchange.com/a/81699/37512
+# dig @resolver1.opendns.com ANY myip.opendns.com +short # Both IPv6 and IPv4
+# dig @ns1.google.com TXT o-o.myaddr.l.google.com +short # Only IPv4
+# dig @ns1-1.akamaitech.net ANY whoami.akamai.net +short # Only IPv4
+alias wanip='dig @resolver1.opendns.com ANY myip.opendns.com +short'
+alias wanip4='dig @resolver1.opendns.com ANY myip.opendns.com +short -4'
+
+# For hosts = cvn.wmflabs.org
+alias cvnlog='for dir in `ls -d /srv/cvn/services/cvnbot/* | sort -V`; do name=$(basename "$dir"); echo; echo "# $name"; (sudo cat /var/log/syslog | grep $name | tail -n10); done;'
+
+# For os = Ubuntu or Debian
+if which ack-grep > /dev/null 2>&1
+then
+	alias ack=ack-grep
+fi
+
+# -------------------------------------------------
+# § 3. Setup
+# -------------------------------------------------
+
+# Bins: Home
+export PATH="${HOME}/bin:${PATH}"
+
+# Fix "sort: string comparison failed: Illegal byte sequence"
+export LC_ALL="C"
+export LANG="en_US"
+# Sort dotfiles before "a" in ls(1) and sort(1) (http://superuser.com/a/448294/164493)
+export LC_COLLATE="C"
+
+# http://serverfault.com/a/414763/180257
+# See also gitconfig/core.pager
+export LESSCHARSET=utf-8
+
+export EDITOR=vim
+
+# Colors
+# http://linux.101hacks.com/ps1-examples/prompt-color-using-tput/
+if [ -x /usr/bin/dircolors ]
+then
+	eval "`dircolors -b`"
+fi
+CLR_NONE=`tput sgr0`
+CLR_LINE=`tput smul`
+CLR_BOLD=`tput bold`
+CLR_BLACK=`tput setaf 0`
+CLR_RED=`tput setaf 1`
+CLR_GREEN=`tput setaf 2`
+CLR_YELLOW=`tput setaf 3`
+CLR_BLUE=`tput setaf 4`
+CLR_MAGENTA=`tput setaf 5`
+CLR_CYAN=`tput setaf 6`
+CLR_WHITE=`tput setaf 7`
+
+# Meta variables for Krinkle Dotfiles itself
+export KDF_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )"
+export KDF_PS1_HOST_NAME="$( hostname -f 2>/dev/null )"
+export KDF_PS1_HOST_COLOR="$CLR_CYAN"
+
+# Shell configuration
+# https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
+shopt -s autocd >/dev/null 2>&1
+shopt -s checkwinsize >/dev/null 2>&1
+shopt -s globstar >/dev/null 2>&1
+shopt -s histappend >/dev/null 2>&1
+shopt -s hostcomplete >/dev/null 2>&1
+shopt -s interactive_comments >/dev/null 2>&1
+shopt -s no_empty_cmd_completion >/dev/null 2>&1
+shopt -u mailwarn >/dev/null 2>&1
+
+export HISTCONTROL=ignorespace:erasedups
+export HISTSIZE=50000
+export HISTFILESIZE=50000
+
+
+# If not running interactively, stop here
+if [ -n "${PS1:-}" ]; then
+
+	test -f /etc/bash_completion && . /etc/bash_completion
+
+	# Bash prompt
+	PROMPT_COMMAND="_dotfiles-ps1-setup${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+
+	# Measure duration of last command
+	trap '_dotfiles-timer-start' DEBUG
+
+	# This MUST be the very last thing in PROMPT_COMMAND.
+	# As such, per-host index.bash MAY NOT change PROMPT_COMMAND.
+	PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;} _dotfiles-timer-stop"
+fi

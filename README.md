@@ -1,28 +1,29 @@
-# The Dotfiles
+# Krinkle Dotfiles
 
 ## Install
 
-**Read only**
+**[Basic](hosts/basic/#readme)**
 ```bash
-git clone https://github.com/Krinkle/dotfiles.git ~/.krinkle.dotfiles && ~/.krinkle.dotfiles/bin/init
+git clone https://github.com/Krinkle/dotfiles.git ~/.krinkle.dotfiles \
+  && ~/.krinkle.dotfiles/hosts/basic/install
 ```
 
-**Read and write**
+**[Primary](hosts/primary/#readme)**
 ```bash
-git clone git@github.com:Krinkle/dotfiles.git ~/.krinkle.dotfiles && ~/.krinkle.dotfiles/bin/init
+git clone git@github.com:Krinkle/dotfiles.git ~/.krinkle.dotfiles \
+  && ~/.krinkle.dotfiles/hosts/primary/install
 ```
 
 ## Screenshots
 
 <img height="444" alt="Screenshot of the Terminal app" src="https://user-images.githubusercontent.com/156867/53701021-b59e3300-3df0-11e9-8132-d0a85e9f80c9.png">
-
 <img height="380" alt="Screenshot of Git prompt" src="https://i.imgur.com/AGJ9uz1.png">
 
 ## FAQ
 
 ### Naming tabs?
 
-See [**§ Terminal app (Mac)**](hosts/KrinkleMac#terminal-app) for how to configure the naming of tabs.
+See [**§ Terminal app (Mac)**](hosts/primary#terminal-app) for how to configure the naming of tabs.
 
 ### j-What?
 
@@ -34,9 +35,10 @@ I recommend [Olivier Lacan's blog post](https://olivierlacan.com/posts/cd-is-was
 
 ### SSH Screen?
 
-Tabs inside GNU Screen over ssh ([config](https://github.com/Krinkle/dotfiles/blob/master/hosts/wmf/bashrc.sh#L113-L137)):
+<img width="591" alt="Screenshot of GNU Screen" src="https://user-images.githubusercontent.com/156867/54076468-dc061780-42a3-11e9-9f56-42b57299bbc4.png">
 
-<a href="https://i.imgur.com/alHXz3c.png"><img height="240" src="https://i.imgur.com/alHXz3c.png" title="Screenshot of tabs inside gnuscreen"></a>
+
+See [`screenrc`](https://github.com/Krinkle/dotfiles/blob/e4bf32b5188c71c0d728aae0f9d80622d3ccf049/hosts/wmf/screenrc) and [`setscreentitle()`](https://github.com/Krinkle/dotfiles/blob/master/hosts/wmf/bashrc#L112-L123).
 
 ## Thanks
 
