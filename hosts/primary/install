@@ -1,6 +1,7 @@
 #!/bin/bash -eu
 
-source $(dirname $0)/index.bash
+export KDF_INSTALLER=1
+. $(dirname $0)/index.bash
 
 function _dotfiles-install {
 
@@ -17,7 +18,7 @@ function _dotfiles-install {
 	_dotfiles-ensure-copy "$src/hosts/primary/bashrc" "$HOME/.bashrc"
 	_dotfiles-ensure-copy "$src/hosts/primary/bash_profile" "$HOME/.bash_profile"
 
-	echo "$(tput setaf 2)>>$(tput sgr0) Home directory ready!"
+	echo "$(tput setaf 2)>>$(tput sgr0) Home directory ready"
 
 	# Homebrew
 	echo "... check Homebrew"
@@ -98,7 +99,7 @@ function _dotfiles-install {
 _dotfiles-install
 
 echo
-echo "$(tput setaf 2)>>$(tput sgr0) Installation complete!"
+echo "$(tput setaf 2)>>$(tput sgr0) Installation complete"
 
 # Re-source after install
-source $(dirname $0)/index.bash
+. $(dirname $0)/index.bash

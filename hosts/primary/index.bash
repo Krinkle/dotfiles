@@ -327,10 +327,6 @@ alias dotfiles-push='cd $KDF_BASE_DIR; git add -p && _dotfiles-prompt-choice "OK
 
 # Colors
 # http://linux.101hacks.com/ps1-examples/prompt-color-using-tput/
-if [ -x /usr/bin/dircolors ]
-then
-	eval "`dircolors -b`"
-fi
 CLR_NONE=`tput sgr0`
 CLR_LINE=`tput smul`
 CLR_BOLD=`tput bold`
@@ -350,14 +346,14 @@ export KDF_PS1_HOST_COLOR="$CLR_CYAN"
 
 # Shell configuration
 # https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
-shopt -s autocd >/dev/null 2>&1
-shopt -s checkwinsize >/dev/null 2>&1
-shopt -s globstar >/dev/null 2>&1
-shopt -s histappend >/dev/null 2>&1
-shopt -s hostcomplete >/dev/null 2>&1
-shopt -s interactive_comments >/dev/null 2>&1
-shopt -s no_empty_cmd_completion >/dev/null 2>&1
-shopt -u mailwarn >/dev/null 2>&1
+shopt -s autocd >/dev/null 2>&1 || true
+shopt -s checkwinsize >/dev/null 2>&1 || true
+shopt -s globstar >/dev/null 2>&1 || true
+shopt -s histappend >/dev/null 2>&1 || true
+shopt -s hostcomplete >/dev/null 2>&1 || true
+shopt -s interactive_comments >/dev/null 2>&1 || true
+shopt -s no_empty_cmd_completion >/dev/null 2>&1 || true
+shopt -u mailwarn >/dev/null 2>&1 || true
 
 export HISTCONTROL=ignorespace:erasedups
 export HISTSIZE=50000
@@ -379,13 +375,13 @@ export PATH=/usr/local/opt/php@7.1/bin:$PATH
 export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
 
 # Bins: Composer global
-export PATH=$HOME/.composer/vendor/bin:$PATH
+export PATH="$HOME/.composer/vendor/bin:$PATH"
 
 # Bins: Misc dotfiles utilities
-export PATH=$KDF_BASE_DIR/hosts/primary/bin:$PATH
+export PATH="$KDF_BASE_DIR/hosts/primary/bin:$PATH"
 
 # Bins: Git contrib: diff-highlight
-export PATH=/usr/local/opt/git/share/git-core/contrib/diff-highlight:$PATH
+export PATH="/usr/local/opt/git/share/git-core/contrib/diff-highlight:$PATH"
 
 # Bins: Home
 export PATH="${HOME}/bin:${PATH}"
@@ -411,11 +407,11 @@ export LESSCHARSET=utf-8
 
 export EDITOR=vim
 
-# If not running interactively, stop here
-if [ -n "${PS1:-}" ]; then
-
+# If running interactively, do the below as well (non-interactively, it's not useful and causes issues).
+# Except when we're provisioning, as it would fail due to missing files.
+if [ -n "${PS1:-}" ] && [ -z "${KDF_INSTALLER:-}" ]; then
 	# Completion modules from Homebrew-installed packages
-	source /usr/local/etc/bash_completion
+	. /usr/local/etc/bash_completion
 	# See also "Aliases"
 	__git_complete g _git
 	__git_complete gi _git

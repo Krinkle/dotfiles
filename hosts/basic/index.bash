@@ -309,10 +309,6 @@ export EDITOR=vim
 
 # Colors
 # http://linux.101hacks.com/ps1-examples/prompt-color-using-tput/
-if [ -x /usr/bin/dircolors ]
-then
-	eval "`dircolors -b`"
-fi
 CLR_NONE=`tput sgr0`
 CLR_LINE=`tput smul`
 CLR_BOLD=`tput bold`
