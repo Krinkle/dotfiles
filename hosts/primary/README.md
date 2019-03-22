@@ -97,21 +97,29 @@ Install (other):
 * Safari Technology Preview
 * Sequel Pro
 * Sublime Text
+* [Tunnelblick](https://tunnelblick.net/)
 * VLC
 
 #### Atom
 
-Community Themes:
+Install Community Themes:
 
 * monokai
 
-Community Packages:
+Install Community Packages:
 
 * linter-eslint
 * minimap
 * minimap-highlight-selected
 * highlight-selected
 * sort-lines
+
+Settings:
+
+* Core / Exclude VCS Ignored Paths: **Disabled**. _(Include MediaWiki extension repos in search index)_
+* Packages / Tree View / Hide VCS Ignored Files: **Disabled**. _(Include MediaWiki extensions in sidebar. [Thanks @viion](https://github.com/atom/atom/issues/3429#issuecomment-286593181)!)_
+
+* Core / Ignored Names: `.git, .hg, .svn, .DS_Store, node_modules, vendor`. _(Compensate for inclusion of VCS Ignored Paths)_
 
 #### Docker for Mac
 
@@ -122,6 +130,26 @@ File Sharing:
 Advanced:
 
 * Increase memory to 4 GB.
+
+#### Finder
+
+Finder Preferences -> General:
+
+* New Finder windows show: Home directory.
+
+Finder Preferences -> Sidebar:
+
+* (disabled) Favourites / Recents.
+* (enabled) Favourites / (all others).
+* (disabled) iCloud Drive.
+* (disabled) Locations / My Computer.
+* (disabled) Locations / CDs (includes "Remote Disc" placeholder)
+* (enabled) Locations / (all others).
+* (disabled) Tags.
+
+Desktop / View:
+
+* Sort By: Snap to Grid (enabled).
 
 #### Gmail
 
@@ -198,6 +226,10 @@ Trackpad -> More Gestures:
 Accessibility -> Mouse & Trackpad -> Trackpad Options:
 
 * (enabled) Enable dragging by "three finger drag".
+
+Spotlight:
+
+* Prevent indexing of: `~/Development`.
 
 #### Terminal app
 
