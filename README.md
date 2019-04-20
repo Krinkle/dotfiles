@@ -42,7 +42,9 @@ See [`screenrc`](https://github.com/Krinkle/dotfiles/blob/e4bf32b5188c71c0d728aa
 
 ## Thanks
 
-* [@cowboy](https://github.com/cowboy) ([cowboy/dotfiles](https://github.com/cowboy/dotfiles))
-* [@rtomayko](https://github.com/rtomayko) ([rtomayko/dotfiles](https://github.com/rtomayko/dotfiles))
+* [@cowboy](https://github.com/cowboy) ([dotfiles](https://github.com/cowboy/dotfiles))
+* [@rtomayko](https://github.com/rtomayko) ([dotfiles](https://github.com/rtomayko/dotfiles))
 * [@catrope](https://github.com/catrope)
 * [@jakemcc](https://github.com/jakemcc) ([Last command run-time in prompt](http://jakemccrary.com/blog/2015/05/03/put-the-last-commands-run-time-in-your-bash-prompt/))
+* [@mathiasbynens](https://github.com/mathiasbynens) ([dotfiles](https://github.com/mathiasbynens/dotfiles/blob/ef819d5fcd/.osx))
+* [@ymendel](https://github.com/ymendel) ([dotfiles](https://github.com/ymendel/dotfiles/tree/0ff3906a98/osx))

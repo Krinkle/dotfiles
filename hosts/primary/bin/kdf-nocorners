@@ -1,0 +1,6 @@
+#!/bin/bash -u
+
+defaults write com.apple.dock wvous-tl-corner -int 0
+defaults write com.apple.dock wvous-tr-corner -int 0
+
+killall Dock

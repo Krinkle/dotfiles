@@ -94,6 +94,30 @@ function _dotfiles-install {
 	tmpPath=$HOME/.config
 	tmpDest=$KDF_BASE_DIR/hosts/primary/config
 	_dotfiles-ensure-link "$tmpPath" "$tmpDest"
+
+
+	# Create Finder Shortcut with descriptive name,
+	# indexed by Spotlight for easy access.
+	tmpSrcDir="$HOME/Documents/Temp"
+	mkdir -p "$tmpSrcDir"
+	tmpDest=$KDF_BASE_DIR/hosts/primary/bin/kdf-corners
+	tmpSrcName="KDF Enable Corners"
+	rm -f "$tmpSrcDir/$tmpSrcName"
+	osascript <<EOF
+tell application "Finder"
+	make new alias to file (posix file "$tmpDest") at (posix file "$tmpSrcDir")
+	set name of result to "$tmpSrcName"
+end tell
+EOF
+	tmpDest=$KDF_BASE_DIR/hosts/primary/bin/kdf-nocorners
+	tmpSrcName="KDF Disable Corners"
+	rm -f "$tmpSrcDir/$tmpSrcName"
+	osascript <<EOF
+tell application "Finder"
+	make new alias to file (posix file "$tmpDest") at (posix file "$tmpSrcDir")
+	set name of result to "$tmpSrcName"
+end tell
+EOF
 }
 
 _dotfiles-install

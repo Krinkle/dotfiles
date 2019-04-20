@@ -1,0 +1,23 @@
+#!/bin/bash -u
+
+# Courtesy of Pawel Grzybek [1] and Yossef Mendelssohn [2].
+#
+# [1]: https://pawelgrzybek.com/change-macos-user-preferences-via-command-line/
+# [2]: https://github.com/ymendel/dotfiles/blob/0ff3906a98/osx/corners.defaults
+
+# Possible values:
+#  0: no-op
+#  2: Mission Control (all windows)
+#  3: Show application windows
+#  4: Desktop
+#  5: Start screen saver
+#  6: Disable screen saver
+#  7: Dashboard
+# 10: Put display to sleep
+# 11: Launchpad
+# 12: Notification Center
+
+defaults write com.apple.dock wvous-tl-corner -int 4
+defaults write com.apple.dock wvous-tr-corner -int 2
+
+killall Dock
