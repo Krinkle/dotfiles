@@ -28,12 +28,12 @@ function _dotfiles-ps1-time {
 }
 
 function _dotfiles-ensure-link {
-	if [ -z $2 ]; then
+	if [ -z "$2" ]; then
 		echo "usage: ${FUNCNAME[0]} <link-path> <link-dest>"
 		return 1
 	fi
-	local path=$1
-	local dest=$2
+	local path="$1"
+	local dest="$2"
 	local name="$(basename $dest)"
 	local backup_dest="$HOME/.dotfiles.backup"
 	local suffix
@@ -186,7 +186,7 @@ function dotfiles-pull {
 }
 
 function genpass {
-	if [ -z $1 ]; then
+	if [ -z "$1" ]; then
 		echo "usage: ${FUNCNAME[0]} <length>"
 		return 1
 	fi
@@ -195,7 +195,7 @@ function genpass {
 }
 
 function doclonegerrit {
-	if [ -z $1 ]; then
+	if [ -z "$1" ]; then
 		echo "usage: ${FUNCNAME[0]} <name>"
 		return 1
 	fi
@@ -203,7 +203,7 @@ function doclonegerrit {
 }
 
 function doaddwmext {
-	if [ -z $1 ]; then
+	if [ -z "$1" ]; then
 		echo "usage: ${FUNCNAME[0]} <name>"
 		return 1
 	fi
@@ -264,6 +264,20 @@ function do-globalgitstatus {
 	base="$HOME/Development"
 	find "$base" -type d -name '.git' -mindepth 1 -maxdepth 6 | _globalgitstatus_read
 	cd $cwd
+}
+
+function vlc-convert-m4a {
+	if [ -z "$1" ]; then
+		echo "usage: ${FUNCNAME[0]} <input>"
+		return 1
+	fi
+	vlc="/Applications/VLC.app/Contents/MacOS/VLC"
+	input="$1"
+	# swap last extension
+	output="${input%.*}.m4a"
+	# strip any quotes
+	output="${output//\"}"
+	"$vlc" -I dummy --sout "#transcode{acodec=mp4a,ab=256,channels=2,samplerate=44100}:std{access=file,mux=mp4,dst=\"$output\"}" "$input" "vlc://quit"
 }
 
 # -------------------------------------------------
