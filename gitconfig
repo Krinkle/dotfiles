@@ -30,7 +30,7 @@
 	gerrit-config-push = push origin meta/config:refs/meta/config
 	gerrit-config-review = push origin meta/config:refs/for/refs/meta/config
 
-	dashboards-checkout = "!f() { git fetch origin refs/meta/dashboards/$1:refs/remotes/origin/dashboards_$1 && git checkout dashboards_$1; }; f"
+	dashboards-checkout = "!f() { git fetch origin refs/meta/dashboards/$1:refs/remotes/origin/dashboards_$1 && git checkout -B dashboards_$1 refs/remotes/origin/dashboards_$1; }; f"
 	dashboards-review = "!f() { git push origin HEAD:refs/for/refs/meta/dashboards/$1; }; f"
 	dashboards-push = "!f() { git push origin HEAD:refs/meta/dashboards/$1; }; f"
 	dash-co = dashboards-checkout
