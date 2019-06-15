@@ -397,6 +397,10 @@ export PATH="$KDF_BASE_DIR/hosts/primary/bin:$PATH"
 # Bins: Git contrib: diff-highlight
 export PATH="/usr/local/opt/git/share/git-core/contrib/diff-highlight:$PATH"
 
+# Bins: Arcnanist
+# https://secure.phabricator.com/book/phabricator/article/arcanist_quick_start/
+export PATH="${PATH}:${HOME}/Development/arcanist/bin"
+
 # Bins: Home
 export PATH="${HOME}/bin:${PATH}"
 
