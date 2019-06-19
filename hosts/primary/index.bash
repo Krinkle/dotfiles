@@ -320,6 +320,7 @@ alias gigisu='git lg-prefix'
 alias domakejenkinscommit='git remote update origin && git co -b jenkins -t origin/master && touch jenkins.js jenkins.css jenkins.php .jenkins && git add jenkins.js jenkins.css jenkins.php .jenkins && git commit -m "Sample commit for Jenkins"'
 
 alias diff='colordiff'
+alias sdi='svn diff | colordiff'
 
 # http://ariejan.net/2011/11/08/fixing-a-slow-starting-terminal-or-iterm2-on-mac-os-x
 # https://discussions.apple.com/thread/2178316?start=0&tstart=0
@@ -383,7 +384,7 @@ export PATH=/usr/local/opt/ruby/bin:$PATH
 export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 
 # Bins: Homebrew's PHP
-export PATH=/usr/local/opt/php@7.1/bin:$PATH
+export PATH=/usr/local/opt/php@7.2/bin:$PATH
 
 # Bins: Sublime Text (subl)
 export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
