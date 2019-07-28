@@ -280,6 +280,16 @@ function vlc-convert-m4a {
 	"$vlc" -I dummy --sout "#transcode{acodec=mp4a,ab=256,channels=2,samplerate=44100}:std{access=file,mux=mp4,dst=\"$output\"}" "$input" "vlc://quit"
 }
 
+function pullfrom0ad {
+	if [ -z "$1" ]; then
+		echo "usage: ${FUNCNAME[0]} <Dnnn>"
+		return 1
+	fi
+	patch="$1"
+	curl "https://code.wildfiregames.com/{$patch}?download=true" -L 2>/dev/null > /tmp/arc.diff
+	arc patch --force --nocommit --patch /tmp/arc.diff
+}
+
 # -------------------------------------------------
 # § 2. Aliases
 # -------------------------------------------------
