@@ -221,7 +221,7 @@ function domwextforeach {
 		echo "Next: $dir"
 		cd "$dir"
 		bash -c "$1"
-		cd "$EXTDIR"
+		cd "$extDir"
 	done
 }
 
