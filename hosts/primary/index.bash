@@ -422,7 +422,7 @@ export GPG_TTY=$(tty)
 export MW_SERVER='http://default.web.mw.localhost:8080'
 export MW_SCRIPT_PATH='/mediawiki'
 export MEDIAWIKI_USER='Admin'
-export MEDIAWIKI_PASSWORD='adminpass'
+export MEDIAWIKI_PASSWORD='dockerpass'
 
 # Fix "sort: string comparison failed: Illegal byte sequence"
 export LC_ALL="C"
