@@ -125,11 +125,15 @@ Settings:
 
 File Sharing:
 
-* Only allow directories under `/Users` to be mounted.
+* Only allow directories under `/Users/krinkle/Development` to be mounted.
 
 Advanced:
 
 * Increase memory to 4 GB.
+
+#### 🌱  Fresh
+
+Install from <https://github.com/wikimedia/fresh>.
 
 #### Finder
 
