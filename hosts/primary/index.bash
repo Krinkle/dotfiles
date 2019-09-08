@@ -280,6 +280,15 @@ function vlc-convert-m4a {
 	"$vlc" -I dummy --sout "#transcode{acodec=mp4a,ab=256,channels=2,samplerate=44100}:std{access=file,mux=mp4,dst=\"$output\"}" "$input" "vlc://quit"
 }
 
+# Workaround: 'arc patch' doesn't work properly when applying patches
+# that upstream Phabricator knows will go into an SVN repo, when the
+# local is a Git repo. It will eagerly demand to find the latest SVN
+# revision in the local Git repo by scanning every commit in the history
+# for the right 'git-svn-id:' text in the commit message, which takes
+# forever.
+#
+# https://secure.phabricator.com/T9044
+#
 function pullfrom0ad {
 	if [ -z "$1" ]; then
 		echo "usage: ${FUNCNAME[0]} <Dnnn>"
@@ -287,7 +296,22 @@ function pullfrom0ad {
 	fi
 	patch="$1"
 	curl "https://code.wildfiregames.com/{$patch}?download=true" -L 2>/dev/null > /tmp/arc.diff
-	arc patch --force --nocommit --patch /tmp/arc.diff
+	# Create or overwrite a dedicated branch and quitely reset to latest origin/master.
+	# This uses 'git checkout -B' instead of 'git branch -f' because the latter doesn't
+	# work if you're already on the given branch.
+	git checkout -q -B "arcpatch_$patch" origin/master
+	# Note, ideally this should be:
+	# `arc patch --force --nocommit --patch /tmp/arc.diff`
+	#
+	# ... because Arcanist is from Phabricator, which is where the patch is downloaded
+	# from. Unfortunately, arc-diff doesn't understand its own output.
+	# For new files it uses '--- /dev/null +++ new/file.txt', which arc-diff fails to apply:
+	# > error: dev/null: does not exist in index
+	# > Usage Exception: Unable to apply patch!
+	#
+	# Work around by using 'git apply' instead, which does understand it.
+	git apply -p0 --index -v /tmp/arc.diff
+	git commit -q -m "D2079"
 }
 
 # -------------------------------------------------
