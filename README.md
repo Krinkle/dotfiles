@@ -38,7 +38,7 @@ I recommend [Olivier Lacan's blog post](https://olivierlacan.com/posts/cd-is-was
 <img width="591" alt="Screenshot of GNU Screen" src="https://user-images.githubusercontent.com/156867/54076468-dc061780-42a3-11e9-9f56-42b57299bbc4.png">
 
 
-See [`screenrc`](https://github.com/Krinkle/dotfiles/blob/e4bf32b5188c71c0d728aae0f9d80622d3ccf049/hosts/wmf/screenrc) and [`setscreentitle()`](https://github.com/Krinkle/dotfiles/blob/master/hosts/wmf/bashrc#L112-L123).
+See [`screenrc`](https://github.com/Krinkle/dotfiles/blob/e4bf32b5188c71c0d728aae0f9d80622d3ccf049/hosts/wmf/screenrc) and [`setscreentitle()`](https://github.com/Krinkle/dotfiles/blob/db27954dcdd05e5d03ea101c97ae2bb096c412aa/hosts/wmf/bashrc#L112-L123).
 
 ## Thanks
 
