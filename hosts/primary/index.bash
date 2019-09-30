@@ -251,7 +251,7 @@ function _globalgitstatus_read {
 		if test -n "$content"; then
 			echo
 			echo "$(dirname "$treedir")/${CLR_BOLD}$(basename "$treedir")$CLR_NONE"
-			printf '%s\n' "${content[@]}"
+			printf '%s\n' "$content"
 		fi
 	done
 }
@@ -346,7 +346,7 @@ alias wanip4='dig @resolver1.opendns.com ANY myip.opendns.com +short -4'
 alias g='git'
 alias gi='git'
 alias gir='git'
-alias dogitcommit='git commit -F ~/Documents/Temp/COMMIT.txt'
+alias dogitcommit='git commit -F ~/Documents/COMMIT.txt'
 alias gogogerrit='git review -R'
 alias grabfromgerrit='git review -d'
 alias gigisu='git lg-prefix'
@@ -443,7 +443,7 @@ export PATH="${HOME}/bin:${PATH}"
 export GPG_TTY=$(tty)
 
 # MediaWiki
-export MW_SERVER='http://default.web.mw.localhost:8080'
+export MW_SERVER='http://default.web.mw.localhost:8181'
 export MW_SCRIPT_PATH='/mediawiki'
 export MEDIAWIKI_USER='Admin'
 export MEDIAWIKI_PASSWORD='dockerpass'

@@ -52,21 +52,6 @@ doaddwmext TemplateData
 doaddwmext WikimediaEvents
 ```
 
-#### Apache
-
-Reserve port 8080 for mediawiki-docker-dev (or MediaWiki-Vagrant).
-Move the local Apache to port 8000, for serving `~/Development`.
-
-```
-# Change `Listen 8080` to `Listen 8000`
-$ edit /usr/local/etc/httpd/httpd.conf
-
-# Load custom config
-$ mkdir /usr/local/etc/httpd/other
-$ echo 'Include /usr/local/etc/httpd/other/*.conf' >> /usr/local/etc/httpd/httpd.conf
-$ ln -s $KDF_BASE_DIR/hosts/primary/httpd.conf /usr/local/etc/httpd/other/krinkle.conf
-```
-
 ## Applications
 
 Install via App Store:
@@ -75,7 +60,6 @@ Install via App Store:
 * Simplenote
 * Skitch
 * The Unarchiver
-* Time Out
 * Wunderlist
 
 Install (other):
@@ -84,20 +68,16 @@ Install (other):
 * coconutBattery
 * Docker
 * Firefox
-* FirefoxDeveloperEdition
 * GPG Suite
 * Google Chrome
-* Google Chrome Canary
 * ImageOptim
 * KeeWeb
 * Logitech Options
 * MySQLWorkbench
 * OpenOffice
-* Opera
-* Safari Technology Preview
 * Sequel Pro
 * Sublime Text
-* [Tunnelblick](https://tunnelblick.net/)
+* Telegram
 * VLC
 
 #### Atom
@@ -155,6 +135,12 @@ Desktop / View:
 
 * Sort By: Snap to Grid (enabled).
 
+#### Firefox
+
+Firefox / Advanced Preferences (`about:config`):
+
+* (enabled) `view_source.wrap_long_lines` _(match Chromium's default behaviour)_
+
 #### Gmail
 
 Settings -> General:
@@ -176,6 +162,12 @@ System Preferences / GPG Suite / Settings:
 Preferences:
 
 * (disabled) Play sound effects.
+
+#### Simplenote
+
+View:
+* Notes List / Note Display: Condensed.
+* Notes List / Sort Order: Alphabetical.
 
 #### Skitch
 
@@ -206,6 +198,7 @@ Keyboard -> Text:
 * (disabled) Use smart quotes. _(Sorry, I do I love these but, the vast majority
   of text areas it affects I may end up writing code in; Besides, any context
   in which I write "properly" already supports this own its own without OS support)_
+* (disabled) Add full stop with double-space.
 
 Keyboard -> Shortcuts -> Mission Control:
 
@@ -215,6 +208,11 @@ Keyboard -> Shortcuts -> Mission Control:
 Date & Time -> Clock:
 
 * (enabled) Show date.
+* (disabled) Application Windows - "^↓"
+
+Dock:
+
+* (disabled) Show recent applications in Dock.
 
 Screen savers -> Hot Corners:
 

@@ -35,7 +35,7 @@ Host gerrit.wikimedia.org git-ssh.wikimedia.org
 ## Wikimedia Production
 ## https://wikitech.wikimedia.org/wiki/Production_shell_access#SSH_configuration
 
-Host bast1002.wikimedia.org bast2001.wikimedia.org bast3002.wikimedia.org bast4002.wikimedia.org bast5001.wikimedia.org
+Host bast1002.wikimedia.org bast2001.wikimedia.org bast3004.wikimedia.org bast4002.wikimedia.org bast5001.wikimedia.org
     ProxyCommand none
     ControlMaster auto
     User krinkle
@@ -43,7 +43,7 @@ Host bast1002.wikimedia.org bast2001.wikimedia.org bast3002.wikimedia.org bast40
     IdentitiesOnly yes
 
 Host *.wikimedia.org *.wmnet !gerrit.wikimedia.org !git-ssh.wikimedia.org
-    ProxyCommand ssh -a -W %h:%p bast3002.wikimedia.org
+    ProxyCommand ssh -a -W %h:%p bast3004.wikimedia.org
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wm
     IdentitiesOnly yes

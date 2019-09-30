@@ -54,12 +54,10 @@ function _dotfiles-install {
 		ruby
 		watch
 		wget
-		httpd
 	)
 	for f in "${formulas[@]}"; do
 		brew upgrade $f || brew install $f
 	done
-	# After 'httpd' above
 	brew upgrade php@7.2 || brew install php@7.2
 
 	brew cleanup
@@ -98,7 +96,7 @@ function _dotfiles-install {
 
 	# Create Finder Shortcut with descriptive name,
 	# indexed by Spotlight for easy access.
-	tmpSrcDir="$HOME/Documents/Temp"
+	tmpSrcDir="$HOME/Applications"
 	mkdir -p "$tmpSrcDir"
 	tmpDest=$KDF_BASE_DIR/hosts/primary/bin/kdf-corners
 	tmpSrcName="KDF Enable Corners"
