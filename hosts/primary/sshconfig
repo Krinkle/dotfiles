@@ -1,78 +1,60 @@
 ## General
 
-# http://stackoverflow.com/a/8660564/319266
-ServerAliveInterval 30
-
-# https://developer.apple.com/library/content/technotes/tn2449/_index.html
-# OpenSSH will no longer load keys into ssh-agent automatically.
-AddKeysToAgent yes
 
 ## Wikimedia Labs
 ## https://wikitech.wikimedia.org/wiki/Help:Access#ProxyCommand
 
 Host primary.bastion.wmflabs.org tools-login.wmflabs.org login-stretch.tools.wmflabs.org
     ProxyCommand none
-    ControlMaster auto
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wla
-    IdentitiesOnly yes
 
 Host *.wmflabs.org *.wmflabs
     ProxyCommand ssh -a -W %h:%p primary.bastion.wmflabs.org
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wla
-    IdentitiesOnly yes
 
 ## Wikimedia Gerrit
 
 Host gerrit.wikimedia.org git-ssh.wikimedia.org
     ProxyCommand none
-    ControlMaster auto
     User krinkle
     IdentityFile ~/.ssh/id_rsa_grr
-    IdentitiesOnly yes
 
 ## Wikimedia Production
 ## https://wikitech.wikimedia.org/wiki/Production_shell_access#SSH_configuration
 
 Host bast1002.wikimedia.org bast2001.wikimedia.org bast3004.wikimedia.org bast4002.wikimedia.org bast5001.wikimedia.org
     ProxyCommand none
-    ControlMaster auto
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wm
-    IdentitiesOnly yes
 
 Host *.wikimedia.org *.wmnet !gerrit.wikimedia.org !git-ssh.wikimedia.org
     ProxyCommand ssh -a -W %h:%p bast3004.wikimedia.org
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wm
-    IdentitiesOnly yes
 
 ## jQuery
 
 Host *.jquery.com *.jquery.net
     User krinkle
     IdentityFile ~/.ssh/id_rsa_jq
-    IdentitiesOnly yes
 
 ## GitHub
 
 Host github.com
     User krinkle
     IdentityFile ~/.ssh/id_rsa_gh
-    IdentitiesOnly yes
 
 Host gist.github.com
     User krinkle
     IdentityFile ~/.ssh/id_rsa_gh
-    IdentitiesOnly yes
 
 ## Antagonist
 
 Host timotijhof.net
     User deb35044
     IdentityFile ~/.ssh/id_rsa_santagio
-    IdentitiesOnly yes
     # IPv4
     AddressFamily inet
 
@@ -82,3 +64,16 @@ Host secure.phabricator.com
     User secure
     IdentityFile ~/.ssh/id_rsa_phabricator
     IdentitiesOnly yes
+
+
+## (Default)
+
+Host *
+    ForwardAgent no
+    ControlMaster no
+    IdentitiesOnly yes
+    # https://stackoverflow.com/a/8660564/319266
+    ServerAliveInterval 60
+    # https://developer.apple.com/library/content/technotes/tn2449/_index.html
+    # OpenSSH will no longer load keys into ssh-agent automatically.
+    AddKeysToAgent yes
