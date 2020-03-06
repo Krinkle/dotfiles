@@ -1,18 +1,16 @@
 ## General
 
+## Wikimedia Cloud VPS
+## https://wikitech.wikimedia.org/wiki/Help:Accessing_Cloud_VPS_instances#ProxyJump_(recommended)
 
-## Wikimedia Labs
-## https://wikitech.wikimedia.org/wiki/Help:Access#ProxyCommand
-
-Host primary.bastion.wmflabs.org tools-login.wmflabs.org login-stretch.tools.wmflabs.org
-    ProxyCommand none
+Host bastion.wmflabs.org tools-login.wmflabs.org
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wla
 
-Host *.wmflabs.org *.wmflabs
-    ProxyCommand ssh -a -W %h:%p primary.bastion.wmflabs.org
+Host *.wmflabs
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wla
+    ProxyJump bastion.wmflabs.org:22
 
 ## Wikimedia Gerrit
 
