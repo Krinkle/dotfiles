@@ -7,7 +7,7 @@ Host bastion.wmflabs.org tools-login.wmflabs.org
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wla
 
-Host *.wmflabs
+Host *.wmflabs *.wikimedia.cloud
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wla
     ProxyJump bastion.wmflabs.org:22

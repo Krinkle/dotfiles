@@ -443,7 +443,7 @@ export PATH="${HOME}/bin:${PATH}"
 export GPG_TTY=$(tty)
 
 # MediaWiki
-export MW_SERVER='http://default.web.mw.localhost:8181'
+export MW_SERVER='http://default.web.mw.localhost:8080'
 export MW_SCRIPT_PATH='/mediawiki'
 export MEDIAWIKI_USER='Admin'
 export MEDIAWIKI_PASSWORD='dockerpass'
