@@ -30,7 +30,7 @@ git clone https://github.com/addshore/mediawiki-docker-dev.git
 doclonegerrit mediawiki/core mediawiki
 doclonegerrit oojs/core oojs
 doclonegerrit oojs/ui oojs-ui
-doclonegerrit integration/config wikimedia/integration/config
+doclonegerrit integration/config wikimedia/integration-config
 doclonegerrit operations/mediawiki-config wikimedia/operations-mediawiki-config
 doclonegerrit operations/puppet wikimedia/puppet
 
@@ -56,11 +56,14 @@ doaddwmext WikimediaEvents
 
 Install via App Store:
 
+* Affinity Photo
+* Mini Calendar
 * Pixelmator
 * Simplenote
 * Skitch
+* Telegram
 * The Unarchiver
-* Wunderlist
+* Time Out
 
 Install (other):
 
@@ -68,16 +71,14 @@ Install (other):
 * coconutBattery
 * Docker
 * Firefox
-* GPG Suite
 * Google Chrome
+* GPG Suite (GPG Keychain)
 * ImageOptim
 * KeeWeb
 * Logitech Options
-* MySQLWorkbench
 * OpenOffice
-* Sequel Pro
+* Steam
 * Sublime Text
-* Telegram
 * VLC
 
 #### Atom
@@ -94,12 +95,17 @@ Install Community Packages:
 * highlight-selected
 * sort-lines
 
-Settings:
+Settings / Core:
 
-* Core / Exclude VCS Ignored Paths: **Disabled**. _(Include MediaWiki extension repos in search index)_
+* Exclude VCS Ignored Paths: **Disabled**. _(Include MediaWiki extension repos in search index)_
+
+* Ignored Names: `.git, .hg, .svn, .DS_Store, node_modules, vendor`. _(Compensate for inclusion of VCS Ignored Paths)_
+
+Settings / Editor:
+
+* Show Invisibles: **Enabled**. _(Show tab marks)_
+
 * Packages / Tree View / Hide VCS Ignored Files: **Disabled**. _(Include MediaWiki extensions in sidebar. [Thanks @viion](https://github.com/atom/atom/issues/3429#issuecomment-286593181)!)_
-
-* Core / Ignored Names: `.git, .hg, .svn, .DS_Store, node_modules, vendor`. _(Compensate for inclusion of VCS Ignored Paths)_
 
 #### Docker for Mac
 
@@ -137,7 +143,15 @@ Desktop / View:
 
 #### Firefox
 
-Firefox / Advanced Preferences (`about:config`):
+Preferences -> Search:
+
+* Default search engine: DuckDuckGo.
+
+Preferences -> Security:
+
+* (disabled) Ask to save logins and passwords.
+
+Advanced Preferences (`about:config`):
 
 * (enabled) `view_source.wrap_long_lines` _(match Chromium's default behaviour)_
 
@@ -163,11 +177,44 @@ Preferences:
 
 * (disabled) Play sound effects.
 
+#### Music app
+
+View:
+
+* (enabled) Show Status Bar.
+
 #### Simplenote
 
 View:
+
 * Notes List / Note Display: Condensed.
 * Notes List / Sort Order: Alphabetical.
+
+#### Safari
+
+View:
+
+* (enabled) Show Status Bar
+
+Preferences -> General:
+
+* Safari opens with: "A new window".
+* New windows: "Empty page".
+* New tabs: "Empty page".
+* (disabled) Open safe files after downloading.
+
+Preferences -> AutoFill:
+
+* (disabled) Everything.
+
+Preferences -> Search:
+
+* Search engine: DuckDuckGo
+* (disabled) Preload Top Hit in the background.
+
+Preferences -> Advanced:
+
+* (enabled) Pressing Tab will highlight each item on a webpage.
 
 #### Skitch
 
@@ -187,10 +234,21 @@ Plugins:
 
 #### System Preferences
 
-Mission Control:
+Accessibility -> Mouse & Trackpad -> Trackpad Options:
 
-* (disabled) Automatically rearrange Spaces based on most recent use.
-* See also <https://apple.stackexchange.com/a/44801/33762>
+* (enabled) Enable dragging by "three finger drag".
+
+Date & Time -> Clock:
+
+* (enabled) Show date.
+
+Dock:
+
+* (disabled) Show recent applications in Dock.
+
+Internet Accounts:
+
+* (enabled) Google / Contacts.
 
 Keyboard -> Text:
 
@@ -205,19 +263,38 @@ Keyboard -> Shortcuts -> Mission Control:
 * (disabled) Mission Control - "^↑" (These interfere with Sublime Text selection expansion shortcuts, `Shift ctrl ↑` and `Shift ^ ↓`.):
 * (disabled) Application Windows - "^↓"
 
-Date & Time -> Clock:
+Mission Control:
 
-* (enabled) Show date.
-* (disabled) Application Windows - "^↓"
+* (disabled) Automatically rearrange Spaces based on most recent use.
+* See also <https://apple.stackexchange.com/a/44801/33762>
 
-Dock:
+Security & Privacy:
 
-* (disabled) Show recent applications in Dock.
+* (enabled) Require password after sleep or screen saver.
+* Require password after: "immediately".
 
 Screen savers -> Hot Corners:
 
 * (enabled) Top left: Desktop.
 * (enabled) Top right: Mission Control.
+
+Sharing:
+
+* Computer Name: `krinkle-mbp#`
+
+Spotlight -> Search results:
+
+* (disabled) Spotlight Suggestions
+* (disabled) Allow Spotlight Suggestions in Look Up
+
+Spotlight -> Privacy:
+
+* Prevent indexing of: `~/Development` (performance reasons).
+
+Time Machine:
+
+* Exclude: `~/Development`.
+* Exclude: `~/Downloads`.
 
 Trackpad -> More Gestures:
 
@@ -225,13 +302,9 @@ Trackpad -> More Gestures:
 * (enabled) Swipe between spaces by "swipe sideways with **four** fingers. _(Keep "three fingers" reserved for dragging.)_
 * (disabled) Mission Control. _(Triggered via Hot Corners instead. Keep "three fingers" reserved for dragging.)_
 
-Accessibility -> Mouse & Trackpad -> Trackpad Options:
+Users & Groups -> Advanced Options:
 
-* (enabled) Enable dragging by "three finger drag".
-
-Spotlight:
-
-* Prevent indexing of: `~/Development`.
+* Login shell: `/usr/local/bin/bash` (via Homebrew)
 
 #### Terminal app
 

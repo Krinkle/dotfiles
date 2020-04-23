@@ -311,7 +311,7 @@ function pullfrom0ad {
 	#
 	# Work around by using 'git apply' instead, which does understand it.
 	git apply -p0 --index -v /tmp/arc.diff
-	git commit -q -m "D2079"
+	git commit -q -m "${patch}"
 }
 
 # -------------------------------------------------
@@ -346,7 +346,7 @@ alias wanip4='dig @resolver1.opendns.com ANY myip.opendns.com +short -4'
 alias g='git'
 alias gi='git'
 alias gir='git'
-alias dogitcommit='git commit -F ~/Documents/COMMIT.txt'
+alias dogitcommit='git commit -F ~/Development/Temp/COMMIT.txt'
 alias gogogerrit='git review -R'
 alias grabfromgerrit='git review -d'
 alias gigisu='git lg-prefix'

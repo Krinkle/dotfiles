@@ -46,12 +46,17 @@ function _dotfiles-install {
 		git
 		# https://www.mediawiki.org/wiki/Gerrit/git-review#OS_X
 		git-review
-		gnupg2
 		hh
 		jq
 		node
 		pwgen
 		ruby
+		# Tox to simplify managing Python venv and testing
+		# - https://www.mediawiki.org/wiki/CI/JJB
+		# - https://www.mediawiki.org/wiki/Zuul
+		# - performance/navtiming
+		# - etc.
+		tox
 		watch
 		wget
 	)
@@ -61,6 +66,9 @@ function _dotfiles-install {
 	brew upgrade php@7.2 || brew install php@7.2
 
 	brew cleanup
+
+	echo "... post-install: node"
+	rm -f /usr/local/bin/npm
 
 	echo "... post-install: php"
 	test -f /usr/local/etc/php/7.2/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/primary/php.ini /usr/local/etc/php/7.2/conf.d/krinkle.ini )

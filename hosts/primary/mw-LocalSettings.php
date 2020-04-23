@@ -14,6 +14,7 @@
 ## Development
 ##
 
+putenv( 'MW_LOG_DIR=/var/log/mediawiki' );
 require_once "$IP/includes/DevelopmentSettings.php";
 // $wgDebugToolbar = true;
 // $wgDebugRawPage = true;
@@ -84,8 +85,10 @@ wfLoadExtension('Cite');
 // wfLoadExtension('AbuseFilter');
 // wfLoadExtension('CodeEditor');
 // wfLoadExtension('ContentTranslation');
+// wfLoadExtension('EventStreamConfig');
 // wfLoadExtension('EventLogging');
 // wfLoadExtension('GlobalCssJs');
+// wfLoadExtension('MobileFrontend');
 // wfLoadExtension('NavigationTiming');
 // wfLoadExtension('TemplateData');
 // wfLoadExtension('UniversalLanguageSelector');
