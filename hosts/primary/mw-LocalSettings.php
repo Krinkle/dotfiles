@@ -16,6 +16,7 @@
 
 putenv( 'MW_LOG_DIR=/var/log/mediawiki' );
 require_once "$IP/includes/DevelopmentSettings.php";
+// ini_set( 'display_errors', 0 );
 // $wgDebugToolbar = true;
 // $wgDebugRawPage = true;
 // $wgDevelopmentWarnings = true;
@@ -65,14 +66,16 @@ $wgLocalisationCacheConf['store'] = 'array';
 ##
 
 wfLoadSkin('Vector');
-// wfLoadSkin('MonoBook');
+wfLoadSkin('MonoBook');
 // wfLoadSkin('MinervaNeue');
+// wfLoadSkin('Nostalgia');
 
 ##
 ## Tarball extensions
 ##
 
 wfLoadExtension('Cite');
+// wfLoadExtension('CiteThisPage');
 // wfLoadExtension('Gadgets');
 // wfLoadExtension('Interwiki');
 // wfLoadExtension('ParserFunctions');
@@ -87,6 +90,7 @@ wfLoadExtension('Cite');
 // wfLoadExtension('ContentTranslation');
 // wfLoadExtension('EventStreamConfig');
 // wfLoadExtension('EventLogging');
+// wfLoadExtension('Echo');
 // wfLoadExtension('GlobalCssJs');
 // wfLoadExtension('MobileFrontend');
 // wfLoadExtension('NavigationTiming');

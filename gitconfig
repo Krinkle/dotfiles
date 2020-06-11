@@ -3,6 +3,7 @@
 [diff]
 	compactionHeuristic = 1
 [alias]
+	# See also https://www.mediawiki.org/wiki/Git/aliases
 	p = add -p
 	ad = add
 	br = branch
@@ -12,7 +13,7 @@
 	ap = commit --amend
 	di = diff
 	ds = diff --staged
-	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
 	l = ! git lg -n25
 	pul = pull
 	pulll = pull
@@ -26,18 +27,20 @@
 	lg-prefix = "!f() { git log --no-merges --oneline $1 | cut -d' ' -f2 | grep ':' | sort | uniq -c | sort -rn; }; f"
 	pem = ! git checkout master && git br -D
 	st = status -sb
+
+	bisect-up = bisect bad
+	bisect-down = bisect good
+
 	gerrit-config-co = "! git fetch origin refs/meta/config:refs/remotes/origin/meta/config && git checkout meta/config"
 	gerrit-config-push = push origin meta/config:refs/meta/config
 	gerrit-config-review = push origin meta/config:refs/for/refs/meta/config
 
+	# See also https://www.mediawiki.org/wiki/Gerrit/Advanced_usage#Gerrit_project_dashboard
 	dashboards-checkout = "!f() { git fetch origin refs/meta/dashboards/$1:refs/remotes/origin/dashboards_$1 && git checkout -B dashboards_$1 refs/remotes/origin/dashboards_$1; }; f"
 	dashboards-review = "!f() { git push origin HEAD:refs/for/refs/meta/dashboards/$1; }; f"
 	dashboards-push = "!f() { git push origin HEAD:refs/meta/dashboards/$1; }; f"
 	dash-co = dashboards-checkout
 	dash-review = dashboards-review
-
-	bisect-up = bisect bad
-	bisect-down = bisect good
 [gitreview]
 	remote = origin
 [core]
@@ -46,3 +49,8 @@
 	default = matching
 [pull]
 	rebase = true
+[tag]
+	# Make 'git tag' use semver sorting by default.
+	# No more 1.1.0, 1.11.0, 1.2.0, 1.20.0, etc.
+	# Thanks to https://andy-carter.com/blog/sort-git-tags-by-ascending-and-descending-semver
+	sort = v:refname

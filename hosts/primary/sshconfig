@@ -3,7 +3,7 @@
 ## Wikimedia Cloud VPS
 ## https://wikitech.wikimedia.org/wiki/Help:Accessing_Cloud_VPS_instances#ProxyJump_(recommended)
 
-Host bastion.wmflabs.org tools-login.wmflabs.org
+Host *.wmflabs.org login.toolforge.org
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wla
 
@@ -37,6 +37,10 @@ Host *.wikimedia.org *.wmnet !gerrit.wikimedia.org !git-ssh.wikimedia.org
 Host *.jquery.com *.jquery.net
     User krinkle
     IdentityFile ~/.ssh/id_rsa_jq
+
+## Debian Salsa
+Host salsa.debian.org
+    IdentityFile ~/.ssh/id_rsa_salsa
 
 ## GitHub
 

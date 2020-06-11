@@ -1,3 +1,6 @@
+# Copyright 2020 Timo Tijhof <https://github.com/Krinkle/dotfiles>
+# This is free and unencumbered software released into the public domain.
+
 # Overview:
 #
 # 1. Functions
@@ -280,7 +283,7 @@ alias wanip='dig @resolver1.opendns.com ANY myip.opendns.com +short'
 alias wanip4='dig @resolver1.opendns.com ANY myip.opendns.com +short -4'
 
 # For hosts = cvn.wmflabs.org
-alias cvnlog='for dir in `ls -d /srv/cvn/services/cvnbot/* | sort -V`; do name=$(basename "$dir"); echo; echo "# $name"; (sudo cat /var/log/syslog | grep $name | tail -n10); done;'
+alias cvnlog='for dir in `ls -d /srv/cvn/services/cvnbot/* | sort -V`; do name=$(basename "$dir"); echo; echo "# $name"; (sudo cat /var/log/syslog | grep -F "[$name]" | tail -n10); done;'
 
 # For os = Ubuntu or Debian
 if which ack-grep > /dev/null 2>&1

@@ -1,3 +1,6 @@
+# Copyright 2020 Timo Tijhof <https://github.com/Krinkle/dotfiles>
+# This is free and unencumbered software released into the public domain.
+
 # Overview:
 #
 # 1. Functions
@@ -411,8 +414,10 @@ export HISTFILESIZE=50000
 # Bins: Homebrew and manually installed programs
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
-# Bins: Homebrew's ruby
+# Based  on `brew --prefix ruby`
 export PATH=/usr/local/opt/ruby/bin:$PATH
+# Based on `gem environment gemdir`
+export PATH=/usr/local/lib/ruby/gems/2.7.0/bin:$PATH
 
 # Bins: Homebrew's coreutils (e.g. realpath)
 export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
@@ -449,8 +454,8 @@ export MEDIAWIKI_USER='Admin'
 export MEDIAWIKI_PASSWORD='dockerpass'
 
 # Fix "sort: string comparison failed: Illegal byte sequence"
-export LC_ALL="C"
 export LANG="en_US"
+export LC_ALL="C"
 # Sort dotfiles before "a" in ls(1) and sort(1) (http://superuser.com/a/448294/164493)
 export LC_COLLATE="C"
 

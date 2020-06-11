@@ -41,8 +41,10 @@ cd ~/Development/mediawiki/extensions
 doaddwmext AbuseFilter
 doaddwmext CategoryTree
 doaddwmext Cite
+doaddwmext CiteThisPage
 doaddwmext CodeEditor
 doaddwmext EventLogging
+doaddwmext EventStreamConfig
 doaddwmext examples
 doaddwmext Gadgets
 doaddwmext Interwiki
@@ -106,6 +108,14 @@ Settings / Editor:
 * Show Invisibles: **Enabled**. _(Show tab marks)_
 
 * Packages / Tree View / Hide VCS Ignored Files: **Disabled**. _(Include MediaWiki extensions in sidebar. [Thanks @viion](https://github.com/atom/atom/issues/3429#issuecomment-286593181)!)_
+
+Since macOS 10.15, the "Move line down" (ctrl-cmd-↓) command still works, but
+also causes an OS level error beep. This is because Atom/Electron/Chromium are
+failing to register their shortcut with the OS, so it assumes it is unhandled
+and gives this feedback.
+
+Apply this workaround to retain your sanity:
+<https://bugs.chromium.org/p/chromium/issues/detail?id=916460#c13>.
 
 #### Docker for Mac
 
