@@ -1,5 +1,7 @@
-# Copyright 2020 Timo Tijhof <https://github.com/Krinkle/dotfiles>
+# Copyright 2021 Timo Tijhof <https://github.com/Krinkle/dotfiles>
 # This is free and unencumbered software released into the public domain.
+
+[ -z "${PS1:-}" ] && return
 
 # Overview:
 #
@@ -237,11 +239,11 @@ function dotfiles-pull {
 	git fetch origin
 
 	# Sanity check before potentially executing arbitrary bash commands
-	git log HEAD^...origin/master --decorate --abbrev-commit --pretty=oneline --color=auto
-	git diff HEAD...origin/master --stat --color=auto && git diff HEAD...origin/master --color=auto
+	git log HEAD^...origin/main --decorate --abbrev-commit --pretty=oneline --color=auto
+	git diff HEAD...origin/main --stat --color=auto && git diff HEAD...origin/main --color=auto
 
 	if _dotfiles-prompt-choice "OK to pull down now?"; then
-		git reset --hard origin/master && source $KDF_BASE_DIR/index.bash
+		git reset --hard origin/main
 		cd -
 	else
 		echo "Dotfiles update aborted."
@@ -310,19 +312,19 @@ export LESSCHARSET=utf-8
 
 export EDITOR=vim
 
-# Colors
-# http://linux.101hacks.com/ps1-examples/prompt-color-using-tput/
-CLR_NONE=`tput sgr0`
-CLR_LINE=`tput smul`
-CLR_BOLD=`tput bold`
-CLR_BLACK=`tput setaf 0`
-CLR_RED=`tput setaf 1`
-CLR_GREEN=`tput setaf 2`
-CLR_YELLOW=`tput setaf 3`
-CLR_BLUE=`tput setaf 4`
-CLR_MAGENTA=`tput setaf 5`
-CLR_CYAN=`tput setaf 6`
-CLR_WHITE=`tput setaf 7`
+# Color codes. – http://linux.101hacks.com/ps1-examples/prompt-color-using-tput/
+# Tolerate lack of color support. – https://phabricator.wikimedia.org/T251309
+CLR_NONE=$(tput sgr0 2>/dev/null || true)
+CLR_LINE=$(tput smul 2>/dev/null || true)
+CLR_BOLD=$(tput bold 2>/dev/null || true)
+CLR_BLACK=$(tput setaf 0 2>/dev/null || true)
+CLR_RED=$(tput setaf 1 2>/dev/null || true)
+CLR_GREEN=$(tput setaf 2 2>/dev/null || true)
+CLR_YELLOW=$(tput setaf 3 2>/dev/null || true)
+CLR_BLUE=$(tput setaf 4 2>/dev/null || true)
+CLR_MAGENTA=$(tput setaf 5 2>/dev/null || true)
+CLR_CYAN=$(tput setaf 6 2>/dev/null || true)
+CLR_WHITE=$(tput setaf 7 2>/dev/null || true)
 
 # Meta variables for Krinkle Dotfiles itself
 export KDF_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )"

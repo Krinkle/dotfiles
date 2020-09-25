@@ -7,40 +7,44 @@
 	p = add -p
 	ad = add
 	br = branch
-	clx = clean -dffx
 	co = checkout
-	comit = commit
 	ap = commit --amend
 	di = diff
 	ds = diff --staged
-	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cs) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
 	l = ! git lg -n25
 	pul = pull
 	pulll = pull
-	por = pull --rebase
-	hard = reset --hard
-	rockon = reset --hard origin/master
+	rockon = ! git reset --hard origin/main || git reset --hard origin/master
 	prodon = reset --hard origin/production
 	sh = show
 	sho = show
-	so = show
-	lg-prefix = "!f() { git log --no-merges --oneline $1 | cut -d' ' -f2 | grep ':' | sort | uniq -c | sort -rn; }; f"
+	# Given a line as "0000000 Foo Bar: Other words here" take the first two words and trim it to the
+	# first colon within that. This gives us all commit message components used in the repository
+	# (or, optionally for a directory or file only).
+	#
+	# Exclude:
+	# - Component longer than two space-separated words are likely false positives from commits
+	#   that don't use a component prefix but happen to contain a colon somewhere
+	# - Double quotes, often used in message like 'Revert "Foo: …"' or 'Re-apply "Foo: …"'.
+	lg-prefix = "!f() { git log --no-merges --oneline $1 | cut -d' ' -f2-3 | cut -d':' -s -f1 | grep -v '\"' | sort | uniq -c | sort -rn; }; f"
 	pem = ! git checkout master && git br -D
+	pam = ! git checkout main && git br -D
 	st = status -sb
 
 	bisect-up = bisect bad
 	bisect-down = bisect good
 
-	gerrit-config-co = "! git fetch origin refs/meta/config:refs/remotes/origin/meta/config && git checkout meta/config"
+	gerrit-config-co = "! git fetch origin refs/meta/config:refs/meta/config && git checkout meta/config"
 	gerrit-config-push = push origin meta/config:refs/meta/config
 	gerrit-config-review = push origin meta/config:refs/for/refs/meta/config
 
 	# See also https://www.mediawiki.org/wiki/Gerrit/Advanced_usage#Gerrit_project_dashboard
-	dashboards-checkout = "!f() { git fetch origin refs/meta/dashboards/$1:refs/remotes/origin/dashboards_$1 && git checkout -B dashboards_$1 refs/remotes/origin/dashboards_$1; }; f"
+	dashboards-checkout = "!f() { git fetch origin refs/meta/dashboards/$1:refs/meta/dashboards/$1 && git checkout -B meta/dashboards/$1 refs/meta/dashboards/$1; }; f"
 	dashboards-review = "!f() { git push origin HEAD:refs/for/refs/meta/dashboards/$1; }; f"
 	dashboards-push = "!f() { git push origin HEAD:refs/meta/dashboards/$1; }; f"
-	dash-co = dashboards-checkout
-	dash-review = dashboards-review
+	dash-co = dashboards-checkout teams
+	dash-review = dashboards-review teams
 [gitreview]
 	remote = origin
 [core]

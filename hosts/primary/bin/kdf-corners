@@ -1,4 +1,4 @@
-#!/bin/bash -u
+#!/bin/bash -eu
 
 # Courtesy of Pawel Grzybek [1] and Yossef Mendelssohn [2].
 #
@@ -13,13 +13,13 @@
 #  5: Start screen saver
 #  6: Disable screen saver
 #  7: Dashboard
-# 10: Put display to sleep
+# 10: Put display to sleep (if holding Cmd)
 # 11: Launchpad
 # 12: Notification Center
 
 defaults write com.apple.dock wvous-tl-corner -int 4
 defaults write com.apple.dock wvous-tr-corner -int 2
-defaults write com.apple.dock wvous-bl-corner -int 10
-defaults write com.apple.dock wvous-br-corner -int 10
+defaults write com.apple.dock wvous-bl-corner -int 0
+defaults write com.apple.dock wvous-br-corner -int 0
 
 killall Dock

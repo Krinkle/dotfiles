@@ -107,6 +107,8 @@ Settings / Editor:
 
 * Show Invisibles: **Enabled**. _(Show tab marks)_
 
+* Non Word Characters: **Remove `$` character from list**. _(Restore double-click to select variable names in JavaScript and PHP, including JS variable names like `$foo`.)_
+
 * Packages / Tree View / Hide VCS Ignored Files: **Disabled**. _(Include MediaWiki extensions in sidebar. [Thanks @viion](https://github.com/atom/atom/issues/3429#issuecomment-286593181)!)_
 
 Since macOS 10.15, the "Move line down" (ctrl-cmd-↓) command still works, but
@@ -237,6 +239,7 @@ Preferences:
 Plugins:
 
 * https://packagecontrol.io/installation
+* EditorConfig
 * LESS
 * Puppet
 * Theme - Soda

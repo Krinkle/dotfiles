@@ -4,7 +4,7 @@ target="${1:-}"
 
 if [ -z "$target" ]; then
 	echo "usage: ./install <scp_target>"
-	return 1
+	exit 1
 fi
 
 function _dotfiles-upload {

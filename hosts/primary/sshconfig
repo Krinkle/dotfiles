@@ -12,25 +12,29 @@ Host *.wmflabs *.wikimedia.cloud
     IdentityFile ~/.ssh/id_rsa_wla
     ProxyJump bastion.wmflabs.org:22
 
-## Wikimedia Gerrit
-
-Host gerrit.wikimedia.org git-ssh.wikimedia.org
-    ProxyCommand none
-    User krinkle
-    IdentityFile ~/.ssh/id_rsa_grr
-
 ## Wikimedia Production
 ## https://wikitech.wikimedia.org/wiki/Production_shell_access#SSH_configuration
 
-Host bast1002.wikimedia.org bast2001.wikimedia.org bast3004.wikimedia.org bast4002.wikimedia.org bast5001.wikimedia.org
-    ProxyCommand none
+CanonicalizeHostname yes
+Match host=*.wikimedia.org,*.wmnet
+    ForwardAgent no
+    IdentitiesOnly yes
+    KbdInteractiveAuthentication no
+    PasswordAuthentication no
     User krinkle
+
+Host *.wmnet *.wikimedia.org !gerrit.wikimedia.org !bast*.wikimedia.org
+    ProxyJump bast3005.wikimedia.org
     IdentityFile ~/.ssh/id_rsa_wm
 
-Host *.wikimedia.org *.wmnet !gerrit.wikimedia.org !git-ssh.wikimedia.org
-    ProxyCommand ssh -a -W %h:%p bast3004.wikimedia.org
-    User krinkle
+Host bast*.wikimedia.org
     IdentityFile ~/.ssh/id_rsa_wm
+
+## Wikimedia Gerrit
+
+Host gerrit.wikimedia.org
+    Port 29418
+    IdentityFile ~/.ssh/id_rsa_grr
 
 ## jQuery
 

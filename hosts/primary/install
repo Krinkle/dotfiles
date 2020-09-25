@@ -17,6 +17,7 @@ function _dotfiles-install {
 	# without affecting the Git repository status.
 	_dotfiles-ensure-copy "$src/hosts/primary/bashrc" "$HOME/.bashrc"
 	_dotfiles-ensure-copy "$src/hosts/primary/bash_profile" "$HOME/.bash_profile"
+	_dotfiles-ensure-copy "$src/hosts/primary/bash_sessions_disable" "$HOME/.bash_sessions_disable"
 
 	echo "$(tput setaf 2)>>$(tput sgr0) Home directory ready"
 
@@ -63,7 +64,7 @@ function _dotfiles-install {
 	for f in "${formulas[@]}"; do
 		brew upgrade $f || brew install $f
 	done
-	brew upgrade php@7.2 || brew install php@7.2
+	brew upgrade php@7.3 || brew install php@7.3
 
 	brew cleanup
 
@@ -71,7 +72,8 @@ function _dotfiles-install {
 	rm -f /usr/local/bin/npm
 
 	echo "... post-install: php"
-	test -f /usr/local/etc/php/7.2/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/primary/php.ini /usr/local/etc/php/7.2/conf.d/krinkle.ini )
+	test -f /usr/local/etc/php/7.3/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/primary/php.ini /usr/local/etc/php/7.3/conf.d/krinkle.ini )
+	pecl install apcu
 
 	echo "... post-install: git"
 	_dotfiles-ensure-link ~/.gitconfig "$KDF_BASE_DIR/hosts/primary/gitconfig"

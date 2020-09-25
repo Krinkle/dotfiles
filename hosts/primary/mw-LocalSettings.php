@@ -14,17 +14,31 @@
 ## Development
 ##
 
-putenv( 'MW_LOG_DIR=/var/log/mediawiki' );
+putenv( 'MW_LOG_DIR=' . ( $dockerLogDirectory ?? '/var/log/mediawiki' ) );
 require_once "$IP/includes/DevelopmentSettings.php";
+
+##
+## Debug Logger
+##
+
 // ini_set( 'display_errors', 0 );
 // $wgDebugToolbar = true;
 // $wgDebugRawPage = true;
 // $wgDevelopmentWarnings = true;
 
-// $wgMainCacheType = CACHE_ACCEL;
+##
+## Profiler
+##
 
-// $wgParserCacheType = CACHE_DB;
-// $wgSessionCacheType = CACHE_DB;
+if ( extension_loaded( 'tideways' ) ) {
+	if ( isset( $_GET['forceprofile'] ) || PHP_SAPI === 'cli' ) {
+		$wgProfiler = [
+			'class'  => ProfilerXhprof::class,
+			'flags'  => TIDEWAYS_FLAGS_CPU | TIDEWAYS_FLAGS_NO_BUILTINS,
+			'output' => 'text',
+		];
+	}
+}
 
 ##
 ## Traffic
@@ -38,6 +52,11 @@ require_once "$IP/includes/DevelopmentSettings.php";
 
 // Needed for $wgLocalisationCacheConf['store'] = 'array';
 $wgCacheDirectory = $wgTmpDirectory;
+
+$wgMainCacheType = CACHE_ACCEL;
+
+// $wgParserCacheType = CACHE_DB;
+// $wgSessionCacheType = CACHE_DB;
 
 ##
 ## ResourceLoader
@@ -66,7 +85,7 @@ $wgLocalisationCacheConf['store'] = 'array';
 ##
 
 wfLoadSkin('Vector');
-wfLoadSkin('MonoBook');
+// wfLoadSkin('MonoBook');
 // wfLoadSkin('MinervaNeue');
 // wfLoadSkin('Nostalgia');
 
@@ -74,7 +93,7 @@ wfLoadSkin('MonoBook');
 ## Tarball extensions
 ##
 
-wfLoadExtension('Cite');
+// wfLoadExtension('Cite');
 // wfLoadExtension('CiteThisPage');
 // wfLoadExtension('Gadgets');
 // wfLoadExtension('Interwiki');
@@ -94,6 +113,7 @@ wfLoadExtension('Cite');
 // wfLoadExtension('GlobalCssJs');
 // wfLoadExtension('MobileFrontend');
 // wfLoadExtension('NavigationTiming');
+// wfLoadExtension('SyntaxHighlight_GeSHi');
 // wfLoadExtension('TemplateData');
 // wfLoadExtension('UniversalLanguageSelector');
 // wfLoadExtension('VisualEditor');
@@ -115,6 +135,7 @@ $wgGlobalCssJsConfig['source'] = 'local';
 
 // wfLoadExtension('CategoryTree');
 // wfLoadExtension('MultimediaViewer');
+// wfLoadExtension('WikiLambda');
 // wfLoadExtension('WikimediaEvents');
 
 // CategoryTree

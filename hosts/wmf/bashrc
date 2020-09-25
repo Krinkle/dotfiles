@@ -1,9 +1,9 @@
-# Copyright 2020 Timo Tijhof <https://github.com/Krinkle/dotfiles>
+# Copyright 2021 Timo Tijhof <https://github.com/Krinkle/dotfiles>
 # This is free and unencumbered software released into the public domain.
 
 ## index
 
-[ -z "$PS1" ] && return
+[ -z "${PS1:-}" ] && return
 
 export KDF_PS1_HOST_NAME="$( hostname -f 2>/dev/null )"
 export KDF_PS1_HOST_COLOR=`tput setaf 2` # CLR_GREEN
@@ -40,17 +40,17 @@ if [ -x /usr/bin/dircolors ]
 then
 	eval "`dircolors -b`"
 fi
-CLR_NONE=`tput sgr0`
-CLR_LINE=`tput smul`
-CLR_BOLD=`tput bold`
-CLR_BLACK=`tput setaf 0`
-CLR_RED=`tput setaf 1`
-CLR_GREEN=`tput setaf 2`
-CLR_YELLOW=`tput setaf 3`
-CLR_BLUE=`tput setaf 4`
-CLR_MAGENTA=`tput setaf 5`
-CLR_CYAN=`tput setaf 6`
-CLR_WHITE=`tput setaf 7`
+CLR_NONE=$(tput sgr0 2>/dev/null || true)
+CLR_LINE=$(tput smul 2>/dev/null || true)
+CLR_BOLD=$(tput bold 2>/dev/null || true)
+CLR_BLACK=$(tput setaf 0 2>/dev/null || true)
+CLR_RED=$(tput setaf 1 2>/dev/null || true)
+CLR_GREEN=$(tput setaf 2 2>/dev/null || true)
+CLR_YELLOW=$(tput setaf 3 2>/dev/null || true)
+CLR_BLUE=$(tput setaf 4 2>/dev/null || true)
+CLR_MAGENTA=$(tput setaf 5 2>/dev/null || true)
+CLR_CYAN=$(tput setaf 6 2>/dev/null || true)
+CLR_WHITE=$(tput setaf 7 2>/dev/null || true)
 
 ## functions
 

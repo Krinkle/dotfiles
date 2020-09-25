@@ -1,5 +1,7 @@
-# Copyright 2020 Timo Tijhof <https://github.com/Krinkle/dotfiles>
+# Copyright 2021 Timo Tijhof <https://github.com/Krinkle/dotfiles>
 # This is free and unencumbered software released into the public domain.
+
+[ -z "${PS1:-}" ] && return
 
 # Overview:
 #
@@ -175,11 +177,11 @@ function dotfiles-pull {
 	git fetch origin
 
 	# Sanity check before potentially executing arbitrary bash commands
-	git log HEAD^...origin/master --decorate --abbrev-commit --pretty=oneline --color=auto
-	git diff HEAD...origin/master --stat --color=auto && git diff HEAD...origin/master --color=auto
+	git log HEAD^...origin/main --decorate --abbrev-commit --pretty=oneline --color=auto
+	git diff HEAD...origin/main --stat --color=auto && git diff HEAD...origin/main --color=auto
 
 	if _dotfiles-prompt-choice "OK to pull down now?"; then
-		git reset --hard origin/master && source $KDF_BASE_DIR/index.bash
+		git reset --hard origin/main
 		cd -
 	else
 		echo "Dotfiles update aborted."
@@ -339,11 +341,16 @@ alias nit='npm install-test'
 alias dsize='du -hs'
 
 # http://unix.stackexchange.com/a/81699/37512
-# dig @resolver1.opendns.com ANY myip.opendns.com +short # Both IPv6 and IPv4
-# dig @ns1.google.com TXT o-o.myaddr.l.google.com +short # Only IPv4
-# dig @ns1-1.akamaitech.net ANY whoami.akamai.net +short # Only IPv4
-alias wanip='dig @resolver1.opendns.com ANY myip.opendns.com +short'
-alias wanip4='dig @resolver1.opendns.com ANY myip.opendns.com +short -4'
+# dig @resolver3.opendns.com myip.opendns.com +short                   # IPv4
+# dig @resolver4.opendns.com myip.opendns.com +short                   # IPv4
+# dig @resolver1.ipv6-sandbox.opendns.com AAAA myip.opendns.com +short # IPv6
+# dig @ns1-1.akamaitech.net ANY whoami.akamai.net +short               # IPv4
+# dig @ns1.google.com TXT o-o.myaddr.l.google.com +short               # IPv4+IPv6
+# dig @ns1.google.com TXT o-o.myaddr.l.google.com +short -4            # IPv4
+# dig @ns1.google.com TXT o-o.myaddr.l.google.com +short -6            # IPv6
+alias wanip='dig @resolver4.opendns.com myip.opendns.com +short'
+alias wanip4='dig @resolver4.opendns.com myip.opendns.com +short -4'
+alias wanip6='dig @resolver1.ipv6-sandbox.opendns.com AAAA myip.opendns.com +short -6'
 
 # Version control
 alias g='git'
@@ -379,23 +386,25 @@ alias dotfiles-push='cd $KDF_BASE_DIR; git add -p && _dotfiles-prompt-choice "OK
 
 # Colors
 # http://linux.101hacks.com/ps1-examples/prompt-color-using-tput/
-CLR_NONE=`tput sgr0`
-CLR_LINE=`tput smul`
-CLR_BOLD=`tput bold`
-CLR_BLACK=`tput setaf 0`
-CLR_RED=`tput setaf 1`
-CLR_GREEN=`tput setaf 2`
-CLR_YELLOW=`tput setaf 3`
-CLR_BLUE=`tput setaf 4`
-CLR_MAGENTA=`tput setaf 5`
-CLR_CYAN=`tput setaf 6`
-CLR_WHITE=`tput setaf 7`
+CLR_NONE=$(tput sgr0 2>/dev/null || true)
+CLR_LINE=$(tput smul 2>/dev/null || true)
+CLR_BOLD=$(tput bold 2>/dev/null || true)
+CLR_BLACK=$(tput setaf 0 2>/dev/null || true)
+CLR_RED=$(tput setaf 1 2>/dev/null || true)
+CLR_GREEN=$(tput setaf 2 2>/dev/null || true)
+CLR_YELLOW=$(tput setaf 3 2>/dev/null || true)
+CLR_BLUE=$(tput setaf 4 2>/dev/null || true)
+CLR_MAGENTA=$(tput setaf 5 2>/dev/null || true)
+CLR_CYAN=$(tput setaf 6 2>/dev/null || true)
+CLR_WHITE=$(tput setaf 7 2>/dev/null || true)
 
 # Meta variables for Krinkle Dotfiles itself
 export KDF_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )"
 export KDF_PS1_HOST_NAME="$( hostname -f 2>/dev/null )"
 export KDF_PS1_HOST_COLOR="$CLR_CYAN"
 
+# Bash
+#
 # Shell configuration
 # https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
 shopt -s autocd >/dev/null 2>&1 || true
@@ -406,43 +415,10 @@ shopt -s hostcomplete >/dev/null 2>&1 || true
 shopt -s interactive_comments >/dev/null 2>&1 || true
 shopt -s no_empty_cmd_completion >/dev/null 2>&1 || true
 shopt -u mailwarn >/dev/null 2>&1 || true
-
+# Shell history
 export HISTCONTROL=ignorespace:erasedups
 export HISTSIZE=50000
 export HISTFILESIZE=50000
-
-# Bins: Homebrew and manually installed programs
-export PATH=/usr/local/bin:/usr/local/sbin:$PATH
-
-# Based  on `brew --prefix ruby`
-export PATH=/usr/local/opt/ruby/bin:$PATH
-# Based on `gem environment gemdir`
-export PATH=/usr/local/lib/ruby/gems/2.7.0/bin:$PATH
-
-# Bins: Homebrew's coreutils (e.g. realpath)
-export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
-
-# Bins: Homebrew's PHP
-export PATH=/usr/local/opt/php@7.2/bin:$PATH
-
-# Bins: Sublime Text (subl)
-export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
-
-# Bins: Composer global
-export PATH="$HOME/.composer/vendor/bin:$PATH"
-
-# Bins: Misc dotfiles utilities
-export PATH="$KDF_BASE_DIR/hosts/primary/bin:$PATH"
-
-# Bins: Git contrib: diff-highlight
-export PATH="/usr/local/opt/git/share/git-core/contrib/diff-highlight:$PATH"
-
-# Bins: Arcnanist
-# https://secure.phabricator.com/book/phabricator/article/arcanist_quick_start/
-export PATH="${PATH}:${HOME}/Development/arcanist/bin"
-
-# Bins: Home
-export PATH="${HOME}/bin:${PATH}"
 
 # GnuPG
 export GPG_TTY=$(tty)
@@ -453,6 +429,8 @@ export MW_SCRIPT_PATH='/mediawiki'
 export MEDIAWIKI_USER='Admin'
 export MEDIAWIKI_PASSWORD='dockerpass'
 
+# General
+#
 # - Fix "sort: string comparison failed: Illegal byte sequence"
 # - Fix Ruby stuff
 # NOTE: This depends on the arguably broken way that (some version of)
@@ -460,16 +438,44 @@ export MEDIAWIKI_PASSWORD='dockerpass'
 # my dotfiles for Linux.
 export LANG="en_US"
 export LC_ALL="C"
-
 # Sort dotfiles before "a" in ls(1) and sort(1)
 # https://superuser.com/a/448294/164493
 export LC_COLLATE="C"
-
 # See also gitconfig/core.pager
 # https://serverfault.com/a/414763/180257
 export LESSCHARSET=utf-8
-
 export EDITOR=vim
+
+# Homebrew
+# https://github.com/Homebrew/brew/blob/3.0.9/docs/Analytics.md
+export HOMEBREW_NO_ANALYTICS=1
+
+# Bins
+#
+# - Homebrew and manually installed programs
+export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+# - Homebrew's Ruby
+#   https://stackoverflow.com/a/14138490/319266
+#   Based on "`brew --prefix ruby`/bin" and "`gem environment gemdir`/bin"
+export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.0.0/bin:$PATH"
+# - Homebrew's coreutils (e.g. realpath)
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+# - Homebrew's PHP
+export PATH="/usr/local/opt/php@7.3/bin:$PATH"
+# - Sublime Text (subl)
+#   https://www.sublimetext.com/docs/command_line.html
+export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
+# - [Disabled] Composer global packages
+# - [Disabled] npm global packages
+# - Homebrew's Git provides diff-highlight
+export PATH="/usr/local/opt/git/share/git-core/contrib/diff-highlight:$PATH"
+# - Arcanist
+#   https://secure.phabricator.com/book/phabricator/article/arcanist_quick_start/
+export PATH="${PATH}:${HOME}/Development/arcanist/bin"
+# - My dotfiles
+export PATH="$KDF_BASE_DIR/hosts/primary/bin:$PATH"
+# - My Home
+export PATH="${HOME}/bin:${PATH}"
 
 # If running interactively, do the below as well (non-interactively, it's not useful and causes issues).
 # Except when we're provisioning, as it would fail due to missing files.
@@ -477,9 +483,9 @@ if [ -n "${PS1:-}" ] && [ -z "${KDF_INSTALLER:-}" ]; then
 	# Completion modules from Homebrew-installed packages
 	. /usr/local/etc/bash_completion
 	# See also "Aliases"
-	__git_complete g _git
-	__git_complete gi _git
-	__git_complete gir _git
+	__git_complete g __git_main
+	__git_complete gi __git_main
+	__git_complete gir __git_main
 
 	[[ -s /usr/local/etc/profile.d/autojump.sh ]] && . /usr/local/etc/profile.d/autojump.sh
 
