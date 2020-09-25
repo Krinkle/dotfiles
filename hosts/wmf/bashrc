@@ -25,8 +25,14 @@ export HISTCONTROL=ignorespace:erasedups
 export HISTSIZE=50000
 export HISTFILESIZE=50000
 export PATH="${HOME}/bin:${PATH}"
-export LC_ALL="en_US.UTF-8"
-export LANG="en_US"
+
+# Make typing Unicode work correctly when inside
+# a GNU screen over ssh. Thanks @dpifke!
+export LC_ALL=
+export LANG=en_US.UTF-8
+
+# Sort dotfiles before "a" in ls(1) and sort(1)
+# https://superuser.com/a/448294/164493
 export LC_COLLATE="C"
 export EDITOR=vim
 

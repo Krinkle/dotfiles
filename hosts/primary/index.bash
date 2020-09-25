@@ -453,14 +453,20 @@ export MW_SCRIPT_PATH='/mediawiki'
 export MEDIAWIKI_USER='Admin'
 export MEDIAWIKI_PASSWORD='dockerpass'
 
-# Fix "sort: string comparison failed: Illegal byte sequence"
+# - Fix "sort: string comparison failed: Illegal byte sequence"
+# - Fix Ruby stuff
+# NOTE: This depends on the arguably broken way that (some version of)
+# Darwin/macOS has these locales configured. It should not be copied to
+# my dotfiles for Linux.
 export LANG="en_US"
 export LC_ALL="C"
-# Sort dotfiles before "a" in ls(1) and sort(1) (http://superuser.com/a/448294/164493)
+
+# Sort dotfiles before "a" in ls(1) and sort(1)
+# https://superuser.com/a/448294/164493
 export LC_COLLATE="C"
 
-# http://serverfault.com/a/414763/180257
 # See also gitconfig/core.pager
+# https://serverfault.com/a/414763/180257
 export LESSCHARSET=utf-8
 
 export EDITOR=vim

@@ -298,14 +298,14 @@ fi
 # Bins: Home
 export PATH="${HOME}/bin:${PATH}"
 
-# Fix "sort: string comparison failed: Illegal byte sequence"
-export LC_ALL="C"
-export LANG="en_US"
-# Sort dotfiles before "a" in ls(1) and sort(1) (http://superuser.com/a/448294/164493)
+export LC_ALL=
+export LANG=en_US.UTF-8
+# Sort dotfiles before "a" in ls(1) and sort(1)
+# https://superuser.com/a/448294/164493
 export LC_COLLATE="C"
 
-# http://serverfault.com/a/414763/180257
 # See also gitconfig/core.pager
+# https://serverfault.com/a/414763/180257
 export LESSCHARSET=utf-8
 
 export EDITOR=vim
