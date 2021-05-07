@@ -25,6 +25,7 @@ require_once "$IP/includes/DevelopmentSettings.php";
 // $wgDebugToolbar = true;
 // $wgDebugRawPage = true;
 // $wgDevelopmentWarnings = true;
+// $wgIncludejQueryMigrate = false;
 
 ##
 ## Profiler
@@ -55,7 +56,7 @@ $wgCacheDirectory = $wgTmpDirectory;
 
 $wgMainCacheType = CACHE_ACCEL;
 
-// $wgParserCacheType = CACHE_DB;
+$wgParserCacheType = CACHE_DB;
 // $wgSessionCacheType = CACHE_DB;
 
 ##
@@ -119,10 +120,10 @@ wfLoadSkin('Vector');
 // wfLoadExtension('VisualEditor');
 
 // EventLogging
-$wgEventLoggingBaseUri = '/event';
+$wgEventLoggingBaseUri = '/beacon/event';
 
 // ULS
-$wgULSCompactLanguageLinksBetaFeature = false;
+// $wgULSCompactLanguageLinksBetaFeature = false;
 
 // GlobalCssJs
 $wgUseGlobalSiteCssJs = true;
@@ -134,6 +135,8 @@ $wgGlobalCssJsConfig['source'] = 'local';
 ##
 
 // wfLoadExtension('CategoryTree');
+// wfLoadExtension('DiscussionTools');
+// wfLoadExtension('Linter');
 // wfLoadExtension('MultimediaViewer');
 // wfLoadExtension('WikiLambda');
 // wfLoadExtension('WikimediaEvents');
@@ -141,9 +144,17 @@ $wgGlobalCssJsConfig['source'] = 'local';
 // CategoryTree
 // $wgCategoryTreeSidebarRoot = 'Category:All';
 
+// DiscussionTools
+$wgLocaltimezone = 'UTC'; // DiscussionTools requires this.
+$wgFragmentMode = [ 'html5' ]; // DiscussionTools requires this.
+// $wgDiscussionToolsTalkPageParserCacheExpiry = 60;
+
 // Wikibase
 // $wgWikimediaJenkinsCI = true;
 // require_once "$IP/extensions/Wikibase/Wikibase.php";
 
 // NavigationTiming
 // $wgNavigationTimingSamplingFactor = 1;
+
+// WikimediaEvents
+$wgWMEStatsdBaseUri = '/beacon/statsv';

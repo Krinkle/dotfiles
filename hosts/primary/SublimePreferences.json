@@ -19,13 +19,6 @@
 	[
 		"Vintage"
 	],
-	"jsdocs_align_tags": "no",
-	"jsdocs_deep_indent": false,
-	"jsdocs_extend_double_slash": true,
-	"jsdocs_indentation_spaces": 1,
-	"jsdocs_lower_case_primitives": true,
-	"jsdocs_override_js_var": "property",
-	"jsdocs_return_tag": "@return",
 	"rulers":
 	[
 		70,

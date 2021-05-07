@@ -41,6 +41,8 @@ function _dotfiles-install {
 		autojump
 		bash
 		bash-completion
+		# For 0ad development
+		cmake
 		colordiff
 		composer
 		coreutils
@@ -51,7 +53,6 @@ function _dotfiles-install {
 		jq
 		node
 		pwgen
-		ruby
 		# Tox to simplify managing Python venv and testing
 		# - https://www.mediawiki.org/wiki/CI/JJB
 		# - https://www.mediawiki.org/wiki/Zuul

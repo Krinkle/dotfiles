@@ -24,7 +24,7 @@ Match host=*.wikimedia.org,*.wmnet
     User krinkle
 
 Host *.wmnet *.wikimedia.org !gerrit.wikimedia.org !bast*.wikimedia.org
-    ProxyJump bast3005.wikimedia.org
+    ProxyJump bast1003.wikimedia.org
     IdentityFile ~/.ssh/id_rsa_wm
 
 Host bast*.wikimedia.org
