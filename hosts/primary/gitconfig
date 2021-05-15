@@ -2,7 +2,7 @@
 	path = ~/.krinkle.dotfiles/gitconfig
 [user]
 	name = Timo Tijhof
-	email = krinklemail@gmail.com
+	email = krinkle@fastmail.com
 	signingkey = 06670C4D66D17553
 [core]
 	editor = subl -n -w

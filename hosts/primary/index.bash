@@ -340,7 +340,7 @@ alias ...='cd ../..'
 alias nit='npm install-test'
 alias dsize='du -hs'
 
-# http://unix.stackexchange.com/a/81699/37512
+# https://unix.stackexchange.com/a/81699/37512
 # dig @resolver3.opendns.com myip.opendns.com +short                   # IPv4
 # dig @resolver4.opendns.com myip.opendns.com +short                   # IPv4
 # dig @resolver1.ipv6-sandbox.opendns.com AAAA myip.opendns.com +short # IPv6
@@ -424,27 +424,30 @@ export HISTFILESIZE=50000
 export GPG_TTY=$(tty)
 
 # MediaWiki
-export MW_SERVER='http://default.web.mw.localhost:8080'
-export MW_SCRIPT_PATH='/mediawiki'
+export MW_SERVER='http://localhost:8080'
+export MW_SCRIPT_PATH='/w'
 export MEDIAWIKI_USER='Admin'
 export MEDIAWIKI_PASSWORD='dockerpass'
 
-# General
+# Fixes "sort: string comparison failed: Illegal byte sequence"
+# Fixes Ruby stuff
 #
-# - Fix "sort: string comparison failed: Illegal byte sequence"
-# - Fix Ruby stuff
 # NOTE: This depends on the arguably broken way that (some version of)
 # Darwin/macOS has these locales configured. It should not be copied to
 # my dotfiles for Linux.
-export LANG="en_US"
+export LANG=en_US.UTF-8
 export LC_ALL="C"
+
 # Sort dotfiles before "a" in ls(1) and sort(1)
 # https://superuser.com/a/448294/164493
 export LC_COLLATE="C"
+
 # See also gitconfig/core.pager
 # https://serverfault.com/a/414763/180257
 export LESSCHARSET=utf-8
+
 export EDITOR=vim
+
 
 # Homebrew
 # https://github.com/Homebrew/brew/blob/3.0.9/docs/Analytics.md
@@ -454,13 +457,18 @@ export HOMEBREW_NO_ANALYTICS=1
 #
 # - Homebrew and manually installed programs
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-# - Homebrew's Ruby
-#   https://stackoverflow.com/a/14138490/319266
-#   Based on "`brew --prefix ruby`/bin" and "`gem environment gemdir`/bin"
+# - Homebrew versions of programs that also come with macOS
+#   These are handled special and not linked to /usr/local automatically
+#   for safety and compatibility.
+# - - Ruby
+#     https://stackoverflow.com/a/14138490/319266
+#     Based on "`brew --prefix ruby`/bin" and "`gem environment gemdir`/bin"
 export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.0.0/bin:$PATH"
-# - Homebrew's coreutils (e.g. realpath)
+# - - coreutils (e.g. realpath)
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-# - Homebrew's PHP
+# - - curl
+export PATH="/usr/local/opt/curl/bin:$PATH"
+# - - PHP
 export PATH="/usr/local/opt/php@7.3/bin:$PATH"
 # - Sublime Text (subl)
 #   https://www.sublimetext.com/docs/command_line.html

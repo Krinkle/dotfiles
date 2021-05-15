@@ -1,31 +1,28 @@
 <?php
-#
-# This file is meant to be located at:
-# ~/Development/mediawiki-docker-dev/config/mediawiki/LocalSettings.mine.php.
-#
-# Then, in ~/Development/mediawiki/Localsettings.php:
-#
-# ```diff
-#   require_once __DIR__ . "/.docker/LocalSettings.php";
-# + require_once __DIR__ . "/.docker/LocalSettings.mine.php";
-# ```
+/*
+This file is meant to be copied to:
+~/Development/mediawiki/LocalSettings.mine.php
+
+Then, in ~/Development/mediawiki/Localsettings.php:
+
+```php
+require_once __DIR__ . "/LocalSettings.mine.php"; // add this line
+```
+
+This is currently written for MediaWiki-Docker, and thus we assume
+the following two are already dealt with:
+
+- Set MW_LOG_DIR to something reachable and useful.
+- Include "$IP/includes/DevelopmentSettings.php";
+*/
 
 ##
-## Development
-##
-
-putenv( 'MW_LOG_DIR=' . ( $dockerLogDirectory ?? '/var/log/mediawiki' ) );
-require_once "$IP/includes/DevelopmentSettings.php";
-
-##
-## Debug Logger
+## Temporary
 ##
 
 // ini_set( 'display_errors', 0 );
 // $wgDebugToolbar = true;
-// $wgDebugRawPage = true;
 // $wgDevelopmentWarnings = true;
-// $wgIncludejQueryMigrate = false;
 
 ##
 ## Profiler
@@ -51,9 +48,6 @@ if ( extension_loaded( 'tideways' ) ) {
 ## Cache
 ##
 
-// Needed for $wgLocalisationCacheConf['store'] = 'array';
-$wgCacheDirectory = $wgTmpDirectory;
-
 $wgMainCacheType = CACHE_ACCEL;
 
 $wgParserCacheType = CACHE_DB;
@@ -78,8 +72,6 @@ $wgUseInstantCommons = true;
 ##
 ## Localisation
 ##
-
-$wgLocalisationCacheConf['store'] = 'array';
 
 ##
 ## Skins
@@ -121,6 +113,7 @@ wfLoadSkin('Vector');
 
 // EventLogging
 $wgEventLoggingBaseUri = '/beacon/event';
+// $wgEventLoggingDBname = $wgDBname;
 
 // ULS
 // $wgULSCompactLanguageLinksBetaFeature = false;
@@ -140,9 +133,10 @@ $wgGlobalCssJsConfig['source'] = 'local';
 // wfLoadExtension('MultimediaViewer');
 // wfLoadExtension('WikiLambda');
 // wfLoadExtension('WikimediaEvents');
+// wfLoadExtension('InputBox');
 
 // CategoryTree
-// $wgCategoryTreeSidebarRoot = 'Category:All';
+$wgCategoryTreeSidebarRoot = 'Category:All';
 
 // DiscussionTools
 $wgLocaltimezone = 'UTC'; // DiscussionTools requires this.

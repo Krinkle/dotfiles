@@ -1,8 +1,6 @@
 # Copyright 2021 Timo Tijhof <https://github.com/Krinkle/dotfiles>
 # This is free and unencumbered software released into the public domain.
 
-[ -z "${PS1:-}" ] && return
-
 # Overview:
 #
 # 1. Functions
@@ -251,6 +249,10 @@ function dotfiles-pull {
 		return 1
 	fi
 }
+
+# Stop here if we're included programmatically from ./install
+# and thus some of the rest can or should not yet apply.
+[ -z "${PS1:-}" ] && return
 
 # -------------------------------------------------
 # § 2. Aliases

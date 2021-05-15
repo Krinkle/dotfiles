@@ -77,6 +77,7 @@ Install (other):
 * GPG Suite (GPG Keychain)
 * ImageOptim
 * KeeWeb
+* Little Snitch
 * Logitech Options
 * OpenOffice
 * Steam
@@ -184,6 +185,13 @@ Settings -> Advanced:
 System Preferences / GPG Suite / Settings:
 
 * (disabled) Store in macOS Keychain.
+
+#### Little Snitch
+
+Preferences:
+
+* Preselected Optoins / Rule Lifetime: For 10 minutes.
+* (enabled) Confirm with Return or Escape
 
 #### Messages app
 

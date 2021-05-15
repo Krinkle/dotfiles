@@ -12,12 +12,15 @@
 		"node_modules",
 		"vendor",
 		".sass-cache",
-		"docs/coverage"
+		"docs/coverage",
+		"docs/html",
+		"docs/latex",
+		"docs/js",
 	],
 	"font_size": 14,
 	"ignored_packages":
 	[
-		"Vintage"
+		"Vintage",
 	],
 	"rulers":
 	[
@@ -27,5 +30,5 @@
 	],
 	"scroll_past_end": true,
 	"spell_check": false,
-	"theme": "Soda Dark.sublime-theme"
+	"theme": "Soda Dark.sublime-theme",
 }

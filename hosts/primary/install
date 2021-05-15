@@ -46,6 +46,7 @@ function _dotfiles-install {
 		colordiff
 		composer
 		coreutils
+		curl
 		git
 		# https://www.mediawiki.org/wiki/Gerrit/git-review#OS_X
 		git-review

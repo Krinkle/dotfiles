@@ -15,4 +15,6 @@
 	sh = show
 	sho = show
 	so = show
-	st = status -sb
+	st = status
+[status]
+	submoduleSummary = 1
