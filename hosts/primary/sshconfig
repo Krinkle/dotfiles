@@ -36,10 +36,17 @@ Host gerrit.wikimedia.org
     Port 29418
     IdentityFile ~/.ssh/id_rsa_grr
 
+## Wikimedia GitLab
+
+Host gitlab.wikimedia.org
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_gitlabwm
+
 ## jQuery
 
 Host *.jquery.com *.jquery.net
     User krinkle
+    IdentityFile ~/.ssh/id_ed_jqinfra
     IdentityFile ~/.ssh/id_rsa_jq
 
 ## Debian Salsa

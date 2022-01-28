@@ -1,7 +1,23 @@
+[core]
+	quotepath = false
+	abbrev = 10
 [color]
 	ui = auto
 [diff]
 	compactionHeuristic = 1
+[gitreview]
+	remote = origin
+[push]
+	default = matching
+[pull]
+	rebase = true
+[tag]
+	# Make 'git tag' use semver sorting by default.
+	# No more 1.1.0, 1.11.0, 1.2.0, 1.20.0, etc.
+	# Thanks to https://andy-carter.com/blog/sort-git-tags-by-ascending-and-descending-semver
+	sort = v:refname
+[status]
+	submoduleSummary = 1
 [alias]
 	# See also https://www.mediawiki.org/wiki/Git/aliases
 	p = add -p
@@ -24,12 +40,35 @@
 	# (or, optionally for a directory or file only).
 	#
 	# Exclude:
-	# - Component longer than two space-separated words are likely false positives from commits
-	#   that don't use a component prefix but happen to contain a colon somewhere
-	# - Double quotes, often used in message like 'Revert "Foo: …"' or 'Re-apply "Foo: …"'.
+	# - Component longer than two space-separated words. Likely false positives from commits
+	#   that don't use a component prefix but happen to contain a colon somewhere.
+	# - Double quotes. Often used in message like 'Revert "Foo: …"' or 'Re-apply "Foo: …"'.
 	lg-prefix = "!f() { git log --no-merges --oneline $1 | cut -d' ' -f2-3 | cut -d':' -s -f1 | grep -v '\"' | sort | uniq -c | sort -rn; }; f"
+
 	pem = ! git checkout master && git br -D
 	pam = ! git checkout main && git br -D
+
+	# Wildcard deletion of local branches
+	# usage: git wildcard-br-d 'review/*'
+	# usage: git wild<tab>
+	wildcard-br-d = "!f() { git branch -l $1 --format '%(refname:short)' | xargs git branch -D; }; f"
+
+	# Wildcard deletion of remote branches
+	#
+	# Inspired by <https://stackoverflow.com/q/3670355/319266>
+	#
+	# Note that git-push requires its branch argument to be without the
+	# localised "refs/remotes/origin" prefix. As such, we strip that off.
+	#
+	# $ git branch -rl 'origin/wmf/1.36*' --format '%(refname)'
+	# $ git branch -rl 'origin/wmf/1.36*' --format '%(refname:lstrip=3)'
+	# $ git push origin --delete
+	#
+	#
+	# usage: git remote-wildcard-br-d 'wmf/1.36*'
+	# usage: git remote-<tab>
+	remote-wildcard-br-d = "!f() { git branch -rl \"origin/$1\" --format '%(refname:lstrip=3)' | xargs git push origin --delete; }; f"
+
 	st = status -sb
 
 	bisect-up = bisect bad
@@ -45,16 +84,3 @@
 	dashboards-push = "!f() { git push origin HEAD:refs/meta/dashboards/$1; }; f"
 	dash-co = dashboards-checkout teams
 	dash-review = dashboards-review teams
-[gitreview]
-	remote = origin
-[core]
-	quotepath = false
-[push]
-	default = matching
-[pull]
-	rebase = true
-[tag]
-	# Make 'git tag' use semver sorting by default.
-	# No more 1.1.0, 1.11.0, 1.2.0, 1.20.0, etc.
-	# Thanks to https://andy-carter.com/blog/sort-git-tags-by-ascending-and-descending-semver
-	sort = v:refname

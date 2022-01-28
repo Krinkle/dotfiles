@@ -46,6 +46,7 @@ function _dotfiles-install {
 		colordiff
 		composer
 		coreutils
+		difftastic
 		curl
 		git
 		# https://www.mediawiki.org/wiki/Gerrit/git-review#OS_X
@@ -66,7 +67,7 @@ function _dotfiles-install {
 	for f in "${formulas[@]}"; do
 		brew upgrade $f || brew install $f
 	done
-	brew upgrade php@7.3 || brew install php@7.3
+	brew upgrade php@7.4 || brew install php@7.4
 
 	brew cleanup
 
@@ -74,7 +75,7 @@ function _dotfiles-install {
 	rm -f /usr/local/bin/npm
 
 	echo "... post-install: php"
-	test -f /usr/local/etc/php/7.3/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/primary/php.ini /usr/local/etc/php/7.3/conf.d/krinkle.ini )
+	test -f /usr/local/etc/php/7.4/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/primary/php.ini /usr/local/etc/php/7.4/conf.d/krinkle.ini )
 	pecl install apcu
 
 	echo "... post-install: git"
@@ -90,11 +91,6 @@ function _dotfiles-install {
 		open http://www.sublimetext.com/3
 		exit 1
 	fi
-
-	echo "... post-install: Atom"
-	tmpPath=$HOME/.atom/styles.less
-	tmpDest=$KDF_BASE_DIR/hosts/primary/atom.styles.less
-	_dotfiles-ensure-link "$tmpPath" "$tmpDest"
 
 	echo "... post-install: Sublime Text"
 	tmpPath="$HOME/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings"

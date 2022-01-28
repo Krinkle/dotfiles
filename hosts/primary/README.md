@@ -26,7 +26,6 @@ See <https://help.github.com/articles/generating-ssh-keys>.
 ```
 mkdir -p ~/Development
 cd ~/Development
-git clone https://github.com/addshore/mediawiki-docker-dev.git
 doclonegerrit mediawiki/core mediawiki
 doclonegerrit oojs/core oojs
 doclonegerrit oojs/ui oojs-ui
@@ -92,7 +91,6 @@ Install Community Themes:
 
 Install Community Packages:
 
-* linter-eslint
 * minimap
 * minimap-highlight-selected
 * highlight-selected

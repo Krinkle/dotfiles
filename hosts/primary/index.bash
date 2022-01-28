@@ -448,10 +448,12 @@ export LESSCHARSET=utf-8
 
 export EDITOR=vim
 
-
 # Homebrew
 # https://github.com/Homebrew/brew/blob/3.0.9/docs/Analytics.md
 export HOMEBREW_NO_ANALYTICS=1
+# Don't reinstall the whole world when installing one package
+# https://brew.sh/2021/06/21/homebrew-3.2.0/
+export HOMEBREW_NO_INSTALL_UPGRADE=1
 
 # Bins
 #

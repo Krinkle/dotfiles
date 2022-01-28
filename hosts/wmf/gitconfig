@@ -1,5 +1,7 @@
 [color]
 	ui = auto
+[status]
+	submoduleSummary = 1
 [alias]
 	p = add -p
 	ad = add
@@ -16,5 +18,3 @@
 	sho = show
 	so = show
 	st = status
-[status]
-	submoduleSummary = 1
