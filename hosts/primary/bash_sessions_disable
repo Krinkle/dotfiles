@@ -1,6 +1,6 @@
 # macOS 10.11+ (El Capitan) introduced a feature in Terminal.app
 # that stores per-tab session histories in a $HOME/.bash_sessions/ directory.
-# This "helpful" feature meant to disable itself when `histappend` is on
+# This "helpful" feature is meant to disable itself when `histappend` is on
 # (as I do in index.bash), but reality disagrees. The files are still being
 # created and populated for every tab.
 #

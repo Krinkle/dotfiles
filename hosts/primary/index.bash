@@ -465,13 +465,13 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 # - - Ruby
 #     https://stackoverflow.com/a/14138490/319266
 #     Based on "`brew --prefix ruby`/bin" and "`gem environment gemdir`/bin"
-export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.0.0/bin:$PATH"
+export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.1.0/bin:$PATH"
 # - - coreutils (e.g. realpath)
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 # - - curl
 export PATH="/usr/local/opt/curl/bin:$PATH"
 # - - PHP
-export PATH="/usr/local/opt/php@7.3/bin:$PATH"
+export PATH="/usr/local/opt/php@8.1/bin:$PATH"
 # - Sublime Text (subl)
 #   https://www.sublimetext.com/docs/command_line.html
 export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
