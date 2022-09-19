@@ -438,6 +438,15 @@ export MEDIAWIKI_PASSWORD='dockerpass'
 export LANG=en_US.UTF-8
 export LC_ALL="C"
 
+# Fixes "ArgumentError: invalid byte sequence in US-ASCII" from
+# everything Ruby/Jekyll-related.
+#
+# Yes, this is mutually exclusive with the above, so do this manually
+# as-needed. It's only here as reminder.
+#
+# https://github.com/jekyll/jekyll/issues/960#issuecomment-21311957
+# export LC_ALL="en_US.UTF-8"
+
 # Sort dotfiles before "a" in ls(1) and sort(1)
 # https://superuser.com/a/448294/164493
 export LC_COLLATE="C"
