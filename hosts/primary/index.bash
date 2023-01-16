@@ -340,6 +340,9 @@ alias ...='cd ../..'
 alias nit='npm install-test'
 alias dsize='du -hs'
 
+alias yt-dlp='docker run --rm -v $HOME/Downloads/dlp:/media tnk4on/yt-dlp -o "/media/%(title)s %(id)s.%(ext)s" --format b'
+alias yt-more-dlp='yt-dlp --embed-subs --embed-metadata --write-description'
+
 # https://unix.stackexchange.com/a/81699/37512
 # dig @resolver3.opendns.com myip.opendns.com +short                   # IPv4
 # dig @resolver4.opendns.com myip.opendns.com +short                   # IPv4
