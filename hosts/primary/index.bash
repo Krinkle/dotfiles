@@ -340,8 +340,10 @@ alias ...='cd ../..'
 alias nit='npm install-test'
 alias dsize='du -hs'
 
-alias yt-dlp='docker run --rm -v $HOME/Downloads/dlp:/media tnk4on/yt-dlp -o "/media/%(title)s %(id)s.%(ext)s" --format b'
-alias yt-more-dlp='yt-dlp --embed-subs --embed-metadata --write-description'
+alias _yt-dlp='docker run --rm -v $HOME/Downloads/dlp:/media tnk4on/yt-dlp --format b -o "/media/%(upload_date>%Y-%m-%d)s %(uploader)s - %(title)s %(id)s.%(ext)s" --no-playlist'
+alias yt-basic-dlp='_yt-dlp'
+alias yt-dlp='_yt-dlp --embed-subs --embed-metadata --write-description'
+alias yt-audio-dlp='_yt-dlp -x'
 
 # https://unix.stackexchange.com/a/81699/37512
 # dig @resolver3.opendns.com myip.opendns.com +short                   # IPv4
@@ -359,7 +361,7 @@ alias wanip6='dig @resolver1.ipv6-sandbox.opendns.com AAAA myip.opendns.com +sho
 alias g='git'
 alias gi='git'
 alias gir='git'
-alias dogitcommit='git commit -F ~/Development/Temp/COMMIT.txt'
+alias dogitcommit='git commit -F ~/Documents/Temp/COMMIT.txt'
 alias gogogerrit='git review -R'
 alias grabfromgerrit='git review -d'
 alias gigisu='git lg-prefix'

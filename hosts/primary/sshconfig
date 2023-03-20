@@ -16,12 +16,14 @@ Host *.wmflabs *.wikimedia.cloud
 ## https://wikitech.wikimedia.org/wiki/Production_shell_access#SSH_configuration
 
 CanonicalizeHostname yes
+
 Match host=*.wikimedia.org,*.wmnet
     ForwardAgent no
     IdentitiesOnly yes
     KbdInteractiveAuthentication no
     PasswordAuthentication no
     User krinkle
+    UserKnownHostsFile ~/.ssh/known_hosts.d/wmf-prod
 
 Host *.wmnet *.wikimedia.org !gerrit.wikimedia.org !bast*.wikimedia.org
     ProxyJump bast1003.wikimedia.org
