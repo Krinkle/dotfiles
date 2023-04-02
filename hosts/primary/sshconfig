@@ -1,5 +1,7 @@
 ## General
 
+CanonicalizeHostname yes
+
 ## Wikimedia Cloud VPS
 ## https://wikitech.wikimedia.org/wiki/Help:Accessing_Cloud_VPS_instances#ProxyJump_(recommended)
 
@@ -14,8 +16,6 @@ Host *.wmflabs *.wikimedia.cloud
 
 ## Wikimedia Production
 ## https://wikitech.wikimedia.org/wiki/Production_shell_access#SSH_configuration
-
-CanonicalizeHostname yes
 
 Match host=*.wikimedia.org,*.wmnet
     ForwardAgent no
@@ -68,7 +68,7 @@ Host gist.github.com
 
 ## Antagonist
 
-Host timotijhof.net
+Host timotijhof.net s222.webhostingserver.nl
     User deb35044
     IdentityFile ~/.ssh/id_rsa_santagio
     # IPv4
@@ -80,7 +80,6 @@ Host secure.phabricator.com
     User secure
     IdentityFile ~/.ssh/id_rsa_phabricator
     IdentitiesOnly yes
-
 
 ## (Default)
 
