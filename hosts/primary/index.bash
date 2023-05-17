@@ -337,7 +337,8 @@ alias lchmod='stat -c "%a %n"'
 alias ..='cd ..'
 alias ...='cd ../..'
 
-alias nit='npm install-test'
+alias fit='fresh-node -- npm install-test'
+alias fet='fresh-node -- npm test'
 alias dsize='du -hs'
 
 alias _yt-dlp='docker run --rm -v $HOME/Downloads/dlp:/media tnk4on/yt-dlp --format b -o "/media/%(upload_date>%Y-%m-%d)s %(uploader)s - %(title)s %(id)s.%(ext)s" --no-playlist'
@@ -361,7 +362,7 @@ alias wanip6='dig @resolver1.ipv6-sandbox.opendns.com AAAA myip.opendns.com +sho
 alias g='git'
 alias gi='git'
 alias gir='git'
-alias dogitcommit='git commit -F ~/Documents/Temp/COMMIT.txt'
+alias dogitcommit='git commit -F ~/Temp/COMMIT.txt'
 alias gogogerrit='git review -R'
 alias grabfromgerrit='git review -d'
 alias gigisu='git lg-prefix'

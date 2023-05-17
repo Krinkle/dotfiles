@@ -11,7 +11,7 @@
 [gitreview]
 	remote = origin
 [push]
-	default = matching
+	default = current
 [pull]
 	rebase = true
 [tag]
