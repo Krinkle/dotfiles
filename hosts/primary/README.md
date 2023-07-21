@@ -21,20 +21,37 @@ See <https://help.github.com/articles/generating-ssh-keys>.
 
 ## Development
 
-#### Checkouts
+### Checkouts
 
 ```
 mkdir -p ~/Development
+
 cd ~/Development
 doclonegerrit mediawiki/core mediawiki
-doclonegerrit oojs/core oojs
-doclonegerrit oojs/ui oojs-ui
+doclonegerrit oojs/core
+doclonegerrit oojs/ui
 doclonegerrit integration/config wikimedia/integration-config
 doclonegerrit operations/mediawiki-config wikimedia/operations-mediawiki-config
 doclonegerrit operations/puppet wikimedia/puppet
+doclonegerrit operations/debs/wmf-sre-laptop wmf-sre-laptop
+
+doclonegerrit cdb
+doclonegerrit jquery-client
+doclonegerrit mediawiki/libs/less.php less.php
+doclonegerrit mediawiki/libs/node-cssjanus node-cssjanus
+doclonegerrit mediawiki/libs/php-cssjanus php-cssjanus
+doclonegerrit RelPath
+doclonegerrit RunningStat
+doclonegerrit WrappedString
+doclonegerrit mediawiki/libs/Minify
+doclonegerrit mediawiki/libs/ScopedCallback
+doclonegerrit mediawiki/libs/Timestamp
+doclonegerrit mediawiki/libs/WaitConditionLoop
+doclonegerrit mediawiki/php/excimer
 
 cd ~/Development/mediawiki/skins
 doclonegerrit mediawiki/skins/Vector
+doclonegerrit mediawiki/skins/MonoBook
 
 cd ~/Development/mediawiki/extensions
 doaddwmext AbuseFilter
@@ -51,6 +68,10 @@ doaddwmext NavigationTiming
 doaddwmext ParserFunctions
 doaddwmext TemplateData
 doaddwmext WikimediaEvents
+
+# Copy and ignore
+cp $KDF_BASE_DIR/hosts/primary/mw-LocalSettings.php ~/Development/mediawiki/LocalSettings.mine.php
+echo LocalSettings.mine.php >> .git/info/exclude
 ```
 
 ## Applications
@@ -68,9 +89,9 @@ Install via App Store:
 
 Install (other):
 
-* Atom
+* 1Password
+* Carbon Copy Cloner
 * coconutBattery
-* Docker
 * Firefox
 * Google Chrome
 * GPG Suite (GPG Keychain)
@@ -78,61 +99,40 @@ Install (other):
 * KeeWeb
 * Little Snitch
 * Logitech Options
+* NetNewsWire (+Feedbin)
 * OpenOffice
-* Steam
+* PhpStorm
+* Podman Desktop
+* Proton VPN
 * Sublime Text
 * VLC
 
-#### Atom
+### 1Password
 
-Install Community Themes:
+OpenJS Foundation:
 
-* monokai
+* username + password + "Recovery Kit.pdf" (server + key)
 
-Install Community Packages:
+### Carbon Copy Cloner
 
-* minimap
-* minimap-highlight-selected
-* highlight-selected
-* sort-lines
+Settings / Dashboard:
 
-Settings / Core:
+* (disabled) Show CCC's icon in the menu bar.
 
-* Exclude VCS Ignored Paths: **Disabled**. _(Include MediaWiki extension repos in search index)_
+Tasks:
 
-* Ignored Names: `.git, .hg, .svn, .DS_Store, node_modules, vendor`. _(Compensate for inclusion of VCS Ignored Paths)_
+* Import Tasks... from backed up `.ccctask` file.
 
-Settings / Editor:
+### Podman Desktop
 
-* Show Invisibles: **Enabled**. _(Show tab marks)_
+* (enabled) docker-compose binary system wide
+* Podman machine: 4 CPU, 4 GB mem, 40 GB disk
 
-* Non Word Characters: **Remove `$` character from list**. _(Restore double-click to select variable names in JavaScript and PHP, including JS variable names like `$foo`.)_
+### 🌱 Fresh
 
-* Packages / Tree View / Hide VCS Ignored Files: **Disabled**. _(Include MediaWiki extensions in sidebar. [Thanks @viion](https://github.com/atom/atom/issues/3429#issuecomment-286593181)!)_
+Install from <https://gerrit.wikimedia.org/g/fresh>.
 
-Since macOS 10.15, the "Move line down" (ctrl-cmd-↓) command still works, but
-also causes an OS level error beep. This is because Atom/Electron/Chromium are
-failing to register their shortcut with the OS, so it assumes it is unhandled
-and gives this feedback.
-
-Apply this workaround to retain your sanity:
-<https://bugs.chromium.org/p/chromium/issues/detail?id=916460#c13>.
-
-#### Docker for Mac
-
-File Sharing:
-
-* Only allow directories under `/Users/krinkle/Development` to be mounted.
-
-Advanced:
-
-* Increase memory to 4 GB.
-
-#### 🌱  Fresh
-
-Install from <https://github.com/wikimedia/fresh>.
-
-#### Finder
+### Finder
 
 Finder Preferences -> General:
 
@@ -152,11 +152,18 @@ Desktop / View:
 
 * Sort By: Snap to Grid (enabled).
 
-#### Firefox
+### Firefox
 
 Preferences -> Search:
 
 * Default search engine: DuckDuckGo.
+
+Preferences -> Home:
+
+* (enabled) Web search
+* (disabled) Shortcuts
+* (disabled) Recommended by Pocket
+* (disabled) Recent activity
 
 Preferences -> Security:
 
@@ -165,10 +172,22 @@ Preferences -> Security:
 Advanced Preferences (`about:config`):
 
 * (enabled) `view_source.wrap_long_lines` _(match Chromium's default behaviour)_
-
 * (change from 3 to 1) `mousewheel.with_meta.action` _(avoid unexpected page zoom action when scrollwheel is still spinning and holding down cmd key for something else; [source](https://support.mozilla.org/en-US/questions/953341))_
 
-#### Gmail
+Toolbar:
+
+* (Remove from Toolbar) Pocket
+
+Sync:
+
+* (enabled) Bookmarks.
+
+Plugins:
+
+* Wayback Machine
+* WikimediaDebug
+
+### Gmail
 
 Settings -> General:
 
@@ -178,39 +197,98 @@ Settings -> Advanced:
 
 * (enabled) Custom keyboard shortcuts. _Google hasn't considered non-American keyboards. As such, the shortcut for `Delete` is non-functional on British English keyboards. Neither Shift-3 (£), nor Shift-Alt-3 (#) works. But you can make it work by adding `£` as custom second shortcut for `Delete`. After enabling this feature, you have to save settings and reload the page before it works. Then, under "Setttings -> Keyboard Shortcuts" add `£` in the second column for "Delete", and again, save and reload before it works. Happy deleting!_
 
-#### GPG Suite
+### GPG Suite
 
 System Preferences / GPG Suite / Settings:
 
 * (disabled) Store in macOS Keychain.
 
-#### Little Snitch
+### KeeWeb
+
+Settings / General / Function:
+
+* (enabled) Automatically save and sync periodically.
+* (enabled) Clear cipboard after copy: In a minute.
+* (enabled) Minimize the app instead of close.
+
+Settings / General / Auto lock:
+
+* (enabled) When the computer is locked or put to sleep.
+
+### Little Snitch
 
 Preferences:
 
-* Preselected Optoins / Rule Lifetime: For 10 minutes.
+* Preselected Options / Rule Lifetime: For 10 minutes.
 * (enabled) Confirm with Return or Escape
 
-#### Messages app
+### Logitech Options
+
+MX Master / Mouse:
+
+* Scroll wheel button: None.
+* Middle button ("Manual switch"): Look Up.
+* Thumb wheel: Horizontal scroll.
+* Thumb forward: Click.
+* Thumb back: Right click.
+* Thumb pad button: None.
+
+MX Master / Point & Scroll:
+
+* Scroll direction: Standard.
+* Smooth scrolling: Disabled.
+* SmartShift: Disabled.
+* Scroll wheel mode: Free spin.
+
+Logitech Options "Plus" regressions:
+
+* "Look Up" missing.
+  * Workaround: keyboard shortcut "ctrl-cmd-D" ([Reddit source](https://old.reddit.com/r/logitech/comments/tfyu5i/look_up_action_disappeared_in_logi_options_beta/))
+* "Click" mapping no longer holds (e.g. for dragging in drag-and-drop, or to move/resize a window), when mapping "Thumb forward" to "Click" (via Advanced click).
+  * Workaround: N/A. Use regular mouse buttons, and pray you don't get RSI.
+  * Reports:
+    [Reddit 1](https://old.reddit.com/r/logitech/comments/14y3nxr/mx_master_2s_side_buttons_no_click_and_hold/),
+    [Reddit 2](https://old.reddit.com/r/logitech/comments/z3jjyc/bring_back_left_click_for_buttons_in_options/),
+    [Reddit 3](https://old.reddit.com/r/logitech/comments/wiyowd/altshiftctrl_click_functions_on_mx3/),
+    [Logi 1](https://support.logi.com/hc/en-gb/community/posts/9037143525655-Logi-Option-advanced-click-can-t-be-holded),
+    [Logi 2](https://support.logi.com/hc/en-us/community/posts/360032668873-Click-and-Hold),
+    [Logi 3](https://support.logi.com/hc/en-us/community/posts/360032391954-Logitech-Options-Advanced-Click),
+    [Logi 4](https://support.logi.com/hc/en-gb/community/posts/360044026454-No-Advanced-Middle-Click-for-Mac-OS-Logi-Options).
+
+### Messages app
 
 Preferences:
 
 * (disabled) Play sound effects.
+* Keep messages: One Year (default: Forever).
 
-#### Music app
+### Music app
 
 View:
 
 * (enabled) Show Status Bar.
 
-#### Simplenote
+Settings > General:
+
+* (disabled) Show "Apple Music".
+* (disabled) Notifications "When song changes".
+
+### PhpStorm
+
+License:
+
+* Import offline activation key.
+* Or recover via JetBrains account
+* Or obtain via <https://office.wikimedia.org/wiki/JetBrains> (restricted)
+
+### Simplenote
 
 View:
 
 * Notes List / Note Display: Condensed.
 * Notes List / Sort Order: Alphabetical.
 
-#### Safari
+### Safari
 
 View:
 
@@ -236,24 +314,43 @@ Preferences -> Advanced:
 
 * (enabled) Pressing Tab will highlight each item on a webpage.
 
-#### Skitch
+### Skitch
 
 Preferences:
 
 * (disabled) Auto-expand canvas.
 
-#### Sublime Text
+### Sublime Text
+
+* Install Package Control (via cmd-P).
 
 Plugins:
 
-* https://packagecontrol.io/installation
 * EditorConfig
-* LESS
+* Less
 * Puppet
 * Theme - Soda
 * TrailingSpaces
 
-#### System Preferences
+### System Preferences
+
+Apple ID:
+* (enabled) Messages
+* (enabled) FaceTime
+* (enabled) iCloud > Find My Mac
+* (disabled) Everything else, including:
+  * Optimise Mac Storage
+  * Photos
+  * Keychain
+  * Access iCloud Data on the Web
+
+Trackpad:
+
+* (enabled) Tap to click
+* (disabled) Mission Control
+* (disabled) App Expose
+* (disabled) Launchpad
+* (disabled) Show Desktop
 
 Accessibility -> Mouse & Trackpad -> Trackpad Options:
 
@@ -269,7 +366,7 @@ Dock:
 
 Internet Accounts:
 
-* (enabled) Google / Contacts.
+* (enabled) Fastmail / Contacts.
 
 Keyboard -> Text:
 
@@ -284,20 +381,22 @@ Keyboard -> Shortcuts -> Mission Control:
 * (disabled) Mission Control - "^↑" (These interfere with Sublime Text selection expansion shortcuts, `Shift ctrl ↑` and `Shift ^ ↓`.):
 * (disabled) Application Windows - "^↓"
 
-Mission Control:
+Desktop & Dock -> Mission Control:
 
 * (disabled) Automatically rearrange Spaces based on most recent use.
-* See also <https://apple.stackexchange.com/a/44801/33762>
+* (enabled) When switching to an application, switch to a Space with open windows for the application.
+  See also <https://apple.stackexchange.com/a/44801/33762>.
 
-Security & Privacy:
-
-* (enabled) Require password after sleep or screen saver.
-* Require password after: "immediately".
-
-Screen savers -> Hot Corners:
+Desktop & Dock -> Hot Corners:
 
 * (enabled) Top left: Desktop.
 * (enabled) Top right: Mission Control.
+
+Lock Screen:
+
+* Turn display off on battery after: 20 minutes.
+* Turn display off on power adapter after: 1 hour.
+* (enabled) Require password after screen saver or display is turned off. After: "immediately".
 
 Sharing:
 
@@ -323,11 +422,7 @@ Trackpad -> More Gestures:
 * (enabled) Swipe between spaces by "swipe sideways with **four** fingers. _(Keep "three fingers" reserved for dragging.)_
 * (disabled) Mission Control. _(Triggered via Hot Corners instead. Keep "three fingers" reserved for dragging.)_
 
-Users & Groups -> Advanced Options:
-
-* Login shell: `/usr/local/bin/bash` (via Homebrew)
-
-#### Terminal app
+### Terminal app
 
 Preferences -> Profiles:
 
@@ -352,3 +447,49 @@ Preferences -> Profiles -> Tab:
 * (disabled) Working directory path
 * (disabled) Active process name
 * (disabled) Arguments
+
+### Thunderbird
+
+Accounts:
+
+* Set up Fastmail.
+
+Accounts -> Folders -> Archive options:
+
+* When archiving messages, place them in: A single folder (default: Yearly archived folders).
+
+Accounts -> Junk:
+
+* (disable) Enable adaptive junk mail controls.
+
+Settings > Composition:
+
+* (disabled) Automatically add outgoing email addresses to my address book.
+
+Settings -> Chat:
+
+* (disabled) Let my contacts know that I am idle.
+* (disabled) Send typing notifications.
+
+Add-ons Manager / Extensions:
+
+* [tbkeys-lite](https://addons.thunderbird.net/en-US/thunderbird/addon/tbkeys-lite/) ([source](https://github.com/wshanks/tbkeys))
+  * `"#": "cmd:cmd_delete"`
+
+Advanced Preferences:
+
+* Change default sort order from Asc (1) to Desc (2).
+  https://superuser.com/a/13551/164493
+  `mailnews.default_sort_order=2`
+
+* Make "Get new messages" do what it says. Change from `false` to `true`.
+  https://superuser.com/a/108756/164493
+  `mail.server.default.check_all_folders_for_new`
+
+### VLC
+
+VLC 3.0.18 (macOS 13.4 Ventura) fails to render subtitle text in
+HiDPI (Retina) resolution. https://code.videolan.org/videolan/vlc/-/issues/27793
+
+Workaround:
+* Settings > Show All > Video > Output modules: "Mac OS X OpenGL video output"

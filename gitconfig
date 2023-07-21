@@ -46,7 +46,7 @@
 	# - Component longer than two space-separated words. Likely false positives from commits
 	#   that don't use a component prefix but happen to contain a colon somewhere.
 	# - Double quotes. Often used in message like 'Revert "Foo: …"' or 'Re-apply "Foo: …"'.
-	lg-prefix = "!f() { git log --no-merges --oneline $1 | cut -d' ' -f2-3 | cut -d':' -s -f1 | grep -v '\"' | sort | uniq -c | sort -rn; }; f"
+	lg-prefix = "!f() { git log --no-merges --oneline $1 | cut -d' ' -f2-3 | fgrep -v '\"' | awk -F': ' '{print $1}' | sort | uniq -c | sort -rn; }; f"
 
 	pem = ! git checkout master && git br -D
 	pam = ! git checkout main && git br -D

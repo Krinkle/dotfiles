@@ -1,34 +1,44 @@
 {
-	"auto_match_enabled": false,
-	"color_scheme": "Packages/Color Scheme - Default/Monokai.sublime-color-scheme",
-	"dictionary": "Packages/Language - English/en_GB.dic",
-	"ensure_newline_at_eof_on_save": true,
-	"folder_exclude_patterns":
-	[
-		".svn",
-		".hg",
-		".git",
-		"CVS",
-		"node_modules",
-		"vendor",
-		".sass-cache",
-		"docs/coverage",
-		"docs/html",
-		"docs/latex",
-		"docs/js",
-	],
-	"font_size": 14,
-	"ignored_packages":
-	[
-		"Vintage",
-	],
+	"theme": "Adaptive.sublime-theme",
 	"rulers":
 	[
 		70,
 		79,
 		99
 	],
+	"always_show_minimap_viewport": true,
+	"auto_match_enabled": false,
 	"scroll_past_end": true,
+	"word_wrap": true,
+
+	"color_scheme": "Mariana.sublime-color-scheme",
+	"font_size": 12,
+
 	"spell_check": false,
-	"theme": "Soda Dark.sublime-theme",
+	"dictionary": "Packages/Language - English/en_GB.dic",
+
+	"ensure_newline_at_eof_on_save": true,
+
+	"folder_exclude_patterns":
+	[
+		".git",
+		".hg",
+		".nyc_output",
+		".sass-cache",
+		".svn",
+		"CVS",
+		"coverage",
+		"doc/html",
+		"docs/_site",
+		"docs/coverage",
+		"docs/html",
+		"docs/js",
+		"docs/latex",
+		"node_modules"
+	],
+	"ignored_packages":
+	[
+		"Vintage",
+	],
+	"update_check": true,
 }

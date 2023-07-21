@@ -1,8 +1,6 @@
 # Copyright 2021 Timo Tijhof <https://github.com/Krinkle/dotfiles>
 # This is free and unencumbered software released into the public domain.
 
-[ -z "${PS1:-}" ] && return
-
 # Overview:
 #
 # 1. Functions
@@ -204,7 +202,12 @@ function doclonegerrit {
 		echo "usage: ${FUNCNAME[0]} <name>"
 		return 1
 	fi
-	git clone https://gerrit.wikimedia.org/r/$1 $2
+	if [ -z $2 ]; then
+		dest=$(echo "$1" | tr '/' '-')
+	else
+		dest="$2"
+	fi
+	git clone "https://gerrit.wikimedia.org/r/$1" "$dest"
 }
 
 function doaddwmext {
@@ -213,7 +216,7 @@ function doaddwmext {
 		return 1
 	fi
 	local extDir="$HOME/Development/mediawiki/extensions"
-	cd "$extDir" && doclonegerrit "mediawiki/extensions/$1" && cd "$1"
+	cd "$extDir" && doclonegerrit "mediawiki/extensions/$1" "$1" && cd "$1"
 }
 
 function domwextforeach {
@@ -318,6 +321,8 @@ function pullfrom0ad {
 	git apply -p0 --index -v /tmp/arc.diff
 	git commit -q -m "${patch}"
 }
+
+[ -z "${PS1:-}" ] && return
 
 # -------------------------------------------------
 # § 2. Aliases
@@ -464,6 +469,14 @@ export LESSCHARSET=utf-8
 export EDITOR=vim
 
 # Homebrew
+#
+# From `homebrew shellenv`
+export HOMEBREW_PREFIX="/opt/homebrew";
+export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar";
+export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX";
+export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin${PATH+:$PATH}";
+export MANPATH="$HOMEBREW_PREFIX/share/man${MANPATH+:$MANPATH}:";
+export INFOPATH="$HOMEBREW_PREFIX/share/info:${INFOPATH:-}";
 # https://github.com/Homebrew/brew/blob/3.0.9/docs/Analytics.md
 export HOMEBREW_NO_ANALYTICS=1
 # Don't reinstall the whole world when installing one package
@@ -472,28 +485,22 @@ export HOMEBREW_NO_INSTALL_UPGRADE=1
 
 # Bins
 #
-# - Homebrew and manually installed programs
-export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-# - Homebrew versions of programs that also come with macOS
-#   These are handled special and not linked to /usr/local automatically
-#   for safety and compatibility.
-# - - Ruby
-#     https://stackoverflow.com/a/14138490/319266
-#     Based on "`brew --prefix ruby`/bin" and "`gem environment gemdir`/bin"
-export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.1.0/bin:$PATH"
-# - - coreutils (e.g. realpath)
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-# - - curl
-export PATH="/usr/local/opt/curl/bin:$PATH"
-# - - PHP
-export PATH="/usr/local/opt/php@8.1/bin:$PATH"
+# - Homebrw's system overrides
+#   * gnu-coreutils without 'g' prefix, e.g. realpath
+#   * new curl
+#   * new ruby
+export PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="$HOMEBREW_PREFIX/opt/curl/bin:$PATH"
+export PATH="$HOMEBREW_PREFIX/opt/ruby/bin:$PATH"
+# - Gems
+#   https://stackoverflow.com/a/14138490/319266
+#   Based on "`gem environment gemdir`/bin"
+export PATH="$HOMEBREW_PREFIX/lib/ruby/gems/3.2.0/bin:$PATH"
 # - Sublime Text (subl)
 #   https://www.sublimetext.com/docs/command_line.html
 export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
-# - [Disabled] Composer global packages
-# - [Disabled] npm global packages
 # - Homebrew's Git provides diff-highlight
-export PATH="/usr/local/opt/git/share/git-core/contrib/diff-highlight:$PATH"
+export PATH="$HOMEBREW_PREFIX/opt/git/share/git-core/contrib/diff-highlight:$PATH"
 # - Arcanist
 #   https://secure.phabricator.com/book/phabricator/article/arcanist_quick_start/
 export PATH="${PATH}:${HOME}/Development/arcanist/bin"
@@ -506,13 +513,14 @@ export PATH="${HOME}/bin:${PATH}"
 # Except when we're provisioning, as it would fail due to missing files.
 if [ -n "${PS1:-}" ] && [ -z "${KDF_INSTALLER:-}" ]; then
 	# Completion modules from Homebrew-installed packages
-	. /usr/local/etc/bash_completion
+	. $HOMEBREW_PREFIX/etc/bash_completion
 	# See also "Aliases"
 	__git_complete g __git_main
 	__git_complete gi __git_main
 	__git_complete gir __git_main
 
-	[[ -s /usr/local/etc/profile.d/autojump.sh ]] && . /usr/local/etc/profile.d/autojump.sh
+	# Autojump
+	. $HOMEBREW_PREFIX/etc/profile.d/autojump.sh
 
 	# Bash prompt
 	PROMPT_COMMAND="_dotfiles-ps1-setup${PROMPT_COMMAND:+; $PROMPT_COMMAND}"

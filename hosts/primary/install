@@ -26,7 +26,7 @@ function _dotfiles-install {
 	if [ -z "$(which brew)" ]
 	then
 		echo "$CLR_RED>> ERROR$CLR_NONE: Install Homebrew first"
-		open http://brew.sh
+		open https://brew.sh
 		exit 1
 	fi
 
@@ -51,9 +51,11 @@ function _dotfiles-install {
 		git
 		# https://www.mediawiki.org/wiki/Gerrit/git-review#OS_X
 		git-review
-		hh
+		hstr
 		jq
 		node
+		# Needed for php-apcu
+		pcre2
 		pwgen
 		# Tox to simplify managing Python venv and testing
 		# - https://www.mediawiki.org/wiki/CI/JJB
@@ -67,15 +69,31 @@ function _dotfiles-install {
 	for f in "${formulas[@]}"; do
 		brew upgrade $f || brew install $f
 	done
-	brew upgrade php@8.1 || brew install php@8.1
+	brew upgrade php@8.2 || brew install php@8.2
 
 	brew cleanup
 
-	echo "... post-install: node"
-	rm -f /usr/local/bin/npm
+	echo "... post-install: bash"
+	if ! grep -q /opt/homebrew/bin/bash /etc/shells
+	then
+		sudo sh -c 'echo "/opt/homebrew/bin/bash" >> /etc/shells'
+		chsh -s /opt/homebrew/bin/bash
+	fi
 
 	echo "... post-install: php"
-	test -f /usr/local/etc/php/8.1/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/primary/php.ini /usr/local/etc/php/8.1/conf.d/krinkle.ini )
+	test -f /opt/homebrew/etc/php/8.2/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/primary/php.ini /opt/homebrew/etc/php/8.2/conf.d/krinkle.ini )
+
+	# Fix missing pcre2 dep for php-apcu.
+	#
+	# https://stackoverflow.com/a/72612925/319266
+	# https://github.com/Homebrew/homebrew-core/issues/102392
+	#
+	# > /opt/homebrew/Cellar/php/8.2.8/include/php/ext/pcre/php_pcre.h:23:10:
+	# > fatal error: 'pcre2.h' file not found
+	#
+	# This worked fine on macOS 10.15, but on macOS 13+, pcre2 is either no longer
+	# installed by default, or (if it is) it's not linked properly?
+	ln -s /opt/homebrew/opt/pcre2/include/pcre2.h /opt/homebrew/opt/php@8.2/include/php/ext/pcre/
 	pecl install apcu
 
 	echo "... post-install: git"
@@ -88,42 +106,18 @@ function _dotfiles-install {
 	if [ -z "$(which subl)" ]
 	then
 		echo "$CLR_RED>> ERROR$CLR_NONE: Install Sublime Text and re-run the installer."
-		open http://www.sublimetext.com/3
+		open http://www.sublimetext.com/download
 		exit 1
 	fi
 
 	echo "... post-install: Sublime Text"
-	tmpPath="$HOME/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings"
+	tmpPath="$HOME/Library/Application Support/Sublime Text/Packages/User/Preferences.sublime-settings"
 	tmpDest=$KDF_BASE_DIR/hosts/primary/SublimePreferences.json
 	_dotfiles-ensure-link "$tmpPath" "$tmpDest"
 
 	tmpPath=$HOME/.config
 	tmpDest=$KDF_BASE_DIR/hosts/primary/config
 	_dotfiles-ensure-link "$tmpPath" "$tmpDest"
-
-
-	# Create Finder Shortcut with descriptive name,
-	# indexed by Spotlight for easy access.
-	tmpSrcDir="$HOME/Applications"
-	mkdir -p "$tmpSrcDir"
-	tmpDest=$KDF_BASE_DIR/hosts/primary/bin/kdf-corners
-	tmpSrcName="KDF Enable Corners"
-	rm -f "$tmpSrcDir/$tmpSrcName"
-	osascript <<EOF
-tell application "Finder"
-	make new alias to file (posix file "$tmpDest") at (posix file "$tmpSrcDir")
-	set name of result to "$tmpSrcName"
-end tell
-EOF
-	tmpDest=$KDF_BASE_DIR/hosts/primary/bin/kdf-nocorners
-	tmpSrcName="KDF Disable Corners"
-	rm -f "$tmpSrcDir/$tmpSrcName"
-	osascript <<EOF
-tell application "Finder"
-	make new alias to file (posix file "$tmpDest") at (posix file "$tmpSrcDir")
-	set name of result to "$tmpSrcName"
-end tell
-EOF
 }
 
 _dotfiles-install

@@ -23,6 +23,7 @@ Match host=*.wikimedia.org,*.wmnet
     KbdInteractiveAuthentication no
     PasswordAuthentication no
     User krinkle
+    # Generate using operations/debs/wmf-sre-laptop.git:/scripts/wmf-update-known-hosts-production
     UserKnownHostsFile ~/.ssh/known_hosts.d/wmf-prod
 
 Host *.wmnet *.wikimedia.org !gerrit.wikimedia.org !bast*.wikimedia.org
@@ -51,6 +52,10 @@ Host *.jquery.com *.jquery.net
     User krinkle
     IdentityFile ~/.ssh/id_ed_jqinfra
     IdentityFile ~/.ssh/id_rsa_jq
+    # required for legacy hosts
+    PubkeyAcceptedKeyTypes +ssh-rsa
+    # curl https://puppet-03.ops.jquery.net/known_hosts
+    UserKnownHostsFile ~/.ssh/known_hosts.d/jquery
 
 ## Debian Salsa
 Host salsa.debian.org
