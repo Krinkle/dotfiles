@@ -346,7 +346,7 @@ alias fit='fresh-node -- npm install-test'
 alias fet='fresh-node -- npm test'
 alias dsize='du -hs'
 
-alias _yt-dlp='docker run --rm -v $HOME/Downloads/dlp:/media tnk4on/yt-dlp --format b -o "/media/%(upload_date>%Y-%m-%d)s %(uploader)s - %(title)s %(id)s.%(ext)s" --no-playlist'
+alias _yt-dlp='docker run --rm -v $HOME/dlp:/media tnk4on/yt-dlp --format b -o "/media/%(upload_date>%Y-%m-%d)s %(uploader)s - %(title)s %(id)s.%(ext)s" --no-playlist'
 alias yt-basic-dlp='_yt-dlp'
 alias yt-dlp='_yt-dlp --embed-subs --embed-metadata --write-description'
 alias yt-audio-dlp='_yt-dlp -x'
@@ -513,7 +513,7 @@ export PATH="${HOME}/bin:${PATH}"
 # Except when we're provisioning, as it would fail due to missing files.
 if [ -n "${PS1:-}" ] && [ -z "${KDF_INSTALLER:-}" ]; then
 	# Completion modules from Homebrew-installed packages
-	. $HOMEBREW_PREFIX/etc/bash_completion
+	. $HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh
 	# See also "Aliases"
 	__git_complete g __git_main
 	__git_complete gi __git_main

@@ -40,7 +40,7 @@ function _dotfiles-install {
 		ack
 		autojump
 		bash
-		bash-completion
+		bash-completion@2
 		# For 0ad development
 		cmake
 		colordiff

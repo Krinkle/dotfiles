@@ -53,7 +53,7 @@ def get_raw_npm():
 	bin = os.environ.get('NPM_BIN')
 	if bin != None:
 		return bin
-	for bin in ('/usr/local/bin/npm', '/usr/bin/npm', '/bin/npm'):
+	for bin in ('/opt/homebrew/bin/npm', '/usr/local/bin/npm', '/usr/bin/npm', '/bin/npm'):
 		if os.access(bin, os.X_OK):
 			return bin
 	print('secpm: unable to find npm', file=sys.stderr)

@@ -70,7 +70,7 @@ doaddwmext TemplateData
 doaddwmext WikimediaEvents
 
 # Copy and ignore
-cp $KDF_BASE_DIR/hosts/primary/mw-LocalSettings.php ~/Development/mediawiki/LocalSettings.mine.php
+ln $KDF_BASE_DIR/hosts/primary/mw-LocalSettings.php ~/Development/mediawiki/LocalSettings.mine.php
 echo LocalSettings.mine.php >> .git/info/exclude
 ```
 
