@@ -48,7 +48,7 @@ Host gitlab.wikimedia.org
 
 ## jQuery
 
-Host *.jquery.com *.jquery.net
+Host *.jquery.com *.ops.jquery.net
     User krinkle
     IdentityFile ~/.ssh/id_ed_jqinfra
     IdentityFile ~/.ssh/id_rsa_jq
@@ -63,11 +63,7 @@ Host salsa.debian.org
 
 ## GitHub
 
-Host github.com
-    User krinkle
-    IdentityFile ~/.ssh/id_rsa_gh
-
-Host gist.github.com
+Host github.com gist.github.com
     User krinkle
     IdentityFile ~/.ssh/id_rsa_gh
 

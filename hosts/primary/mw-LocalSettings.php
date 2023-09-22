@@ -1,27 +1,29 @@
 <?php
-/*
-This file is meant to be copied to:
-~/Development/mediawiki/LocalSettings.mine.php
-
-Then, in ~/Development/mediawiki/Localsettings.php:
-
-```php
-require_once __DIR__ . "/LocalSettings.mine.php"; // add this line
-```
-
-This is currently written for MediaWiki-Docker, and thus we assume
-the following two are already dealt with:
-
-- Set MW_LOG_DIR to something reachable and useful.
-- Include "$IP/includes/DevelopmentSettings.php";
-*/
+/**
+ * This file is meant to be copied or hardlinked to:
+ * ~/Development/mediawiki/LocalSettings.mine.php
+ *
+ * Then, add this line to ~/Development/mediawiki/Localsettings.php:
+ *
+ * ```php
+ * require_once __DIR__ . "/LocalSettings.mine.php";
+ * ```
+ *
+ * This is currently written for MediaWiki-Docker, and thus we assume:
+ * - MW_LOG_DIR is set to something writable.
+ * - "$IP/includes/DevelopmentSettings.php" is already included.
+ */
 
 ##
 ## Temporary
 ##
 
-// ini_set( 'display_errors', 0 );
+// Ad-hoc debugging
+// $wgDebugDumpSql = true;
+// $wgDebugRawPage = true;
 // $wgDebugToolbar = true;
+
+// ini_set( 'display_errors', 0 );
 // $wgDevelopmentWarnings = true;
 
 ##
@@ -51,7 +53,7 @@ if ( extension_loaded( 'tideways' ) ) {
 $wgMainCacheType = CACHE_ACCEL;
 
 $wgParserCacheType = CACHE_DB;
-// $wgSessionCacheType = CACHE_DB;
+$wgSessionCacheType = CACHE_DB;
 
 ##
 ## ResourceLoader
@@ -120,7 +122,7 @@ $wgEventLoggingBaseUri = '/beacon/event';
 
 // GlobalCssJs
 $wgUseGlobalSiteCssJs = true;
-$wgGlobalCssJsConfig['wiki'] = wfWikiID();
+$wgGlobalCssJsConfig['wiki'] = $wgDBname;
 $wgGlobalCssJsConfig['source'] = 'local';
 
 ##
