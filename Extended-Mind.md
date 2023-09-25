@@ -35,15 +35,35 @@ git filter-branch --prune-empty --tree-filter 'rm -rf .gitignore README.md docs/
 
 Remove yourself as, otherwise retroactively injected, committer of all changes by mapping committer to author.
 ```
-git filter-branch --env-filter 'export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"; export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"; '
+git filter-branch --env-filter 'export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"; export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL";'
+```
+See also:
+```
+git rebase --committer-date-is-author-date
 ```
 
-See also: `git rebase --committer-date-is-author-date`.
+Only some the last few commits:
+```
+git filter-branch [--some-options-here] d84af39036...HEAD
+```
 
 ## Gerrit
 
 ```
 ssh -p 29418 gerrit.wikimedia.org delete-project delete "' examples/testing'" --yes-really-delete
+```
+
+Add "Reviewed-on:" footer to commit messages during repository extraction or splitting, <https://phabricator.wikimedia.org/T273247#6794951>.
+```
+cd new-library
+
+export FIRST_GERRIT_COMMIT_SHA1=
+
+git rebase $FIRST_GERRIT_COMMIT_SHA1 -i --committer-date-is-author-date --exec 'K_GERRITID=$(git log -1 --format=%b | grep "Change-Id:" | head -n1 || true) && test -n "$K_GERRITID" && K_REVIEWLINE=$(GIT_DIR=/Users/krinkle/Development/mediawiki/.git git log --notes=review --grep="$K_GERRITID" -1 --format=%N | grep "Reviewed-on:" || true) && test -n "$K_REVIEWLINE" && K_OLDMSG=$(git log --format=%B -n 1) && git commit --amend -m "$(printf "$K_OLDMSG\n$K_REVIEWLINE\n")"'
+
+
+git rebase --root -i --committer-date-is-author-date --exec 'K_GERRITID=$(git log -1 --format=%b | grep "Change-Id:" | head -n1 || true) && test -n "$K_GERRITID" && K_REVIEWLINE=$(git log origin/master --notes=review --grep="$K_GERRITID" -1 --format=%N | grep "Reviewed-on:" || true) && test -n "$K_REVIEWLINE" && K_OLDMSG=$(git log --format=%B -n 1) && git commit --amend -m "$(printf "$K_OLDMSG\n$K_REVIEWLINE\n")"'
+
 ```
 
 ## MySQL
