@@ -322,6 +322,10 @@ function pullfrom0ad {
 	git commit -q -m "${patch}"
 }
 
+function gigisu {
+	git lg-prefix "${1:-}" | less
+}
+
 [ -z "${PS1:-}" ] && return
 
 # -------------------------------------------------
@@ -370,7 +374,6 @@ alias gir='git'
 alias dogitcommit='git commit -F ~/Temp/COMMIT.txt'
 alias gogogerrit='git review -R'
 alias grabfromgerrit='git review -d'
-alias gigisu='git lg-prefix'
 
 alias domakejenkinscommit='git remote update origin && git co -b jenkins -t origin/master && touch jenkins.js jenkins.css jenkins.php .jenkins && git add jenkins.js jenkins.css jenkins.php .jenkins && git commit -m "Sample commit for Jenkins"'
 
