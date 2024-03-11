@@ -350,10 +350,11 @@ alias fit='fresh-node -- npm install-test'
 alias fet='fresh-node -- npm test'
 alias dsize='du -hs'
 
-alias _yt-dlp='docker run --rm -v $HOME/dlp:/media tnk4on/yt-dlp --format b -o "/media/%(upload_date>%Y-%m-%d)s %(uploader)s - %(title)s %(id)s.%(ext)s" --no-playlist'
-alias yt-basic-dlp='_yt-dlp'
-alias yt-dlp='_yt-dlp --embed-subs --embed-metadata --write-description'
-alias yt-audio-dlp='_yt-dlp -x'
+# Avoid insertion of Unicode Fullwidth Quotation Mark. https://github.com/yt-dlp/yt-dlp/issues/4547#issuecomment-1817679265
+alias _yt='yt-dlp -o "$HOME/dlp/%(upload_date>%Y-%m-%d)s %(uploader)s - %(title)s.%(ext)s" --no-playlist --compat-options filename-sanitization'
+# Omit --write-description. https://github.com/yt-dlp/yt-dlp/issues/8616
+alias yt='_yt --format b --embed-subs --embed-metadata --print-to-file description "$HOME/dlp/%(upload_date>%Y-%m-%d)s %(uploader)s - %(title)s %(id)s.txt"'
+alias yt-audio='_yt --format ba -x --audio-format m4a'
 
 # https://unix.stackexchange.com/a/81699/37512
 # dig @resolver3.opendns.com myip.opendns.com +short                   # IPv4
@@ -375,7 +376,7 @@ alias dogitcommit='git commit -F ~/Temp/COMMIT.txt'
 alias gogogerrit='git review -R'
 alias grabfromgerrit='git review -d'
 
-alias domakejenkinscommit='git remote update origin && git co -b jenkins -t origin/master && touch jenkins.js jenkins.css jenkins.php .jenkins && git add jenkins.js jenkins.css jenkins.php .jenkins && git commit -m "Sample commit for Jenkins"'
+alias domakejenkinscommit='git remote update origin && git co -f -b jenkins-sample -t origin/master && echo "mw.log( 'Jenkins' );" > jenkins.js && git add jenkins.js && git commit -m "[DNM][WIP] Sample commit for Jenkins"'
 
 alias diff='colordiff'
 alias sdi='svn diff | colordiff'
@@ -437,9 +438,12 @@ export HISTFILESIZE=50000
 # GnuPG
 export GPG_TTY=$(tty)
 
+# difft by Difftastic https://difftastic.wilfred.me.uk/
+export DFT_SKIP_UNCHANGED=1
+
 # MediaWiki
-export MW_SERVER='http://localhost:8080'
-export MW_SCRIPT_PATH='/w'
+export MW_SERVER='http://localhost:4000'
+export MW_SCRIPT_PATH=''
 export MEDIAWIKI_USER='Admin'
 export MEDIAWIKI_PASSWORD='dockerpass'
 
@@ -485,6 +489,7 @@ export HOMEBREW_NO_ANALYTICS=1
 # Don't reinstall the whole world when installing one package
 # https://brew.sh/2021/06/21/homebrew-3.2.0/
 export HOMEBREW_NO_INSTALL_UPGRADE=1
+export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
 
 # Bins
 #
