@@ -351,11 +351,10 @@ alias fet='fresh-node -- npm test'
 alias dsize='du -hs'
 
 # Avoid insertion of Unicode Fullwidth Quotation Mark. https://github.com/yt-dlp/yt-dlp/issues/4547#issuecomment-1817679265
-alias _yt='yt-dlp --format b -o "$HOME/dlp/%(upload_date>%Y-%m-%d)s %(uploader)s - %(title)s.%(ext)s" --no-playlist --compat-options filename-sanitization'
+alias _yt='yt-dlp -o "$HOME/dlp/%(upload_date>%Y-%m-%d)s %(uploader)s - %(title)s.%(ext)s" --no-playlist --compat-options filename-sanitization'
 # Omit --write-description. https://github.com/yt-dlp/yt-dlp/issues/8616
-alias yt='_yt --embed-subs --embed-metadata --print-to-file description "$HOME/dlp/%(upload_date>%Y-%m-%d)s %(uploader)s - %(title)s %(id)s.txt"'
-alias yt-basic='_yt'
-alias yt-audio='_yt -x'
+alias yt='_yt --format b --embed-subs --embed-metadata --print-to-file description "$HOME/dlp/%(upload_date>%Y-%m-%d)s %(uploader)s - %(title)s %(id)s.txt"'
+alias yt-audio='_yt --format ba -x --audio-format m4a'
 
 # https://unix.stackexchange.com/a/81699/37512
 # dig @resolver3.opendns.com myip.opendns.com +short                   # IPv4
@@ -438,6 +437,9 @@ export HISTFILESIZE=50000
 
 # GnuPG
 export GPG_TTY=$(tty)
+
+# difft by Difftastic https://difftastic.wilfred.me.uk/
+export DFT_SKIP_UNCHANGED=1
 
 # MediaWiki
 export MW_SERVER='http://localhost:4000'

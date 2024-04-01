@@ -49,7 +49,6 @@ function _dotfiles-install {
 		difftastic
 		curl
 		git
-		# https://www.mediawiki.org/wiki/Gerrit/git-review#OS_X
 		git-review
 		hstr
 		jq
@@ -57,12 +56,6 @@ function _dotfiles-install {
 		# Needed for php-apcu
 		pcre2
 		pwgen
-		# Tox to simplify managing Python venv and testing
-		# - https://www.mediawiki.org/wiki/CI/JJB
-		# - https://www.mediawiki.org/wiki/Zuul
-		# - performance/navtiming
-		# - etc.
-		tox
 		watch
 		wget
 	)
