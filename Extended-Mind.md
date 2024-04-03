@@ -3,6 +3,14 @@
 Various shell commands and conceptually related patterns I frequently
 use but sometimes forget.
 
+## apt
+
+What Debian package installs a given command?
+
+* iproute2: ip, `ip -4 route list`.
+* iputils-ping: ping.
+* net-tools: ifconfig, netstat.
+
 ## ffmpeg
 
 * http://ffmpeg.org/ffmpeg.html#Main-options
