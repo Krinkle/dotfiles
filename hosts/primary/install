@@ -38,6 +38,7 @@ function _dotfiles-install {
 	echo "... ensure Homebrew packages"
 	formulas=(
 		ack
+		aspell
 		autojump
 		bash
 		bash-completion@2

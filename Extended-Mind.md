@@ -3,6 +3,35 @@
 Various shell commands and conceptually related patterns I frequently
 use but sometimes forget.
 
+## apt
+
+What Debian package installs a given command?
+
+* iproute2: ip, `ip -4 route list`.
+* iputils-ping: ping.
+* net-tools: ifconfig, netstat.
+
+## aspell
+
+aspell does not crawl directories or take multiple files, nor does it work easily with xargs. For loops! Note `|| break` in order to be able to stop it with aspell 0.60.9+ ([bug](https://github.com/GNUAspell/aspell/issues/598)).
+
+```
+for _filename in $(git ls-files '*.md'); do aspell --mode=markdown --encoding=utf-8 --lang=en check "$_filename" || break; done;
+```
+
+## chown
+
+Fix permissions recursively for files not owned by a given user or group:
+
+```
+find . -not -group MY_GROUP  -print0 | xargs -0 -r chgrp --no-dereference MY_GROUP
+
+
+find . -not -user MY_USER  -print0 | xargs -0 -r chown --no-dereference MY_USER
+```
+
+Inspired by [wikimedia/operations-puppet.git:/mediawiki/fix-staging-perms.sh](https://gerrit.wikimedia.org/g/operations/puppet/+/b1721a0871515a55f5d9eefdba1447ec30da1bc1/modules/profile/files/mediawiki/deployment/fix-staging-perms.sh).
+
 ## ffmpeg
 
 * http://ffmpeg.org/ffmpeg.html#Main-options
