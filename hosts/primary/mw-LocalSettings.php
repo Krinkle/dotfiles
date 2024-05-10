@@ -40,6 +40,21 @@ if ( extension_loaded( 'tideways' ) ) {
 	}
 }
 
+// Use ?forceflame=1 to generate a trace log, written to /w/logs/speedscope.json
+if ( extension_loaded( 'excimer' ) && isset( $_GET['forceflame'] ) ) {
+	$excimer = new ExcimerProfiler();
+	$excimer->setPeriod( 0.0001 ); // 0.1ms
+	$excimer->setEventType( EXCIMER_REAL );
+	$excimer->start();
+	register_shutdown_function( function () use ( $excimer ) {
+		$excimer->stop();
+		$data = $excimer->getLog()->getSpeedscopeData();
+		$data['profiles'][0]['name'] = $_SERVER['REQUEST_URI'];
+		file_put_contents( MW_INSTALL_PATH . '/logs/speedscope-' . ( new DateTime )->format( 'Y-m-d_His_v' ) . '-' . MW_ENTRY_POINT . '.json',
+				json_encode( $data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) );
+	} );
+}
+
 ##
 ## Traffic
 ##
@@ -72,8 +87,22 @@ $wgUseInstantCommons = true;
 // $wgGenerateThumbnailOnParse = false;
 
 ##
+## Notifications
+##
+
+// $wgEnableSpecialMute = true;
+// $wgEnableUserEmailMuteList = true;
+// $wgEchoPerUserBlacklist = true;
+
+##
 ## Localisation
 ##
+
+##
+## Parser
+##
+
+$wgFragmentMode = [ 'html5' ]; // DiscussionTools requires this.
 
 ##
 ## Skins
@@ -88,19 +117,29 @@ wfLoadSkin('Vector');
 ## Tarball extensions
 ##
 
+// wfLoadExtension('AbuseFilter');
+// wfLoadExtension('CategoryTree');
 // wfLoadExtension('Cite');
 // wfLoadExtension('CiteThisPage');
-// wfLoadExtension('Gadgets');
+// wfLoadExtension('CodeEditor');
+// wfLoadExtension('ConfirmEdit');
+wfLoadExtension('Gadgets');
+// wfLoadExtension('ImageMap');
+// wfLoadExtension('InputBox');
 // wfLoadExtension('Interwiki');
+// wfLoadExtension('Math');
 // wfLoadExtension('ParserFunctions');
+// wfLoadExtension('PdfHandler');
+// wfLoadExtension('Poem');
+// wfLoadExtension('SpamBlacklist');
+// wfLoadExtension('TemplateData');
+// wfLoadExtension('VisualEditor');
 // wfLoadExtension('WikiEditor');
 
 ##
 ## WMF CI Gate extensions
 ##
 
-// wfLoadExtension('AbuseFilter');
-// wfLoadExtension('CodeEditor');
 // wfLoadExtension('ContentTranslation');
 // wfLoadExtension('EventStreamConfig');
 // wfLoadExtension('EventLogging');
@@ -109,48 +148,92 @@ wfLoadSkin('Vector');
 // wfLoadExtension('MobileFrontend');
 // wfLoadExtension('NavigationTiming');
 // wfLoadExtension('SyntaxHighlight_GeSHi');
-// wfLoadExtension('TemplateData');
 // wfLoadExtension('UniversalLanguageSelector');
-// wfLoadExtension('VisualEditor');
+
+##
+## Misc extensions
+##
+
+// wfLoadExtension('DiscussionTools');
+// wfLoadExtension('Linter');
+// wfLoadExtension('MultimediaViewer');
+// wfLoadExtension('WikiLambda');
+// wfLoadExtension('WikimediaEvents');
+
+// CategoryTree
+$wgCategoryTreeSidebarRoot = 'Category:All';
+
+// DiscussionTools
+// $wgDiscussionToolsTalkPageParserCacheExpiry = 60;
 
 // EventLogging
 $wgEventLoggingBaseUri = '/beacon/event';
 // $wgEventLoggingDBname = $wgDBname;
-
-// ULS
-// $wgULSCompactLanguageLinksBetaFeature = false;
 
 // GlobalCssJs
 $wgUseGlobalSiteCssJs = true;
 $wgGlobalCssJsConfig['wiki'] = $wgDBname;
 $wgGlobalCssJsConfig['source'] = 'local';
 
-##
-## Misc extensions
-##
+// NavigationTiming
+// $wgNavigationTimingSamplingFactor = 1;
 
-// wfLoadExtension('CategoryTree');
-// wfLoadExtension('DiscussionTools');
-// wfLoadExtension('Linter');
-// wfLoadExtension('MultimediaViewer');
-// wfLoadExtension('WikiLambda');
-// wfLoadExtension('WikimediaEvents');
-// wfLoadExtension('InputBox');
-
-// CategoryTree
-$wgCategoryTreeSidebarRoot = 'Category:All';
-
-// DiscussionTools
-$wgLocaltimezone = 'UTC'; // DiscussionTools requires this.
-$wgFragmentMode = [ 'html5' ]; // DiscussionTools requires this.
-// $wgDiscussionToolsTalkPageParserCacheExpiry = 60;
+// ULS
+// $wgULSCompactLanguageLinksBetaFeature = false;
 
 // Wikibase
 // $wgWikimediaJenkinsCI = true;
 // require_once "$IP/extensions/Wikibase/Wikibase.php";
 
-// NavigationTiming
-// $wgNavigationTimingSamplingFactor = 1;
-
 // WikimediaEvents
 $wgWMEStatsdBaseUri = '/beacon/statsv';
+
+// CommunityConfiguration
+/*
+wfLoadExtension('CommunityConfiguration');
+$wgCommunityConfigurationProviders = [
+	'foo' => [
+		'store' => [
+			'type' => 'wikipage',
+			'args' => [ 'MediaWiki:Foo.json' ],
+		],
+		'validator' => [
+			'type' => 'jsonschema',
+			'args' => [ FooSchema::class ]
+		],
+		'type' => 'mw-config',
+	],
+];
+
+use MediaWiki\Extension\CommunityConfiguration\Schema\JsonSchema;
+use MediaWiki\MediaWikiServices;
+$wgExtensionFunctions[] = function () {
+	class FooSchema extends JsonSchema {
+		public const FooThing = [
+			JsonSchema::TYPE => JsonSchema::TYPE_STRING,
+			JsonSchema::DEFAULT => 'initial',
+		];
+	}
+
+	class SpecialFooConfig extends SpecialPage {
+		public function __construct() {
+			parent::__construct( 'FooConfig' );
+		}
+		public function execute( $par ) {
+			$this->getOutput()->setPageTitle( 'Foo Config' );
+			$this->getOutput()->addHtml(
+				Html::element( 'p', [], 'The value of FooThing is:' )
+				. Html::element( 'pre', [], $this->getFooThing() )
+			);
+		}
+		private function getFooThing() {
+			$reader = MediaWikiServices::getInstance()->get( 'CommunityConfiguration.WikiPageConfigReader' );
+			return $reader->get( 'FooThing' );
+		}
+	}
+};
+$wgSpecialPages['FooConfig'] = 'SpecialFooConfig';
+$wgHooks['LocalisationCacheRecache'][] = function ( $localisationCache, $code, &$allData ) {
+	$allData['specialPageAliases']['FooConfig'] = ['FooConfig'];
+};
+*/
