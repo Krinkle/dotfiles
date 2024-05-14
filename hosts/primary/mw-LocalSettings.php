@@ -56,6 +56,17 @@ if ( extension_loaded( 'excimer' ) && isset( $_GET['forceflame'] ) ) {
 }
 
 ##
+## Stats
+##
+## $ nc -ul 8125
+## $ nc -ul 8126
+##
+
+// $wgStatsdServer = '127.0.0.1:8125';
+// $wgStatsTarget = 'udp://127.0.0.1:8126';
+// $wgStatsFormat = 'dogstatsd';
+
+##
 ## Traffic
 ##
 
@@ -189,51 +200,47 @@ $wgGlobalCssJsConfig['source'] = 'local';
 $wgWMEStatsdBaseUri = '/beacon/statsv';
 
 // CommunityConfiguration
-/*
-wfLoadExtension('CommunityConfiguration');
-$wgCommunityConfigurationProviders = [
-	'foo' => [
-		'store' => [
-			'type' => 'wikipage',
-			'args' => [ 'MediaWiki:Foo.json' ],
-		],
-		'validator' => [
-			'type' => 'jsonschema',
-			'args' => [ FooSchema::class ]
-		],
-		'type' => 'mw-config',
-	],
-];
-
-use MediaWiki\Extension\CommunityConfiguration\Schema\JsonSchema;
-use MediaWiki\MediaWikiServices;
-$wgExtensionFunctions[] = function () {
-	class FooSchema extends JsonSchema {
-		public const FooThing = [
-			JsonSchema::TYPE => JsonSchema::TYPE_STRING,
-			JsonSchema::DEFAULT => 'initial',
-		];
-	}
-
-	class SpecialFooConfig extends SpecialPage {
-		public function __construct() {
-			parent::__construct( 'FooConfig' );
-		}
-		public function execute( $par ) {
-			$this->getOutput()->setPageTitle( 'Foo Config' );
-			$this->getOutput()->addHtml(
-				Html::element( 'p', [], 'The value of FooThing is:' )
-				. Html::element( 'pre', [], $this->getFooThing() )
-			);
-		}
-		private function getFooThing() {
-			$reader = MediaWikiServices::getInstance()->get( 'CommunityConfiguration.WikiPageConfigReader' );
-			return $reader->get( 'FooThing' );
-		}
-	}
-};
-$wgSpecialPages['FooConfig'] = 'SpecialFooConfig';
-$wgHooks['LocalisationCacheRecache'][] = function ( $localisationCache, $code, &$allData ) {
-	$allData['specialPageAliases']['FooConfig'] = ['FooConfig'];
-};
-*/
+// wfLoadExtension('CommunityConfiguration');
+// $wgCommunityConfigurationProviders = [
+// 	'foo' => [
+// 		'store' => [
+// 			'type' => 'wikipage',
+// 			'args' => [ 'MediaWiki:Foo.json' ],
+// 		],
+// 		'validator' => [
+// 			'type' => 'jsonschema',
+// 			'args' => [ FooSchema::class ]
+// 		],
+// 		'type' => 'mw-config',
+// 	],
+// ];
+// use MediaWiki\Extension\CommunityConfiguration\Schema\JsonSchema;
+// use MediaWiki\MediaWikiServices;
+// $wgExtensionFunctions[] = function () {
+// 	class FooSchema extends JsonSchema {
+// 		public const FooThing = [
+// 			JsonSchema::TYPE => JsonSchema::TYPE_STRING,
+// 			JsonSchema::DEFAULT => 'initial',
+// 		];
+// 	}
+// 	class SpecialFooConfig extends SpecialPage {
+// 		public function __construct() {
+// 			parent::__construct( 'FooConfig' );
+// 		}
+// 		public function execute( $par ) {
+// 			$this->getOutput()->setPageTitle( 'Foo Config' );
+// 			$this->getOutput()->addHtml(
+// 				Html::element( 'p', [], 'The value of FooThing is:' )
+// 				. Html::element( 'pre', [], $this->getFooThing() )
+// 			);
+// 		}
+// 		private function getFooThing() {
+// 			$reader = MediaWikiServices::getInstance()->get( 'CommunityConfiguration.WikiPageConfigReader' );
+// 			return $reader->get( 'FooThing' );
+// 		}
+// 	}
+// };
+// $wgSpecialPages['FooConfig'] = 'SpecialFooConfig';
+// $wgHooks['LocalisationCacheRecache'][] = function ( $localisationCache, $code, &$allData ) {
+// 	$allData['specialPageAliases']['FooConfig'] = ['FooConfig'];
+// };
