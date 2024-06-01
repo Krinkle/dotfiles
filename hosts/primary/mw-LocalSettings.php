@@ -168,6 +168,7 @@ wfLoadExtension('Gadgets');
 // wfLoadExtension('DiscussionTools');
 // wfLoadExtension('Linter');
 // wfLoadExtension('MultimediaViewer');
+// wfLoadExtension('TitleKey');
 // wfLoadExtension('WikiLambda');
 // wfLoadExtension('WikimediaEvents');
 
@@ -185,6 +186,9 @@ $wgEventLoggingBaseUri = '/beacon/event';
 $wgUseGlobalSiteCssJs = true;
 $wgGlobalCssJsConfig['wiki'] = $wgDBname;
 $wgGlobalCssJsConfig['source'] = 'local';
+
+// Math
+$wgMathValidModes = [ 'source', 'mathml', 'native', 'mathjax' ];
 
 // NavigationTiming
 // $wgNavigationTimingSamplingFactor = 1;
