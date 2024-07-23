@@ -425,15 +425,23 @@ export KDF_PS1_HOST_COLOR="$CLR_CYAN"
 shopt -s autocd >/dev/null 2>&1 || true
 shopt -s checkwinsize >/dev/null 2>&1 || true
 shopt -s globstar >/dev/null 2>&1 || true
-shopt -s histappend >/dev/null 2>&1 || true
 shopt -s hostcomplete >/dev/null 2>&1 || true
 shopt -s interactive_comments >/dev/null 2>&1 || true
 shopt -s no_empty_cmd_completion >/dev/null 2>&1 || true
 shopt -u mailwarn >/dev/null 2>&1 || true
 # Shell history
+#
+# - Let multiple tabs append instead of overwrite
+shopt -s histappend >/dev/null 2>&1 || true
+# - Hide sensitive commands, and increase capacity
 export HISTCONTROL=ignorespace:erasedups
 export HISTSIZE=50000
 export HISTFILESIZE=50000
+# - Sync after every command instead of only when closing a tab
+export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
+# - Hstr preferences
+#   https://github.com/dvorka/hstr/blob/master/CONFIGURATION.md
+export HSTR_CONFIG=hicolor,help-on-opposite-side
 
 # GnuPG
 export GPG_TTY=$(tty)
