@@ -16,3 +16,5 @@
 	defaultBranch = main
 [http]
 	cookiefile = /Users/krinkle/.gitcookies
+[cinnabar]
+	version-check = 1738266626

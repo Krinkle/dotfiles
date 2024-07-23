@@ -300,7 +300,7 @@ fi
 # -------------------------------------------------
 
 # Bins: Home
-export PATH="${HOME}/bin:${PATH}"
+export PATH="${HOME}/.local/bin:${PATH}"
 
 export LC_ALL=
 export LANG=en_US.UTF-8

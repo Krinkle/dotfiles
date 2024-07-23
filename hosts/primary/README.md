@@ -173,6 +173,7 @@ Advanced Preferences (`about:config`):
 
 * (enabled) `view_source.wrap_long_lines` _(match Chromium's default behaviour)_
 * (change from 3 to 1) `mousewheel.with_meta.action` _(avoid unexpected page zoom action when scrollwheel is still spinning and holding down cmd key for something else; [source](https://support.mozilla.org/en-US/questions/953341))_
+* (disabled) `browser.urlbar.trimURLs`  _(This was enabled in 2025 but is buggy and causes copy to clipboard to fail seemingly at random with a missing protocol; [Credit to Alice](https://mk.nyaa.place/notes/aabif6f9q5jm03g5))_
 
 Toolbar:
 

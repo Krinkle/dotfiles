@@ -38,8 +38,10 @@
 	],
 	"ignored_packages":
 	[
+		"EditorConfig",
 		"Vintage",
 	],
 	"update_check": true,
 	"index_files": true,
+	"font_face": "Menlo",
 }

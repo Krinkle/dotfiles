@@ -9,8 +9,8 @@
  * require_once __DIR__ . "/LocalSettings.mine.php";
  * ```
  *
- * This is currently written for MediaWiki-Docker, and thus we assume:
- * - MW_LOG_DIR is set to something writable.
+ * I use Quickstart, and thus we assume:
+ * - MW_LOG_DIR is set to a writable path in composer.json.
  * - "$IP/includes/DevelopmentSettings.php" is already included.
  */
 
@@ -22,6 +22,7 @@
 // $wgDebugDumpSql = true;
 // $wgDebugRawPage = true;
 // $wgDebugToolbar = true;
+$wgDebugLogGroups['silenced-error'] = false;
 
 // ini_set( 'display_errors', 0 );
 // $wgDevelopmentWarnings = true;
@@ -30,13 +31,16 @@
 ## Profiler
 ##
 
-if ( extension_loaded( 'tideways' ) ) {
+if ( extension_loaded( 'xhprof' ) ) {
 	if ( isset( $_GET['forceprofile'] ) || PHP_SAPI === 'cli' ) {
 		$wgProfiler = [
 			'class'  => ProfilerXhprof::class,
-			'flags'  => TIDEWAYS_FLAGS_CPU | TIDEWAYS_FLAGS_NO_BUILTINS,
+			'flags'  => XHPROF_FLAGS_CPU | XHPROF_FLAGS_NO_BUILTINS,
 			'output' => 'text',
+			// 'thresholdMs' => 0.01, // lower threshold to show stuff on fast requests too
+			// 'running' => true, // profile Setup.php too
 		];
+		// xhprof_enable( XHPROF_FLAGS_CPU | XHPROF_FLAGS_NO_BUILTINS );
 	}
 }
 
@@ -58,12 +62,16 @@ if ( extension_loaded( 'excimer' ) && isset( $_GET['forceflame'] ) ) {
 ##
 ## Stats
 ##
-## $ nc -ul 8125
-## $ nc -ul 8126
+## This was originally `while true; do nc -ul -w0 8125; done`,
+## but that causes stats to arrive incompletely with the majority
+## of stats lost between loop iterations since each iteration will
+## open the port for 1 UDP connection, and then restart.
+##
+## $ brew install socat
+## $ socat -u UDP-RECVFROM:8125,fork -
 ##
 
-// $wgStatsdServer = '127.0.0.1:8125';
-// $wgStatsTarget = 'udp://127.0.0.1:8126';
+// $wgStatsTarget = 'udp://127.0.0.1:8125';
 // $wgStatsFormat = 'dogstatsd';
 
 ##
@@ -73,13 +81,38 @@ if ( extension_loaded( 'excimer' ) && isset( $_GET['forceflame'] ) ) {
 // $wgUseSquid = true;
 
 ##
+## Authentication
+##
+
+// $wgLoginLanguageSelector = true;
+
+##
 ## Cache
 ##
 
 $wgMainCacheType = CACHE_ACCEL;
-
 $wgParserCacheType = CACHE_DB;
 $wgSessionCacheType = CACHE_DB;
+
+// Enable full debug logs and StatsD metrics with APCu as main cache (like CACHE_DB or Memcached)
+// by using 'apcu' instead of CACHE_ACCEL. The latter uses the LocalServerObjectCache service,
+// which disables logging/stats.
+// $wgMainCacheType = 'apcu';
+
+// $wgMiserMode = true;
+
+// $wgPoolCountClientConf = [
+//   'servers' => [ '127.0.0.1' ],
+//   'timeout' => 0.5,
+//   'connect_timeout' => 0.1,
+// ];
+// $wgPoolCounterConf = [ 'ArticleView' => [
+// 	'class' => 'PoolCounter_Client',
+// 	'fastStale' => true,
+// 	'timeout' => 10, // wait timeout in seconds
+// 	'workers' => 2, // maximum number of active threads in each pool
+// 	'maxqueue' => 10, // maximum number of total threads in each pool
+// ] ];
 
 ##
 ## ResourceLoader
@@ -89,13 +122,49 @@ $wgAllowUserCss = $wgAllowUserJs = true;
 
 // $wgResourceLoaderEnableJSProfiler = true;
 
+// $wgResourceModules['example1'] = [
+// 	'group' => 'example',
+//  	'scripts' => [
+//  		[ 'name' => 'example1.js', 'content' => "// Comment\nconsole.log( 'example1' );\n" ],
+//  	],
+//  ];
+// $wgResourceModules['example2'] = [
+// 	'group' => 'example',
+//  	'scripts' => [
+//  		[ 'name' => 'example2a.js', 'content' => "// Comment\nconsole.log( 'example2a' );\n" ],
+//  		[ 'name' => 'example2b.js', 'content' => "/*@nomin*/\n// Comment\nconsole.log( 'example2b' );\n" ],
+//  		[ 'name' => 'example2c.js', 'content' => "// Comment\nconsole.log( 'example2c' );\n" ],
+//  	],
+//  ];
+// $wgResourceModules['example3'] = [
+// 	'group' => 'example',
+//  	'scripts' => [
+//  		[ 'name' => 'example3a.js', 'content' => "// Comment\nconsole.log( 'example3a' );\n" ],
+//  		[ 'name' => 'example3b.js', 'content' => "// Comment\nconsole.log( 'example3b' );\n" ],
+//  	],
+//  ];
+//  $wgHooks['BeforePageDisplay'][] = function ( $out ) {
+//  	$out->addModules(['example1', 'example2', 'example3']);
+//  };
+
 ##
-## Media
+## Multimedia
 ##
+
+$wgLogo = '/mw-config/images/installer-logo.png';
+$wgLogos = false;
 
 $wgUseInstantCommons = true;
 
 // $wgGenerateThumbnailOnParse = false;
+
+// $wgLockManagers[] = [
+// 	'name' => 'locky-mc-lock-face',
+// 	'class' => 'MemcLockManager',
+// 	'lockServers' => [
+// 		'127.0.0.1:11211',
+// 	],
+// ];
 
 ##
 ## Recent changes & Watchlist
@@ -119,7 +188,17 @@ $wgUseInstantCommons = true;
 ## Parser
 ##
 
+// Default is 20kB which is smaller than chaarts.css (51kB).
+// Increase to 10x the default
+$wgMaxArticleSize = 20480;
+
 $wgFragmentMode = [ 'html5' ]; // DiscussionTools requires this.
+
+##
+## Shellbox
+##
+
+$wgPhpCli = PHP_BINARY;
 
 ##
 ## Skins
@@ -140,7 +219,7 @@ wfLoadSkin('Vector');
 // wfLoadExtension('CiteThisPage');
 // wfLoadExtension('CodeEditor');
 // wfLoadExtension('ConfirmEdit');
-wfLoadExtension('Gadgets');
+// wfLoadExtension('Gadgets');
 // wfLoadExtension('ImageMap');
 // wfLoadExtension('InputBox');
 // wfLoadExtension('Interwiki');
@@ -149,7 +228,9 @@ wfLoadExtension('Gadgets');
 // wfLoadExtension('PdfHandler');
 // wfLoadExtension('Poem');
 // wfLoadExtension('SpamBlacklist');
+// wfLoadExtension('SyntaxHighlight_GeSHi');
 // wfLoadExtension('TemplateData');
+// wfLoadExtension('TextExtracts');
 // wfLoadExtension('VisualEditor');
 // wfLoadExtension('WikiEditor');
 
@@ -158,25 +239,45 @@ wfLoadExtension('Gadgets');
 ##
 
 // wfLoadExtension('ContentTranslation');
-// wfLoadExtension('EventStreamConfig');
-// wfLoadExtension('EventLogging');
 // wfLoadExtension('Echo');
+// wfLoadExtension('EventLogging');
+// wfLoadExtension('EventStreamConfig');
 // wfLoadExtension('GlobalCssJs');
 // wfLoadExtension('MobileFrontend');
 // wfLoadExtension('NavigationTiming');
-// wfLoadExtension('SyntaxHighlight_GeSHi');
 // wfLoadExtension('UniversalLanguageSelector');
 
 ##
 ## Misc extensions
 ##
 
+// wfLoadExtension('AntiSpoof');
+// wfLoadExtension('ApiFeatureUsage');
+// wfLoadExtension('CommunityConfiguration');
+// wfLoadExtension('CentralAuth');
+// wfLoadExtension('cldr');
 // wfLoadExtension('DiscussionTools');
-// wfLoadExtension('Linter');
+// wfLoadExtension('EventBus');
+// wfLoadExtension('Flow');
+// wfLoadExtension('GrowthExperiments');
+// wfLoadExtension('GlobalBlocking');
+// wfLoadExtension('GlobalUserPage');
+// wfLoadExtension('GuidedTour');
+// wfLoadExtension('JsonConfig');
+// wfLoadExtension('MassMessage');
+// wfLoadExtension('MediaModeration');
 // wfLoadExtension('MultimediaViewer');
+// wfLoadExtension('Nuke');
+// wfLoadExtension('PageTriage');
+// wfLoadExtension('Scribunto');
+// wfLoadExtension('TemplateSandbox');
+// wfLoadExtension('TemplateStyles');
 // wfLoadExtension('TitleKey');
+// wfLoadExtension('UploadWizard');
+// wfLoadExtension('UrlShortener');
 // wfLoadExtension('WikiLambda');
 // wfLoadExtension('WikimediaEvents');
+// wfLoadExtension('WikimediaMaintenance');
 // wfLoadExtension('examples');
 
 // examples
@@ -184,6 +285,11 @@ wfLoadExtension('Gadgets');
 
 // CategoryTree
 $wgCategoryTreeSidebarRoot = 'Category:All';
+
+// ConfirmEdit
+// wfLoadExtension('ConfirmEdit/FancyCaptcha');
+// $wgCaptchaClass = 'FancyCaptcha';
+// $wgCaptchaTriggers['createaccount'] = true;
 
 // DiscussionTools
 // $wgDiscussionToolsTalkPageParserCacheExpiry = 60;
@@ -197,8 +303,18 @@ $wgUseGlobalSiteCssJs = true;
 $wgGlobalCssJsConfig['wiki'] = $wgDBname;
 $wgGlobalCssJsConfig['source'] = 'local';
 
+// GlobalBlocking
+// $wgGroupPermissions['sysop']['globalblock'] = true;
+
+// Interwiki
+$wgGroupPermissions['sysop']['interwiki'] = true;
+
 // Math
-$wgMathValidModes = [ 'source', 'mathml', 'native', 'mathjax' ];
+// $wgMathValidModes = [ 'source', 'mathml', 'native', 'mathjax' ];
+
+// MobileFrontend
+// $wgMFMobileHeader = 'Foobar';
+// $wgMFCustomSiteModules = true;
 
 // NavigationTiming
 // $wgNavigationTimingSamplingFactor = 1;
@@ -210,11 +326,13 @@ $wgMathValidModes = [ 'source', 'mathml', 'native', 'mathjax' ];
 // $wgULSCompactLanguageLinksBetaFeature = false;
 
 // Wikibase
-// $wgWikimediaJenkinsCI = true;
+// define( 'MW_QUIBBLE_CI', true );
 // require_once "$IP/extensions/Wikibase/Wikibase.php";
 
 // WikimediaEvents
 $wgWMEStatsdBaseUri = '/beacon/statsv';
+// $wgWMENewPHPVersion = '8.1';
+// $wgWMENewPHPSamplingRate = 0;
 
 // CommunityConfiguration
 // wfLoadExtension('CommunityConfiguration');

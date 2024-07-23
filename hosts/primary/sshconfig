@@ -5,6 +5,9 @@ CanonicalizeHostname yes
 ## Wikimedia Cloud VPS
 ## https://wikitech.wikimedia.org/wiki/Help:Accessing_Cloud_VPS_instances#ProxyJump_(recommended)
 
+Host tools-login.alias
+    HostName login.toolforge.org
+
 Host *.wmflabs.org login.toolforge.org
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wla
@@ -17,7 +20,7 @@ Host *.wmflabs *.wikimedia.cloud
 ## Wikimedia Production
 ## https://wikitech.wikimedia.org/wiki/Production_shell_access#SSH_configuration
 
-Match host=*.wikimedia.org,*.wmnet
+Host *.wikimedia.org,*.wmnet
     ForwardAgent no
     IdentitiesOnly yes
     KbdInteractiveAuthentication no
@@ -51,15 +54,18 @@ Host gitlab.wikimedia.org
 Host *.jquery.com *.ops.jquery.net
     User krinkle
     IdentityFile ~/.ssh/id_ed_jqinfra
-    IdentityFile ~/.ssh/id_rsa_jq
-    # required for legacy hosts
-    PubkeyAcceptedKeyTypes +ssh-rsa
-    # curl https://puppet-03.ops.jquery.net/known_hosts
+    # curl https://puppet-04.ops.jquery.net/known_hosts | tee ~/.ssh/known_hosts.d/jquery
     UserKnownHostsFile ~/.ssh/known_hosts.d/jquery
 
 ## Debian Salsa
 Host salsa.debian.org
     IdentityFile ~/.ssh/id_rsa_salsa
+
+## Codeberg
+
+Host codeberg.org
+    User krinkle
+    IdentityFile ~/.ssh/id_ed_codeberg
 
 ## GitHub
 
