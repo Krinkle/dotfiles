@@ -105,6 +105,30 @@ GRANT INSERT, SELECT, ALTER, CREATE, DELETE, UPDATE ON `the_database`.* TO 'the_
 GRANT INSERT, SELECT ON `the_database`.* TO 'the_user'@'%';
 ```
 
+## varnishlog
+
+https://varnish-cache.org/docs/6.0/
+https://varnish-cache.org/docs/6.0/reference/varnishlog.html
+https://gerrit.wikimedia.org/r/q/project:operations/debs/varnish4
+
+
+```
+sudo varnishlog -c -n frontend -d
+
+sudo varnishlog -c -n frontend -i ReqUrl,ReqHeader -q "ReqUrl ~ '/wiki/'"
+sudo varnishlog -c -n frontend -g request -i ReqHeader -q "ReqUrl ~ '/wiki/'"
+sudo varnishlog -c -n frontend -g raw -I ReqHeader:accept-language
+sudo varnishlog -c -n frontend -i ReqUrl,ReqHeader -q "ReqUrl ~ '/wiki/' and ReqHeader eq 'X-WMF-LastStamp: 12-Aug-2024'" | fgrep 'accept-language:'
+```
+
+```
+cat req-head-acceptlang.log | cut -d':' -f2- | sed 's/-[A-Za-z]*//g' | sed 's/;[^,]*//g' | sort | uniq -c | sort -n
+```
+
+https://gerrit.wikimedia.org/g/operations/puppet/+/HEAD/conftool-data/node/esams.yaml
+https://config-master.wikimedia.org/pybal/esams/text
+https://config-master.wikimedia.org/pybal/esams/upload
+
 ## vim
 
 ```
