@@ -136,3 +136,20 @@ https://config-master.wikimedia.org/pybal/esams/upload
 n	Find next match
 N	Find previous match
 ```
+
+## watch
+
+```
+$ watch --help
+…
+  -d, --differences       highlight changes between updates
+  -e, --errexit           exit if command has a non-zero exit
+  -g, --chgexit           exit when output from command changes
+  -q, --equexit <cycles>  exit when output from command does not change
+```
+
+Lop until the output is not "Already up to date".
+
+```
+watch -g git pull
+```
