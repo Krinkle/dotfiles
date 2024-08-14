@@ -5,6 +5,9 @@ CanonicalizeHostname yes
 ## Wikimedia Cloud VPS
 ## https://wikitech.wikimedia.org/wiki/Help:Accessing_Cloud_VPS_instances#ProxyJump_(recommended)
 
+Host tools-login.alias
+    HostName login.toolforge.org
+
 Host *.wmflabs.org login.toolforge.org
     User krinkle
     IdentityFile ~/.ssh/id_rsa_wla
