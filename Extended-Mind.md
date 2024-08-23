@@ -105,6 +105,51 @@ GRANT INSERT, SELECT, ALTER, CREATE, DELETE, UPDATE ON `the_database`.* TO 'the_
 GRANT INSERT, SELECT ON `the_database`.* TO 'the_user'@'%';
 ```
 
+## tty
+
+Rewrite multiple lines in terminal output.
+
+The simplest way is carriage return `\r` to overwrite the current line, which works fine if the replacement is of equal or longer length (or you pad with spaces), or if rendering a progress bar of constant width or equal to the current terminal width (TTY columns).
+
+More advanced method, which has the benefit of remaining friendly to line wrapping and without direclty depending on terminal width:
+
+[Leedehai wrote 2 Dec 2019](https://stackoverflow.com/a/59147732/319266):
+```python
+#!/usr/bin/env python
+
+import sys
+import time
+from collections import deque
+
+queue = deque([], 3)
+i = 0
+while True:
+    time.sleep(0.5)
+    if i <= 20:
+        s = "update %d" % i
+        i += 1
+    else:
+        s = None
+    for _ in range(len(queue)):
+        sys.stdout.write("\x1b[1A\x1b[2K") # move up cursor and delete whole line
+    if s != None:
+        queue.append(s)
+    else:
+        queue.popleft()
+    if len(queue) == 0:
+        break
+    for i in range(len(queue)):
+        sys.stdout.write(queue[i] + "\n") # reprint the lines
+```
+
+[Darkman wrote 27 Feb 2022](https://stackoverflow.com/a/71286261/319266):
+```bash
+# clear the previous line
+printf '\033[1A\033[K'
+# clear the last 10 lines
+for i in {1..10}; do printf '\033[1A\033[K'; done
+```
+
 ## varnishlog
 
 https://varnish-cache.org/docs/6.0/
