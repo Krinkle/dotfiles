@@ -58,8 +58,8 @@ if ( extension_loaded( 'excimer' ) && isset( $_GET['forceflame'] ) ) {
 ##
 ## Stats
 ##
-## $ nc -ul 8125
-## $ nc -ul 8126
+## $ while true; do nc -ul -w0 8125; done
+## $ while true; do nc -ul -w0 8126; done
 ##
 
 // $wgStatsdServer = '127.0.0.1:8125';
@@ -73,10 +73,16 @@ if ( extension_loaded( 'excimer' ) && isset( $_GET['forceflame'] ) ) {
 // $wgUseSquid = true;
 
 ##
+## Authentication
+##
+
+// $wgLoginLanguageSelector = true;
+
+##
 ## Cache
 ##
 
-$wgMainCacheType = CACHE_ACCEL;
+$wgMainCacheType = CACHE_ACCELL;
 
 $wgParserCacheType = CACHE_DB;
 $wgSessionCacheType = CACHE_DB;
@@ -90,12 +96,20 @@ $wgAllowUserCss = $wgAllowUserJs = true;
 // $wgResourceLoaderEnableJSProfiler = true;
 
 ##
-## Media
+## Multimedia
 ##
 
 $wgUseInstantCommons = true;
 
 // $wgGenerateThumbnailOnParse = false;
+
+// $wgLockManagers[] = [
+// 	'name' => 'locky-mc-lock-face',
+// 	'class' => 'MemcLockManager',
+// 	'lockServers' => [
+// 		'127.0.0.1:11211',
+// 	],
+// ];
 
 ##
 ## Recent changes & Watchlist
@@ -122,6 +136,12 @@ $wgUseInstantCommons = true;
 $wgFragmentMode = [ 'html5' ]; // DiscussionTools requires this.
 
 ##
+## Shellbox
+##
+
+$wgPhpCli = PHP_BINARY;
+
+##
 ## Skins
 ##
 
@@ -140,7 +160,7 @@ wfLoadSkin('Vector');
 // wfLoadExtension('CiteThisPage');
 // wfLoadExtension('CodeEditor');
 // wfLoadExtension('ConfirmEdit');
-wfLoadExtension('Gadgets');
+// wfLoadExtension('Gadgets');
 // wfLoadExtension('ImageMap');
 // wfLoadExtension('InputBox');
 // wfLoadExtension('Interwiki');
@@ -149,7 +169,9 @@ wfLoadExtension('Gadgets');
 // wfLoadExtension('PdfHandler');
 // wfLoadExtension('Poem');
 // wfLoadExtension('SpamBlacklist');
+// wfLoadExtension('SyntaxHighlight_GeSHi');
 // wfLoadExtension('TemplateData');
+// wfLoadExtension('TextExtracts');
 // wfLoadExtension('VisualEditor');
 // wfLoadExtension('WikiEditor');
 
@@ -158,25 +180,32 @@ wfLoadExtension('Gadgets');
 ##
 
 // wfLoadExtension('ContentTranslation');
-// wfLoadExtension('EventStreamConfig');
-// wfLoadExtension('EventLogging');
 // wfLoadExtension('Echo');
+// wfLoadExtension('EventLogging');
+// wfLoadExtension('EventStreamConfig');
 // wfLoadExtension('GlobalCssJs');
 // wfLoadExtension('MobileFrontend');
 // wfLoadExtension('NavigationTiming');
-// wfLoadExtension('SyntaxHighlight_GeSHi');
 // wfLoadExtension('UniversalLanguageSelector');
 
 ##
 ## Misc extensions
 ##
 
+// wfLoadExtension('ApiFeatureUsage');
+// wfLoadExtension('CommunityConfiguration');
 // wfLoadExtension('DiscussionTools');
+// wfLoadExtension('EventBus');
+// wfLoadExtension('Flow');
+// wfLoadExtension('GrowthExperiments');
+// wfLoadExtension('GlobalBlocking');
 // wfLoadExtension('Linter');
 // wfLoadExtension('MultimediaViewer');
+// wfLoadExtension('PageTriage');
 // wfLoadExtension('TitleKey');
 // wfLoadExtension('WikiLambda');
 // wfLoadExtension('WikimediaEvents');
+// wfLoadExtension('WikimediaMaintenance');
 // wfLoadExtension('examples');
 
 // examples
@@ -197,8 +226,14 @@ $wgUseGlobalSiteCssJs = true;
 $wgGlobalCssJsConfig['wiki'] = $wgDBname;
 $wgGlobalCssJsConfig['source'] = 'local';
 
+// GlobalBlocking
+// $wgGroupPermissions['sysop']['globalblock'] = true;
+
+// Interwiki
+// $wgGroupPermissions['sysop']['interwiki'] = true;
+
 // Math
-$wgMathValidModes = [ 'source', 'mathml', 'native', 'mathjax' ];
+// $wgMathValidModes = [ 'source', 'mathml', 'native', 'mathjax' ];
 
 // NavigationTiming
 // $wgNavigationTimingSamplingFactor = 1;
@@ -215,6 +250,8 @@ $wgMathValidModes = [ 'source', 'mathml', 'native', 'mathjax' ];
 
 // WikimediaEvents
 $wgWMEStatsdBaseUri = '/beacon/statsv';
+// $wgWMENewPHPVersion = '8.1';
+// $wgWMENewPHPSamplingRate = 0;
 
 // CommunityConfiguration
 // wfLoadExtension('CommunityConfiguration');
