@@ -376,7 +376,7 @@ alias dogitcommit='git commit -F ~/Temp/COMMIT.txt'
 alias gogogerrit='git review -R'
 alias grabfromgerrit='git review -d'
 
-alias domakejenkinscommit='git remote update origin && git co -f -b jenkins-sample -t origin/master && echo "mw.log( 'Jenkins' );" > jenkins.js && git add jenkins.js && git commit -m "[DNM][WIP] Sample commit for Jenkins"'
+alias domakejenkinscommit="git remote update origin && git co -f -b jenkins-sample -t origin/master && echo \"mw.log( 'Jenkins' );\" > jenkins.js && git add jenkins.js && git commit -m '[DNM][WIP] Sample commit for Jenkins'"
 
 alias diff='colordiff'
 alias sdi='svn diff | colordiff'
@@ -520,6 +520,9 @@ export PATH="$HOMEBREW_PREFIX/opt/git/share/git-core/contrib/diff-highlight:$PAT
 # - Arcanist
 #   https://secure.phabricator.com/book/phabricator/article/arcanist_quick_start/
 export PATH="${PATH}:${HOME}/Development/arcanist/bin"
+# - git-cinnabar for Mozilla development
+#   https://firefox-source-docs.mozilla.org/setup/macos_build.html
+export PATH="${PATH}:${HOME}/.mozbuild/git-cinnabar"
 # - My dotfiles
 export PATH="$KDF_BASE_DIR/hosts/primary/bin:$PATH"
 # - My Home

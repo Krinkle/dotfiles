@@ -95,11 +95,39 @@ $wgAllowUserCss = $wgAllowUserJs = true;
 
 // $wgResourceLoaderEnableJSProfiler = true;
 
+// $wgResourceModules['example1'] = [
+// 	'group' => 'example',
+//  	'scripts' => [
+//  		[ 'name' => 'example1.js', 'content' => "// Comment\nconsole.log( 'example1' );\n" ],
+//  	],
+//  ];
+// $wgResourceModules['example2'] = [
+// 	'group' => 'example',
+//  	'scripts' => [
+//  		[ 'name' => 'example2a.js', 'content' => "// Comment\nconsole.log( 'example2a' );\n" ],
+//  		[ 'name' => 'example2b.js', 'content' => "/*@nomin*/\n// Comment\nconsole.log( 'example2b' );\n" ],
+//  		[ 'name' => 'example2c.js', 'content' => "// Comment\nconsole.log( 'example2c' );\n" ],
+//  	],
+//  ];
+// $wgResourceModules['example3'] = [
+// 	'group' => 'example',
+//  	'scripts' => [
+//  		[ 'name' => 'example3a.js', 'content' => "// Comment\nconsole.log( 'example3a' );\n" ],
+//  		[ 'name' => 'example3b.js', 'content' => "// Comment\nconsole.log( 'example3b' );\n" ],
+//  	],
+//  ];
+//  $wgHooks['BeforePageDisplay'][] = function ( $out ) {
+//  	$out->addModules(['example1', 'example2', 'example3']);
+//  };
+
 ##
 ## Multimedia
 ##
 
-$wgUseInstantCommons = true;
+$wgLogo = '/mw-config/images/installer-logo.png';
+$wgLogos = false;
+
+// $wgUseInstantCommons = true;
 
 // $wgGenerateThumbnailOnParse = false;
 
@@ -132,6 +160,10 @@ $wgUseInstantCommons = true;
 ##
 ## Parser
 ##
+
+// Default is 20kB which is smaller than chaarts.css (51kB).
+// Increase to 10x the default
+// $wgMaxArticleSize = 20480;
 
 $wgFragmentMode = [ 'html5' ]; // DiscussionTools requires this.
 
@@ -192,17 +224,23 @@ wfLoadSkin('Vector');
 ## Misc extensions
 ##
 
+// wfLoadExtension('AntiSpoof');
 // wfLoadExtension('ApiFeatureUsage');
 // wfLoadExtension('CommunityConfiguration');
+// wfLoadExtension('CentralAuth');
 // wfLoadExtension('DiscussionTools');
 // wfLoadExtension('EventBus');
 // wfLoadExtension('Flow');
 // wfLoadExtension('GrowthExperiments');
 // wfLoadExtension('GlobalBlocking');
+// wfLoadExtension('GuidedTour');
 // wfLoadExtension('Linter');
 // wfLoadExtension('MultimediaViewer');
 // wfLoadExtension('PageTriage');
+// wfLoadExtension('Scribunto');
+// wfLoadExtension('TemplateStyles');
 // wfLoadExtension('TitleKey');
+// wfLoadExtension('UploadWizard');
 // wfLoadExtension('WikiLambda');
 // wfLoadExtension('WikimediaEvents');
 // wfLoadExtension('WikimediaMaintenance');
@@ -245,7 +283,7 @@ $wgGlobalCssJsConfig['source'] = 'local';
 // $wgULSCompactLanguageLinksBetaFeature = false;
 
 // Wikibase
-// $wgWikimediaJenkinsCI = true;
+// define( 'MW_QUIBBLE_CI', true );
 // require_once "$IP/extensions/Wikibase/Wikibase.php";
 
 // WikimediaEvents
