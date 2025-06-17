@@ -20,7 +20,7 @@ Host *.wmflabs *.wikimedia.cloud
 ## Wikimedia Production
 ## https://wikitech.wikimedia.org/wiki/Production_shell_access#SSH_configuration
 
-Match host=*.wikimedia.org,*.wmnet
+Host *.wikimedia.org,*.wmnet
     ForwardAgent no
     IdentitiesOnly yes
     KbdInteractiveAuthentication no

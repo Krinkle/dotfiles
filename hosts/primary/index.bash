@@ -447,7 +447,7 @@ export HSTR_CONFIG=hicolor,help-on-opposite-side
 export GPG_TTY=$(tty)
 
 # difft by Difftastic https://difftastic.wilfred.me.uk/
-export DFT_SKIP_UNCHANGED=1
+export DFT_SKIP_UNCHANGED=true
 
 # MediaWiki
 export MW_SERVER='http://localhost:4000'
