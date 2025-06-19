@@ -1,7 +1,6 @@
 # Extended Mind: The Missing Manual
 
-Various shell commands and conceptually related patterns I frequently
-use but sometimes forget.
+Various shell commands and patterns I use infrequently and sometimes forget.
 
 ## apt
 
@@ -103,6 +102,42 @@ GRANT USAGE ON *.* TO 'the_user'@'%' IDENTIFIED BY 'the_pass' WITH MAX_USER_CONN
 GRANT INSERT, SELECT, ALTER, CREATE, DELETE, UPDATE ON `the_database`.* TO 'the_admin_user'@'%';
 
 GRANT INSERT, SELECT ON `the_database`.* TO 'the_user'@'%';
+```
+
+## Python
+
+Test an SSL certificate
+
+```sh
+$ cat serve.py
+```
+
+```py
+# Require: Python 3.12+
+from http.server import HTTPServer, BaseHTTPRequestHandler
+import ssl
+
+httpd = HTTPServer(('localhost', 4443), BaseHTTPRequestHandler)
+context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+context.load_cert_chain(certfile='example/example_org.pem', keyfile='example/example_org.key')
+httpd.socket = context.wrap_socket(httpd.socket, server_side=True)
+httpd.serve_forever()
+```
+
+```sh
+$ python3 serve.py
+```
+
+```sh
+$ cat /etc/hosts
+# …
+krinkle.example.org 127.0.0.1
+```
+
+```sh
+$ curl -v https://krinkle.example.org:4443
+
+$ open https://krinkle.example.org:4443
 ```
 
 ## tty
