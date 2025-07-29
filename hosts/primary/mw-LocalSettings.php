@@ -9,8 +9,8 @@
  * require_once __DIR__ . "/LocalSettings.mine.php";
  * ```
  *
- * This is currently written for MediaWiki-Docker, and thus we assume:
- * - MW_LOG_DIR is set to something writable.
+ * I use Quickstart, and thus we assume:
+ * - MW_LOG_DIR is set to a writable path in composer.json.
  * - "$IP/includes/DevelopmentSettings.php" is already included.
  */
 
@@ -22,6 +22,7 @@
 // $wgDebugDumpSql = true;
 // $wgDebugRawPage = true;
 // $wgDebugToolbar = true;
+$wgDebugLogGroups['silenced-error'] = false;
 
 // ini_set( 'display_errors', 0 );
 // $wgDevelopmentWarnings = true;
@@ -58,12 +59,16 @@ if ( extension_loaded( 'excimer' ) && isset( $_GET['forceflame'] ) ) {
 ##
 ## Stats
 ##
-## $ while true; do nc -ul -w0 8125; done
-## $ while true; do nc -ul -w0 8126; done
+## This was originally `while true; do nc -ul -w0 8125; done`,
+## but that causes stats to arrive incompletely with the majority
+## of stats lost between loop iterations since each iteration will
+## open the port for 1 UDP connection, and then restart.
+##
+## $ brew install socat
+## $ socat -u UDP-RECVFROM:8125,fork -
 ##
 
-// $wgStatsdServer = '127.0.0.1:8125';
-// $wgStatsTarget = 'udp://127.0.0.1:8126';
+// $wgStatsTarget = 'udp://127.0.0.1:8125';
 // $wgStatsFormat = 'dogstatsd';
 
 ##
@@ -82,10 +87,27 @@ if ( extension_loaded( 'excimer' ) && isset( $_GET['forceflame'] ) ) {
 ## Cache
 ##
 
-$wgMainCacheType = CACHE_ACCELL;
-
+// Prefer 'apcu' instead of CACHE_ACCEL so that we get the same
+// debug logs and StatsD metrics as when using CACHE_DB or Memcached,
+// to make debugging and development easier and more consistent.
+$wgMainCacheType = 'apcu';
 $wgParserCacheType = CACHE_DB;
 $wgSessionCacheType = CACHE_DB;
+
+// $wgMiserMode = true;
+
+// $wgPoolCountClientConf = [
+//   'servers' => [ '127.0.0.1' ],
+//   'timeout' => 0.5,
+//   'connect_timeout' => 0.1,
+// ];
+// $wgPoolCounterConf = [ 'ArticleView' => [
+// 	'class' => 'PoolCounter_Client',
+// 	'fastStale' => true,
+// 	'timeout' => 10, // wait timeout in seconds
+// 	'workers' => 2, // maximum number of active threads in each pool
+// 	'maxqueue' => 10, // maximum number of total threads in each pool
+// ] ];
 
 ##
 ## ResourceLoader
@@ -127,7 +149,7 @@ $wgAllowUserCss = $wgAllowUserJs = true;
 $wgLogo = '/mw-config/images/installer-logo.png';
 $wgLogos = false;
 
-// $wgUseInstantCommons = true;
+$wgUseInstantCommons = true;
 
 // $wgGenerateThumbnailOnParse = false;
 
@@ -163,7 +185,7 @@ $wgLogos = false;
 
 // Default is 20kB which is smaller than chaarts.css (51kB).
 // Increase to 10x the default
-// $wgMaxArticleSize = 20480;
+$wgMaxArticleSize = 20480;
 
 $wgFragmentMode = [ 'html5' ]; // DiscussionTools requires this.
 
@@ -233,14 +255,19 @@ wfLoadSkin('Vector');
 // wfLoadExtension('Flow');
 // wfLoadExtension('GrowthExperiments');
 // wfLoadExtension('GlobalBlocking');
+// wfLoadExtension('GlobalUserPage');
 // wfLoadExtension('GuidedTour');
-// wfLoadExtension('Linter');
+// wfLoadExtension('JsonConfig');
+// wfLoadExtension('MassMessage');
+// wfLoadExtension('MediaModeration');
 // wfLoadExtension('MultimediaViewer');
 // wfLoadExtension('PageTriage');
 // wfLoadExtension('Scribunto');
+// wfLoadExtension('TemplateSandbox');
 // wfLoadExtension('TemplateStyles');
 // wfLoadExtension('TitleKey');
 // wfLoadExtension('UploadWizard');
+// wfLoadExtension('UrlShortener');
 // wfLoadExtension('WikiLambda');
 // wfLoadExtension('WikimediaEvents');
 // wfLoadExtension('WikimediaMaintenance');
@@ -251,6 +278,11 @@ wfLoadSkin('Vector');
 
 // CategoryTree
 $wgCategoryTreeSidebarRoot = 'Category:All';
+
+// ConfirmEdit
+// wfLoadExtension('ConfirmEdit/FancyCaptcha');
+// $wgCaptchaClass = 'FancyCaptcha';
+// $wgCaptchaTriggers['createaccount'] = true;
 
 // DiscussionTools
 // $wgDiscussionToolsTalkPageParserCacheExpiry = 60;
@@ -268,10 +300,14 @@ $wgGlobalCssJsConfig['source'] = 'local';
 // $wgGroupPermissions['sysop']['globalblock'] = true;
 
 // Interwiki
-// $wgGroupPermissions['sysop']['interwiki'] = true;
+$wgGroupPermissions['sysop']['interwiki'] = true;
 
 // Math
 // $wgMathValidModes = [ 'source', 'mathml', 'native', 'mathjax' ];
+
+// MobileFrontend
+// $wgMFMobileHeader = 'Foobar';
+// $wgMFCustomSiteModules = false;
 
 // NavigationTiming
 // $wgNavigationTimingSamplingFactor = 1;

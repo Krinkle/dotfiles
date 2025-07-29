@@ -526,7 +526,7 @@ export PATH="${PATH}:${HOME}/.mozbuild/git-cinnabar"
 # - My dotfiles
 export PATH="$KDF_BASE_DIR/hosts/primary/bin:$PATH"
 # - My Home
-export PATH="${HOME}/bin:${PATH}"
+export PATH="${HOME}/.local/bin:${PATH}"
 
 # If running interactively, do the below as well (non-interactively, it's not useful and causes issues).
 # Except when we're provisioning, as it would fail due to missing files.
