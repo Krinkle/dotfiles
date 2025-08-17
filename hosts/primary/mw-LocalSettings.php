@@ -31,13 +31,16 @@ $wgDebugLogGroups['silenced-error'] = false;
 ## Profiler
 ##
 
-if ( extension_loaded( 'tideways' ) ) {
+if ( extension_loaded( 'xhprof' ) ) {
 	if ( isset( $_GET['forceprofile'] ) || PHP_SAPI === 'cli' ) {
 		$wgProfiler = [
 			'class'  => ProfilerXhprof::class,
-			'flags'  => TIDEWAYS_FLAGS_CPU | TIDEWAYS_FLAGS_NO_BUILTINS,
+			'flags'  => XHPROF_FLAGS_CPU | XHPROF_FLAGS_NO_BUILTINS,
 			'output' => 'text',
+			// 'thresholdMs' => 0.01, // lower threshold to show stuff on fast requests too
+			// 'running' => true, // profile Setup.php too
 		];
+		// xhprof_enable( XHPROF_FLAGS_CPU | XHPROF_FLAGS_NO_BUILTINS );
 	}
 }
 
@@ -87,12 +90,14 @@ if ( extension_loaded( 'excimer' ) && isset( $_GET['forceflame'] ) ) {
 ## Cache
 ##
 
-// Prefer 'apcu' instead of CACHE_ACCEL so that we get the same
-// debug logs and StatsD metrics as when using CACHE_DB or Memcached,
-// to make debugging and development easier and more consistent.
-$wgMainCacheType = 'apcu';
+$wgMainCacheType = CACHE_ACCEL;
 $wgParserCacheType = CACHE_DB;
 $wgSessionCacheType = CACHE_DB;
+
+// Enable full debug logs and StatsD metrics with APCu as main cache (like CACHE_DB or Memcached)
+// by using 'apcu' instead of CACHE_ACCEL. The latter uses the LocalServerObjectCache service,
+// which disables logging/stats.
+// $wgMainCacheType = 'apcu';
 
 // $wgMiserMode = true;
 
@@ -306,8 +311,8 @@ $wgGroupPermissions['sysop']['interwiki'] = true;
 // $wgMathValidModes = [ 'source', 'mathml', 'native', 'mathjax' ];
 
 // MobileFrontend
-// $wgMFMobileHeader = 'Foobar';
-// $wgMFCustomSiteModules = false;
+$wgMFMobileHeader = 'Foobar';
+$wgMFCustomSiteModules = true;
 
 // NavigationTiming
 // $wgNavigationTimingSamplingFactor = 1;

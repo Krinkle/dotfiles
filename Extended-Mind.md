@@ -104,6 +104,15 @@ GRANT INSERT, SELECT, ALTER, CREATE, DELETE, UPDATE ON `the_database`.* TO 'the_
 GRANT INSERT, SELECT ON `the_database`.* TO 'the_user'@'%';
 ```
 
+## php-src development
+
+* `brew install libiconv`, keg-only system override. Even when in PATH, LDFLAGS, and CPPFLAGS, it is not automatically discovered. https://github.com/php/php-src/pull/19475
+* `brew install icu4c`, key-only system override, for `--enable-intl`. Discovered via PKG_CONFIG_PATH.
+
+```
+./configure --enable-debug --without-iconv --enable-intl --enable-mbregex --enable-mbstring --with-libedit && make -j8
+```
+
 ## Python
 
 Test an SSL certificate

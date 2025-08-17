@@ -485,13 +485,13 @@ export EDITOR=vim
 
 # Homebrew
 #
-# From `homebrew shellenv`
+# From `brew shellenv`
 export HOMEBREW_PREFIX="/opt/homebrew";
-export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar";
-export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX";
-export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin${PATH+:$PATH}";
-export MANPATH="$HOMEBREW_PREFIX/share/man${MANPATH+:$MANPATH}:";
-export INFOPATH="$HOMEBREW_PREFIX/share/info:${INFOPATH:-}";
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
+export HOMEBREW_REPOSITORY="/opt/homebrew";
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
+export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
+export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
 # https://github.com/Homebrew/brew/blob/3.0.9/docs/Analytics.md
 export HOMEBREW_NO_ANALYTICS=1
 # Don't reinstall the whole world when installing one package
@@ -501,22 +501,26 @@ export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
 
 # Bins
 #
-# - Homebrw's system overrides
+# - System overrides via Homebrew
+#   These keg-only packages from Homebrew will override the macOS system defaults.
 #   * gnu-coreutils without 'g' prefix, e.g. realpath
-#   * new curl
-#   * new ruby
-export PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"
-export PATH="$HOMEBREW_PREFIX/opt/curl/bin:$PATH"
-export PATH="$HOMEBREW_PREFIX/opt/ruby/bin:$PATH"
+#   * bison, libiconv, and icu4c for php-src development
+export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="/opt/homebrew/opt/curl/bin:$PATH"
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+export PATH="/opt/homebrew/opt/bison/bin:$PATH"
+export PATH="/opt/homebrew/opt/libiconv/bin:$PATH"
+export PATH="/opt/homebrew/opt/icu4c/bin:$PATH"
+export PATH="/opt/homebrew/opt/icu4c/sbin:$PATH"
 # - Gems
 #   https://stackoverflow.com/a/14138490/319266
 #   Based on "`gem environment gemdir`/bin"
-export PATH="$HOMEBREW_PREFIX/lib/ruby/gems/3.2.0/bin:$PATH"
+export PATH="/opt/homebrew/lib/ruby/gems/3.2.0/bin:$PATH"
 # - Sublime Text (subl)
 #   https://www.sublimetext.com/docs/command_line.html
 export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
 # - Homebrew's Git provides diff-highlight
-export PATH="$HOMEBREW_PREFIX/opt/git/share/git-core/contrib/diff-highlight:$PATH"
+export PATH="/opt/homebrew/opt/git/share/git-core/contrib/diff-highlight:$PATH"
 # - Arcanist
 #   https://secure.phabricator.com/book/phabricator/article/arcanist_quick_start/
 export PATH="${PATH}:${HOME}/Development/arcanist/bin"
@@ -528,18 +532,29 @@ export PATH="$KDF_BASE_DIR/hosts/primary/bin:$PATH"
 # - My Home
 export PATH="${HOME}/.local/bin:${PATH}"
 
+# C++ development
+#
+# - System overrides via Homebrew
+#   * libiconv for php-src dev --with-iconv
+#   * icu4c for php-src dev --with-intl
+export LDFLAGS="-L/opt/homebrew/opt/libiconv/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/libiconv/include"
+export LDFLAGS="$LDFLAGS -L/opt/homebrew/opt/icu4c/lib"
+export CPPFLAGS="$CPPFLAGS -I/opt/homebrew/opt/icu4c/include"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/icu4c/lib/pkgconfig"
+
 # If running interactively, do the below as well (non-interactively, it's not useful and causes issues).
 # Except when we're provisioning, as it would fail due to missing files.
 if [ -n "${PS1:-}" ] && [ -z "${KDF_INSTALLER:-}" ]; then
 	# Completion modules from Homebrew-installed packages
-	. $HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh
+	. /opt/homebrew/etc/profile.d/bash_completion.sh
 	# See also "Aliases"
 	__git_complete g __git_main
 	__git_complete gi __git_main
 	__git_complete gir __git_main
 
 	# Autojump
-	. $HOMEBREW_PREFIX/etc/profile.d/autojump.sh
+	. /opt/homebrew/etc/profile.d/autojump.sh
 
 	# Bash prompt
 	PROMPT_COMMAND="_dotfiles-ps1-setup${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
