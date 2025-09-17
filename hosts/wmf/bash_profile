@@ -2,4 +2,13 @@ source $HOME/.bashrc
 
 # By default, always operate in a screen to avoid commands being
 # disrupted by connection issues and for continuity in general.
-screen -DR
+#
+# NOTE: We configure Screen to use a login-shell screenrc so that
+# server-side functions defined in /etc/profile.d remain available,
+# that means this will run both on ssh and on screen itself.
+# Avoid recursion to prevent a "Attaching from inside of screen?"
+# warning at the top of every login shell.
+# https://phabricator.wikimedia.org/T404739
+if [ -z "$STY" ]; then
+    exec screen -DR
+fi

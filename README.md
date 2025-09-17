@@ -48,3 +48,4 @@ See [`screenrc`](https://github.com/Krinkle/dotfiles/blob/e4bf32b5188c71c0d728aa
 * [@jakemcc](https://github.com/jakemcc) ([Last command run-time in prompt](http://jakemccrary.com/blog/2015/05/03/put-the-last-commands-run-time-in-your-bash-prompt/))
 * [@mathiasbynens](https://github.com/mathiasbynens) ([dotfiles](https://github.com/mathiasbynens/dotfiles/blob/ef819d5fcd/.osx))
 * [@ymendel](https://github.com/ymendel) ([dotfiles](https://github.com/ymendel/dotfiles/tree/0ff3906a98/osx))
+* [@cgoubert](https://github.com/cgoubert) ([T404739](https://phabricator.wikimedia.org/T404739))
