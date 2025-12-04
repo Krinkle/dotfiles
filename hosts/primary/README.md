@@ -370,6 +370,10 @@ Internet Accounts:
 
 * (enabled) Fastmail / Contacts.
 
+Keyboard:
+
+* Press fn key to – "Do Nothing". _In 2020, macOS added a system-wide keyboard shortcut to open the Emoji picker when the fn-key is pressed. This means when you press fn-Backspace to perform a forward Delete in a textarea, you get this thing in the way. [Source: HowToGeek](https://www.howtogeek.com/708537/how-to-disable-the-mac-keyboards-emoji-shortcut/)_
+
 Keyboard -> Text:
 
 * (disabled) Correct spelling automatically.

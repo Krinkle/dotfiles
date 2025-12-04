@@ -1,6 +1,7 @@
 [user]
 	name = Timo Tijhof
 	email = krinkle@fastmail.com
+	timezone = UTC
 [core]
 	quotepath = false
 	abbrev = 10

@@ -94,6 +94,26 @@ git rebase --root -i --committer-date-is-author-date --exec 'K_GERRITID=$(git lo
 
 ```
 
+## Hive
+
+See [spark3-sql](#spark3-sql).
+
+## JavaScript consoles snippets
+
+### JS: Turnilo legend
+
+Fix unreadable legend in multi-year Turnilo results. Inspect one of the `<text>` labels in the SVG, and run the following snipet
+
+```js
+var last;
+for (var el of $0.parentNode.children) {
+ if (el.textContent.includes(' Jan ')) el.textContent.replace(/^.* (\d\d)$/, 'Jan 20$1');
+ else el.textContent.replace(/^1 | \d\d$/, '');
+ if (last === el.textContent) el.textContent = '';
+ else last = el.textContent;
+}
+```
+
 ## kafkacat, kcat
 
 ```
@@ -107,6 +127,25 @@ $ kafkacat -C -b kafka-jumbo1013.eqiad.wmnet:9092 -L
 ```
 $ kafkacat -C -b kafka-jumbo1013.eqiad.wmnet:9092 -o -1000000 -t eqiad.mediawiki.web_ui_actions
 ```
+
+## MediaWiki
+
+```
+$ mwscript eval.php testwiki
+```
+
+```php
+// MW 1.43
+User::newFromName('Krinkle')->addGroup('sysop');
+User::newFromName('Krinkle')->removeGroup('sysop');
+```
+```php
+// MW 1.43+
+MW::user('Krinkle');
+MW::srv()->getUserGroupManager()->addUserToGroup(MW::user('Krinkle'), 'sysop');
+MW::srv()->getUserGroupManager()->removeUserFromGroup(MW::user('Krinkle'), 'sysop');
+```
+
 
 ## MySQL
 
