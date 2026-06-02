@@ -19,6 +19,17 @@
 
 	"ensure_newline_at_eof_on_save": false,
 
+	// Fork of default with "$" excluded so that jQuery
+	// variable names like "$foo" in JavaScript can be
+	// selected and automatically highlighted.
+	//
+	// https://forum.sublimetext.com/t/solved-highlighting-variables-including-the-dollar-symbol/3035
+	//
+	// NOTE: Needs an extra override in JavaScript.sublime-settings
+	// https://forum.sublimetext.com/t/double-click-highlight-issue/60936
+	"word_separators": "./\\()\"'-:,.;<>~!@#$%^&*|+=[]{}`~?",
+	"sub_word_separators": "_",
+
 	"folder_exclude_patterns":
 	[
 		".git",

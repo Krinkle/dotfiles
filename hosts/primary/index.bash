@@ -353,7 +353,7 @@ alias dsize='du -hs'
 # Avoid insertion of Unicode Fullwidth Quotation Mark. https://github.com/yt-dlp/yt-dlp/issues/4547#issuecomment-1817679265
 alias _yt='yt-dlp -o "$HOME/dlp/%(upload_date>%Y-%m-%d)s %(uploader)s - %(title)s.%(ext)s" --no-playlist --compat-options filename-sanitization'
 # Omit --write-description. https://github.com/yt-dlp/yt-dlp/issues/8616
-alias yt='_yt --format b --embed-subs --embed-metadata --print-to-file description "$HOME/dlp/%(upload_date>%Y-%m-%d)s %(uploader)s - %(title)s %(id)s.txt"'
+alias yt='_yt --format "bv[height<=720]+ba" -t mp4 --embed-subs --embed-metadata --print-to-file description "$HOME/dlp/%(upload_date>%Y-%m-%d)s %(uploader)s - %(title)s %(id)s.txt"'
 alias yt-audio='_yt --format ba -x --audio-format m4a'
 
 # https://unix.stackexchange.com/a/81699/37512
@@ -515,7 +515,7 @@ export PATH="/opt/homebrew/opt/icu4c/sbin:$PATH"
 # - Gems
 #   https://stackoverflow.com/a/14138490/319266
 #   Based on "`gem environment gemdir`/bin"
-export PATH="/opt/homebrew/lib/ruby/gems/3.2.0/bin:$PATH"
+export PATH="/opt/homebrew/lib/ruby/gems/3.3.0/bin:$PATH"
 # - Sublime Text (subl)
 #   https://www.sublimetext.com/docs/command_line.html
 export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"

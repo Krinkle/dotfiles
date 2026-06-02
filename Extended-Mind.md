@@ -210,6 +210,17 @@ https://wikitech.wikimedia.org/wiki/Data_Platform/Systems/Spark#Use_PySpark_to_r
 $ spark3-sql --master yarn --executor-memory 8G --executor-cores 4 --driver-memory 2G --conf spark.dynamicAllocation.maxExecutors=64
 ```
 
+
+```
+SELECT access_method,uri_host,uri_path,uri_query,referer FROM wmf.pageview_actor WHERE year=2025 AND month=9 AND day=9 and hour=23 AND uri_host LIKE 'en.%' LIMIT 10;
+
+SELECT COUNT(*),access_method,http_status,is_pageview,is_redirect_to_pageview FROM wmf.pageview_actor WHERE year=2025 AND month=9 AND day=22 and hour=13 AND uri_host='it.wikipedia.org' AND (is_pageview OR is_redirect_to_pageview) GROUP BY access_method,http_status,is_pageview,is_redirect_to_pageview;
+
+SELECT CONCAT(year,'-',LPAD(month, 2, '0'),'-',LPAD(day, 2, '0')) _date,access_method,is_pageview,is_redirect_to_pageview,COUNT(*) FROM wmf.pageview_actor WHERE year=2025 AND month=9 AND uri_host='it.wikipedia.org' AND (is_redirect_to_pageview OR is_pageview) GROUP BY year,month,day,access_method,is_pageview,is_redirect_to_pageview ORDER BY _date ASC,access_method,is_pageview, is_redirect_to_pageview;
+
+SELECT CONCAT(year,'-',LPAD(month, 2, '0'),'-',LPAD(day, 2, '0')) AS _date, CASE WHEN is_redirect_to_pageview THEN 'mobile_redirect' ELSE 'mobile_pageview' END AS _bucket, COUNT(*) AS _count FROM wmf.pageview_actor WHERE year=2025 AND month=9 AND uri_host='it.wikipedia.org' AND uri_path NOT LIKE '/wiki/Special:CentralAutoLogin%' AND ((is_redirect_to_pageview AND user_agent RLIKE '(?i)(android|mobi)') OR (is_pageview AND access_method='mobile web')) GROUP BY year,month,day,is_pageview,is_redirect_to_pageview ORDER BY _date ASC, _bucket ASC;
+```
+
 ## ssh
 
 Easily remove a host key (fingerprint) from a known host, if the change is expected

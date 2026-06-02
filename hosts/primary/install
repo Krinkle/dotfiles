@@ -63,7 +63,7 @@ function _dotfiles-install {
 	for f in "${formulas[@]}"; do
 		brew upgrade $f || brew install $f
 	done
-	brew upgrade php@8.3 || brew install php@8.3
+	brew upgrade php@8.5 || brew install php@8.5
 
 	brew cleanup
 
@@ -75,7 +75,7 @@ function _dotfiles-install {
 	fi
 
 	echo "... post-install: php"
-	test -f /opt/homebrew/etc/php/8.3/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/primary/php.ini /opt/homebrew/etc/php/8.3/conf.d/krinkle.ini )
+	test -f /opt/homebrew/etc/php/8.5/conf.d/krinkle.ini || ( echo "linking php.ini" && ln -s $KDF_BASE_DIR/hosts/primary/php.ini /opt/homebrew/etc/php/8.5/conf.d/krinkle.ini )
 
 	# Fix missing pcre2 dep for php-apcu.
 	#
@@ -87,7 +87,7 @@ function _dotfiles-install {
 	#
 	# This worked fine on macOS 10.15, but on macOS 13+, pcre2 is either no longer
 	# installed by default, or (if it is) it's not linked properly?
-	ln -s /opt/homebrew/opt/pcre2/include/pcre2.h /opt/homebrew/opt/php@8.3/include/php/ext/pcre/
+	ln -s /opt/homebrew/opt/pcre2/include/pcre2.h /opt/homebrew/opt/php@8.5/include/php/ext/pcre/
 	pecl install apcu ast excimer pcov
 
 	echo "... post-install: git"

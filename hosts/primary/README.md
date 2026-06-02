@@ -154,6 +154,11 @@ Desktop / View:
 
 ### Firefox
 
+Preferences -> General:
+
+* (disabled) Use AI to suggest tabs and a name for tab groups.
+* (disabled) Enable link previews. _This adds the "Preview Link" option to the right-click context menu._
+
 Preferences -> Search:
 
 * Default search engine: DuckDuckGo.

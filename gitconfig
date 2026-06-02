@@ -27,6 +27,7 @@
 	p = add -p
 	ad = add
 	br = branch
+	bril = branch --format='%(objectname:short) %(refname:short)'
 	co = checkout
 	ap = commit --amend
 	di = diff
