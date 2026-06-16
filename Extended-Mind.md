@@ -149,6 +149,8 @@ MW::srv()->getUserGroupManager()->removeUserFromGroup(MW::user('Krinkle'), 'syso
 
 ## MySQL
 
+### Database permissions
+
 ```
 GRANT USAGE ON *.* TO 'the_user'@'%' IDENTIFIED BY 'the_pass' WITH MAX_USER_CONNECTIONS 100;
 
@@ -156,6 +158,68 @@ GRANT INSERT, SELECT, ALTER, CREATE, DELETE, UPDATE ON `the_database`.* TO 'the_
 
 GRANT INSERT, SELECT ON `the_database`.* TO 'the_user'@'%';
 ```
+
+### Fix database REPL encoding
+
+The `mysql` command-line REPL by default seems to render text retrieved from a database as if encoded with ASCI or latin1. Thus, when querying a database with modern utf8mb4 encoding, there is the frustrating reality in which "good" values appear corrupt in your terminal, and misplaced latin1-encoded values from your utf8mb4-encoded table render fine despite actually being corrupt.
+
+Fix this by running `SET NAMES` after starting the `mysql` client. This only configured your current connection. It does not change the database itself:
+
+```sql
+SET NAMES utf8mb4;
+```
+
+Alternatively, start the command-line client as follows:
+
+```sh
+$ mysql --default-character-set=utf8mb4
+```
+
+### Fix database encoding corruption
+
+_See also <https://github.com/jquery/infrastructure-puppet/issues/89>._
+
+You may encounter a WordPress database that was originally encoded with `latin1`, that was switched to the modern `utf8mb4` without converting the contents. For example, if its contents were mistakenly assumed to be encoded in the legacy `utf8` or `utf8mb3` encoding, which are compatible and don't require re-encoding.
+
+There are a few tell tales to recognise such corruption:
+
+| Description | Correct | Corrupt | latin1 hex | utf8mb4 hex
+|--|--|--|--|--
+| U+2013 En Dash                             | `–` | `â€“` | `C3A2E282ACE2809C` | `E28093`
+| U+2014 Em Dash                             | `—` | `â€”` | `C3A2E282ACE2809D` | `E28094`
+| U+2019 Right Single Quotation Mark         | `’` | `â€™` | `C3A2E282ACE284A2` | `E28099`
+| U+00F6 Latin Small Letter O with Diaeresis | `ö` | `Ã¶`  | `C383C2B6` | `C3B6`
+| U+0139 Latin Capital Letter L with Acute   | `ĺ` | `Äº`  | `C384C2BA` | `C4BA`
+| U+00E7 Latin Small Letter C with Cedilla   | `ç` | `Ã§`  | `C383C2A7` | `C3A7`
+| U+00A0 No-Break Space (NBSP)               | ` ` | `Â ` | `C382C2A0` | `C2A020`
+
+Scan for affected rows:
+
+```sql
+SELECT comment_ID, comment_post_ID FROM wp_comments
+WHERE HEX(comment_content) LIKE '%C3A2E282ACE%' LIMIT 10;
+
+SELECT comment_ID, comment_post_ID FROM wp_comments
+WHERE HEX(comment_content) LIKE '%C3A2E282ACE2809C%' OR HEX(comment_content) LIKE '%C3A2E282ACE2809D%' OR HEX(comment_content) LIKE '%C3A2E282ACE284A2%' OR HEX(comment_content) LIKE '%C383C2B6%' OR HEX(comment_content) LIKE '%C384C2BA%' OR HEX(comment_content) LIKE '%C383C2A7%'
+LIMIT 10;
+
+SELECT ID, post_type, post_status, guid, post_name FROM wp_posts
+WHERE post_status='publish' AND (
+HEX(post_content) LIKE '%C3A2E282ACE2809C%' OR HEX(post_content) LIKE '%C3A2E282ACE2809D%' OR HEX(post_content) LIKE '%C3A2E282ACE284A2%' OR HEX(post_content) LIKE '%C383C2B6%' OR HEX(post_content) LIKE '%C384C2BA%' OR HEX(post_content) LIKE '%C383C2A7%'
+) LIMIT 10;
+```
+
+Convert all affected rows (change LIMIT accordingly):
+
+```sql
+UPDATE wp_comments SET comment_content = CONVERT(CAST(CONVERT(comment_content USING latin1) AS BINARY) USING utf8mb4)
+WHERE HEX(comment_content) LIKE '%C3A2E282ACE2809C%' OR HEX(comment_content) LIKE '%C3A2E282ACE2809D%' OR HEX(comment_content) LIKE '%C3A2E282ACE284A2%' OR HEX(comment_content) LIKE '%C383C2B6%' OR HEX(comment_content) LIKE '%C384C2BA%' OR HEX(comment_content) LIKE '%C383C2A7%'
+LIMIT 1;
+
+UPDATE wp_posts SET post_content = CONVERT(CAST(CONVERT(post_content USING latin1) AS BINARY) USING utf8mb4) WHERE post_status='publish' AND (HEX(post_content) LIKE '%C3A2E282ACE2809C%' OR HEX(post_content) LIKE '%C3A2E282ACE2809D%' OR HEX(post_content) LIKE '%C3A2E282ACE284A2%' OR HEX(post_content) LIKE '%C383C2B6%' OR HEX(post_content) LIKE '%C384C2BA%' OR HEX(post_content) LIKE '%C383C2A7%'
+) LIMIT 1;
+```
+
 
 ## php-src development
 
