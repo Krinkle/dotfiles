@@ -170,6 +170,10 @@ Preferences -> Home:
 * (disabled) Recommended by Pocket
 * (disabled) Recent activity
 
+Preferences -> Tabs and browsing:
+
+* (disabled) Use Container Tabs _This got re-enabled in 2026 and adds "Open Link in New Container Tab" as prominent second item in the right-click context menu where "Open Link in New Window" is meant to be and thus pushed down._
+
 Preferences -> Security:
 
 * (disabled) Ask to save logins and passwords.
@@ -180,6 +184,7 @@ Advanced Preferences (`about:config`):
 * (change from 3 to 1) `mousewheel.with_meta.action` _Avoid unexpected page zoom action when scrollwheel is still spinning and holding down cmd key for something else ([source](https://support.mozilla.org/en-US/questions/953341))._
 * (disabled) `browser.urlbar.trimURLs`  _This shipped in 2025 but is buggy and causes copy to clipboard to fail seemingly at random with a missing protocol ([credit to Alice](https://mk.nyaa.place/notes/aabif6f9q5jm03g5))._
 * (disabled) `browser.ml.linkPreview.enabled` _This shipped in 2025 but is useless and clutters the right-click context menu._
+* (disabled) `browser.tabs.splitView.enabled` _This shipped in 2026 and adds "Open Link in Split View" to the right-click context menu._
 
 Toolbar:
 
@@ -458,6 +463,20 @@ Preferences -> Profiles -> Tab:
 * (disabled) Working directory path
 * (disabled) Active process name
 * (disabled) Arguments
+
+### Textual
+
+Generate a bouncer password in your IRCCloud account (<https://blog.irccloud.com/bouncer/>):
+* Log into IRCCloud on the web
+* under Libera.Chat server > Connect with another IRC client > Generate password
+
+In the Textual app, ignore the welcome screen. Do not use its "Continue" button and the server connect wizard it provides because it has no way to set a port number or server password, and rejects inputs like `ircs://bnc.irccloud.com:6697` or `ircs://bnc.irccloud.com` or `bnc.irccloud.com:6697`.
+
+Textual > Server > Add server...
+* Name: Libera.Chat (via IRCCloud)
+* Server address: `bnc.irccloud.com`
+* Secure connection: Yes
+* Server password: (your generated bouncer password, replacing `bnc:` with `bnc@textual:`)
 
 ### Thunderbird
 

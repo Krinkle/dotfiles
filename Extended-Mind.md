@@ -172,7 +172,7 @@ SET NAMES utf8mb4;
 Alternatively, start the command-line client as follows:
 
 ```sh
-$ mysql --default-character-set=utf8mb4
+mysql --default-character-set=utf8mb4
 ```
 
 ### Fix database encoding corruption
@@ -183,40 +183,179 @@ You may encounter a WordPress database that was originally encoded with `latin1`
 
 There are a few tell tales to recognise such corruption:
 
-| Description | Correct | Corrupt | latin1 hex | utf8mb4 hex
+| Description | Corrupt | Correct | latin1 hex | utf8mb4 hex
 |--|--|--|--|--
-| U+2013 En Dash                             | `–` | `â€“` | `C3A2E282ACE2809C` | `E28093`
-| U+2014 Em Dash                             | `—` | `â€”` | `C3A2E282ACE2809D` | `E28094`
-| U+2019 Right Single Quotation Mark         | `’` | `â€™` | `C3A2E282ACE284A2` | `E28099`
-| U+00F6 Latin Small Letter O with Diaeresis | `ö` | `Ã¶`  | `C383C2B6` | `C3B6`
-| U+0139 Latin Capital Letter L with Acute   | `ĺ` | `Äº`  | `C384C2BA` | `C4BA`
-| U+00E7 Latin Small Letter C with Cedilla   | `ç` | `Ã§`  | `C383C2A7` | `C3A7`
-| U+00A0 No-Break Space (NBSP)               | ` ` | `Â ` | `C382C2A0` | `C2A020`
+| U+00A0 No-Break Space (NBSP)                | `Â ` | ` ` | `C382C2A0` | `C2A020`
+| U+00B4 Acute Accent                         | `Â´`  | `´` | `C382C2B4` | `C2B4`
+| U+00E1 Latin Small Letter A with Acute      | `Ã¡`  | `á` | `C383C2A1` | `C3A1`
+| U+00E7 Latin Small Letter C with Cedilla    | `Ã§`  | `ç` | `C383C2A7` | `C3A7`
+| U+00F4 Latin Small Letter O with Circumflex | `Ã³`  | `ó` | `C383C2B3` | `C3B3`
+| U+00F6 Latin Small Letter O with Diaeresis  | `Ã¶`  | `ö` | `C383C2B6` | `C3B6`
+| U+0139 Latin Capital Letter L with Acute    | `Äº`  | `ĺ` | `C384C2BA` | `C4BA`
+| U+2013 En Dash                              | `â€“` | `–` | `C3A2E282ACE2809C` | `E28093`
+| U+2014 Em Dash                              | `â€”` | `—` | `C3A2E282ACE2809D` | `E28094`
+| U+2018 Left Single Quotation Mark           | `â€˜` | `‘` | `C3A2E282ACCB9C` | `E28098`
+| U+2019 Right Single Quotation Mark          | `â€™` | `’` | `C3A2E282ACE284A2` | `E28099`
+| U+201C Left Double Quotation Mark           | `â€œ` | `“` | `C3A2E282ACC593` | `E2809C`
+| U+201D Right Double Quotation Mark          | `â€`  | `”` | `C3A2E282ACC29D` | `E2809D`
+| U+2026 Horizontal Ellipsis                  | `â€¦` | `…` | `C3A2E282ACC2A6` | `E280A6`
+| U+53F0 CJK Unified Ideograph-53F0       | `å` | `台` | `C3A5C28FC2B0C3` | `E58FB0`
+
+Find tell tales (may contain false positives!)
+
+```sql
+SELECT comment_ID, comment_post_ID FROM wp_comments
+WHERE HEX(comment_content) LIKE '%C3A2E282AC%' LIMIT 10;
+
+SELECT comment_ID, comment_post_ID FROM wp_comments
+WHERE HEX(comment_content) LIKE '%C38%' LIMIT 10;
+```
 
 Scan for affected rows:
 
 ```sql
 SELECT comment_ID, comment_post_ID FROM wp_comments
-WHERE HEX(comment_content) LIKE '%C3A2E282ACE%' LIMIT 10;
+WHERE
+HEX(comment_content) LIKE '%C382C2A0%' OR
+HEX(comment_content) LIKE '%C382C2B4%' OR
+HEX(comment_content) LIKE '%C383C2A1%' OR
+HEX(comment_content) LIKE '%C383C2A7%' OR
+HEX(comment_content) LIKE '%C383C2B3%' OR
+HEX(comment_content) LIKE '%C383C2B6%' OR
+HEX(comment_content) LIKE '%C384C2BA%' OR
+HEX(comment_content) LIKE '%C3A2E282ACE2809C%' OR
+HEX(comment_content) LIKE '%C3A2E282ACE2809D%' OR
+HEX(comment_content) LIKE '%C3A2E282ACCB9C%' OR
+HEX(comment_content) LIKE '%C3A2E282ACE284A2%' OR
+HEX(comment_content) LIKE '%C3A2E282ACC593%' OR
+HEX(comment_content) LIKE '%C3A2E282ACC29D%' OR
+HEX(comment_content) LIKE '%C3A2E282ACC2A6%' OR
+HEX(comment_content) LIKE '%C3A5C28FC2B0C3%'
+LIMIT 10;
 
 SELECT comment_ID, comment_post_ID FROM wp_comments
-WHERE HEX(comment_content) LIKE '%C3A2E282ACE2809C%' OR HEX(comment_content) LIKE '%C3A2E282ACE2809D%' OR HEX(comment_content) LIKE '%C3A2E282ACE284A2%' OR HEX(comment_content) LIKE '%C383C2B6%' OR HEX(comment_content) LIKE '%C384C2BA%' OR HEX(comment_content) LIKE '%C383C2A7%'
+WHERE
+HEX(comment_author) LIKE '%C382C2A0%' OR
+HEX(comment_author) LIKE '%C382C2B4%' OR
+HEX(comment_author) LIKE '%C383C2A1%' OR
+HEX(comment_author) LIKE '%C383C2A7%' OR
+HEX(comment_author) LIKE '%C383C2B3%' OR
+HEX(comment_author) LIKE '%C383C2B6%' OR
+HEX(comment_author) LIKE '%C384C2BA%' OR
+HEX(comment_author) LIKE '%C3A2E282ACE2809C%' OR
+HEX(comment_author) LIKE '%C3A2E282ACE2809D%' OR
+HEX(comment_author) LIKE '%C3A2E282ACCB9C%' OR
+HEX(comment_author) LIKE '%C3A2E282ACE284A2%' OR
+HEX(comment_author) LIKE '%C3A2E282ACC593%' OR
+HEX(comment_author) LIKE '%C3A2E282ACC29D%' OR
+HEX(comment_author) LIKE '%C3A2E282ACC2A6%' OR
+HEX(comment_author) LIKE '%C3A5C28FC2B0C3%'
 LIMIT 10;
 
 SELECT ID, post_type, post_status, guid, post_name FROM wp_posts
 WHERE post_status='publish' AND (
-HEX(post_content) LIKE '%C3A2E282ACE2809C%' OR HEX(post_content) LIKE '%C3A2E282ACE2809D%' OR HEX(post_content) LIKE '%C3A2E282ACE284A2%' OR HEX(post_content) LIKE '%C383C2B6%' OR HEX(post_content) LIKE '%C384C2BA%' OR HEX(post_content) LIKE '%C383C2A7%'
+HEX(post_content) LIKE '%C382C2A0%' OR
+HEX(post_content) LIKE '%C382C2B4%' OR
+HEX(post_content) LIKE '%C383C2A1%' OR
+HEX(post_content) LIKE '%C383C2A7%' OR
+HEX(post_content) LIKE '%C383C2B3%' OR
+HEX(post_content) LIKE '%C383C2B6%' OR
+HEX(post_content) LIKE '%C384C2BA%' OR
+HEX(post_content) LIKE '%C3A2E282ACE2809C%' OR
+HEX(post_content) LIKE '%C3A2E282ACE2809D%' OR
+HEX(post_content) LIKE '%C3A2E282ACCB9C%' OR
+HEX(post_content) LIKE '%C3A2E282ACE284A2%' OR
+HEX(post_content) LIKE '%C3A2E282ACC593%' OR
+HEX(post_content) LIKE '%C3A2E282ACC29D%' OR
+HEX(post_content) LIKE '%C3A2E282ACC2A6%' OR
+HEX(post_content) LIKE '%C3A5C28FC2B0C3%'
 ) LIMIT 10;
+```
+
+Preview a conversion:
+
+```sql
+SELECT comment_ID, comment_post_ID, comment_content, CONVERT(CAST(CONVERT(comment_content USING latin1) AS BINARY) USING utf8mb4) AS _converted_content
+FROM wp_comments
+WHERE comment_ID=226857
+LIMIT 1;
+```
+
+Extract a new found character:
+
+```sql
+SELECT HEX('6. Class selector using UTF8 (.'), HEX(comment_content)
+FROM wp_comments
+WHERE comment_ID=44300
+LIMIT 1;
+
+SELECT HEX('philosophy of '), HEX('Find'), HEX(comment_content)
+FROM wp_comments
+WHERE comment_ID=5989
+LIMIT 1;
 ```
 
 Convert all affected rows (change LIMIT accordingly):
 
 ```sql
-UPDATE wp_comments SET comment_content = CONVERT(CAST(CONVERT(comment_content USING latin1) AS BINARY) USING utf8mb4)
-WHERE HEX(comment_content) LIKE '%C3A2E282ACE2809C%' OR HEX(comment_content) LIKE '%C3A2E282ACE2809D%' OR HEX(comment_content) LIKE '%C3A2E282ACE284A2%' OR HEX(comment_content) LIKE '%C383C2B6%' OR HEX(comment_content) LIKE '%C384C2BA%' OR HEX(comment_content) LIKE '%C383C2A7%'
-LIMIT 1;
 
-UPDATE wp_posts SET post_content = CONVERT(CAST(CONVERT(post_content USING latin1) AS BINARY) USING utf8mb4) WHERE post_status='publish' AND (HEX(post_content) LIKE '%C3A2E282ACE2809C%' OR HEX(post_content) LIKE '%C3A2E282ACE2809D%' OR HEX(post_content) LIKE '%C3A2E282ACE284A2%' OR HEX(post_content) LIKE '%C383C2B6%' OR HEX(post_content) LIKE '%C384C2BA%' OR HEX(post_content) LIKE '%C383C2A7%'
+UPDATE wp_comments SET comment_content = CONVERT(CAST(CONVERT(comment_content USING latin1) AS BINARY) USING utf8mb4) WHERE comment_ID=224643 LIMIT 1;
+
+
+UPDATE wp_comments SET comment_content = CONVERT(CAST(CONVERT(comment_content USING latin1) AS BINARY) USING utf8mb4)
+WHERE
+HEX(comment_content) LIKE '%C382C2A0%' OR
+HEX(comment_content) LIKE '%C382C2B4%' OR
+HEX(comment_content) LIKE '%C383C2A1%' OR
+HEX(comment_content) LIKE '%C383C2A7%' OR
+HEX(comment_content) LIKE '%C383C2B3%' OR
+HEX(comment_content) LIKE '%C383C2B6%' OR
+HEX(comment_content) LIKE '%C384C2BA%' OR
+HEX(comment_content) LIKE '%C3A2E282ACE2809C%' OR
+HEX(comment_content) LIKE '%C3A2E282ACE2809D%' OR
+HEX(comment_content) LIKE '%C3A2E282ACCB9C%' OR
+HEX(comment_content) LIKE '%C3A2E282ACE284A2%' OR
+HEX(comment_content) LIKE '%C3A2E282ACC593%' OR
+HEX(comment_content) LIKE '%C3A2E282ACC29D%' OR
+HEX(comment_content) LIKE '%C3A2E282ACC2A6%' OR
+HEX(comment_content) LIKE '%C3A5C28FC2B0C3%'
+LIMIT 10;
+
+UPDATE wp_comments SET comment_author = CONVERT(CAST(CONVERT(comment_author USING latin1) AS BINARY) USING utf8mb4)
+WHERE
+HEX(comment_author) LIKE '%C382C2A0%' OR
+HEX(comment_author) LIKE '%C382C2B4%' OR
+HEX(comment_author) LIKE '%C383C2A1%' OR
+HEX(comment_author) LIKE '%C383C2A7%' OR
+HEX(comment_author) LIKE '%C383C2B3%' OR
+HEX(comment_author) LIKE '%C383C2B6%' OR
+HEX(comment_author) LIKE '%C384C2BA%' OR
+HEX(comment_author) LIKE '%C3A2E282ACE2809C%' OR
+HEX(comment_author) LIKE '%C3A2E282ACE2809D%' OR
+HEX(comment_author) LIKE '%C3A2E282ACCB9C%' OR
+HEX(comment_author) LIKE '%C3A2E282ACE284A2%' OR
+HEX(comment_author) LIKE '%C3A2E282ACC593%' OR
+HEX(comment_author) LIKE '%C3A2E282ACC29D%' OR
+HEX(comment_author) LIKE '%C3A2E282ACC2A6%' OR
+HEX(comment_author) LIKE '%C3A5C28FC2B0C3%'
+LIMIT 10;
+
+UPDATE wp_posts SET post_content = CONVERT(CAST(CONVERT(post_content USING latin1) AS BINARY) USING utf8mb4) WHERE post_status='publish' AND (
+HEX(post_content) LIKE '%C382C2A0%' OR
+HEX(post_content) LIKE '%C382C2B4%' OR
+HEX(post_content) LIKE '%C383C2A1%' OR
+HEX(post_content) LIKE '%C383C2A7%' OR
+HEX(post_content) LIKE '%C383C2B3%' OR
+HEX(post_content) LIKE '%C383C2B6%' OR
+HEX(post_content) LIKE '%C384C2BA%' OR
+HEX(post_content) LIKE '%C3A2E282ACE2809C%' OR
+HEX(post_content) LIKE '%C3A2E282ACE2809D%' OR
+HEX(post_content) LIKE '%C3A2E282ACCB9C%' OR
+HEX(post_content) LIKE '%C3A2E282ACE284A2%' OR
+HEX(post_content) LIKE '%C3A2E282ACC593%' OR
+HEX(post_content) LIKE '%C3A2E282ACC29D%' OR
+HEX(post_content) LIKE '%C3A2E282ACC2A6%' OR
+HEX(post_content) LIKE '%C3A5C28FC2B0C3%'
 ) LIMIT 1;
 ```
 
@@ -283,6 +422,8 @@ SELECT COUNT(*),access_method,http_status,is_pageview,is_redirect_to_pageview FR
 SELECT CONCAT(year,'-',LPAD(month, 2, '0'),'-',LPAD(day, 2, '0')) _date,access_method,is_pageview,is_redirect_to_pageview,COUNT(*) FROM wmf.pageview_actor WHERE year=2025 AND month=9 AND uri_host='it.wikipedia.org' AND (is_redirect_to_pageview OR is_pageview) GROUP BY year,month,day,access_method,is_pageview,is_redirect_to_pageview ORDER BY _date ASC,access_method,is_pageview, is_redirect_to_pageview;
 
 SELECT CONCAT(year,'-',LPAD(month, 2, '0'),'-',LPAD(day, 2, '0')) AS _date, CASE WHEN is_redirect_to_pageview THEN 'mobile_redirect' ELSE 'mobile_pageview' END AS _bucket, COUNT(*) AS _count FROM wmf.pageview_actor WHERE year=2025 AND month=9 AND uri_host='it.wikipedia.org' AND uri_path NOT LIKE '/wiki/Special:CentralAutoLogin%' AND ((is_redirect_to_pageview AND user_agent RLIKE '(?i)(android|mobi)') OR (is_pageview AND access_method='mobile web')) GROUP BY year,month,day,is_pageview,is_redirect_to_pageview ORDER BY _date ASC, _bucket ASC;
+
+SELECT uri_host, COUNT(*) _reqs FROM wmf.webrequest WHERE year=2026 AND month=2 AND day IN (20,21,22,23,24,25) AND webrequest_source='text' AND uri_path LIKE '/w/rest.php/site/v1/sitemap/0%' AND isp_data["isp"]='Googlebot' AND http_status=200 GROUP BY uri_host ORDER BY _reqs DESC;
 ```
 
 ## ssh
