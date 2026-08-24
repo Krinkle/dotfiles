@@ -28,7 +28,7 @@ export PATH="${HOME}/bin:${PATH}"
 
 # Make typing Unicode work correctly when inside
 # a GNU screen over ssh. Thanks @dpifke!
-export LC_ALL=
+export LC_ALL=C
 export LANG=en_US.UTF-8
 
 # Sort dotfiles before "a" in ls(1) and sort(1)

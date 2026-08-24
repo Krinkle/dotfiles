@@ -461,8 +461,8 @@ export MEDIAWIKI_PASSWORD='dockerpass'
 # NOTE: This depends on the arguably broken way that (some version of)
 # Darwin/macOS has these locales configured. It should not be copied to
 # my dotfiles for Linux.
+export LC_ALL=C
 export LANG=en_US.UTF-8
-export LC_ALL="C"
 
 # Fixes "ArgumentError: invalid byte sequence in US-ASCII" from
 # everything Ruby/Jekyll-related.

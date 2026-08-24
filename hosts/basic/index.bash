@@ -302,7 +302,7 @@ fi
 # Bins: Home
 export PATH="${HOME}/.local/bin:${PATH}"
 
-export LC_ALL=
+export LC_ALL=C
 export LANG=en_US.UTF-8
 # Sort dotfiles before "a" in ls(1) and sort(1)
 # https://superuser.com/a/448294/164493
