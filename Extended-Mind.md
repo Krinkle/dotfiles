@@ -144,8 +144,11 @@ User::newFromName('Krinkle')->removeGroup('sysop');
 MW::user('Krinkle');
 MW::srv()->getUserGroupManager()->addUserToGroup(MW::user('Krinkle'), 'sysop');
 MW::srv()->getUserGroupManager()->removeUserFromGroup(MW::user('Krinkle'), 'sysop');
-```
 
+$ca = MediaWiki\Extension\CentralAuth\User\CentralAuthUser::getPrimaryInstanceByName('Krinkle');
+$ca->addToGlobalGroup('global-sysop');
+$ca->removeFromGlobalGroups('global-sysop');
+```
 
 ## MySQL
 
@@ -271,94 +274,6 @@ HEX(post_content) LIKE '%C3A2E282ACC2A6%' OR
 HEX(post_content) LIKE '%C3A5C28FC2B0C3%'
 ) LIMIT 10;
 ```
-
-Preview a conversion:
-
-```sql
-SELECT comment_ID, comment_post_ID, comment_content, CONVERT(CAST(CONVERT(comment_content USING latin1) AS BINARY) USING utf8mb4) AS _converted_content
-FROM wp_comments
-WHERE comment_ID=226857
-LIMIT 1;
-```
-
-Extract a new found character:
-
-```sql
-SELECT HEX('6. Class selector using UTF8 (.'), HEX(comment_content)
-FROM wp_comments
-WHERE comment_ID=44300
-LIMIT 1;
-
-SELECT HEX('philosophy of '), HEX('Find'), HEX(comment_content)
-FROM wp_comments
-WHERE comment_ID=5989
-LIMIT 1;
-```
-
-Convert all affected rows (change LIMIT accordingly):
-
-```sql
-
-UPDATE wp_comments SET comment_content = CONVERT(CAST(CONVERT(comment_content USING latin1) AS BINARY) USING utf8mb4) WHERE comment_ID=224643 LIMIT 1;
-
-
-UPDATE wp_comments SET comment_content = CONVERT(CAST(CONVERT(comment_content USING latin1) AS BINARY) USING utf8mb4)
-WHERE
-HEX(comment_content) LIKE '%C382C2A0%' OR
-HEX(comment_content) LIKE '%C382C2B4%' OR
-HEX(comment_content) LIKE '%C383C2A1%' OR
-HEX(comment_content) LIKE '%C383C2A7%' OR
-HEX(comment_content) LIKE '%C383C2B3%' OR
-HEX(comment_content) LIKE '%C383C2B6%' OR
-HEX(comment_content) LIKE '%C384C2BA%' OR
-HEX(comment_content) LIKE '%C3A2E282ACE2809C%' OR
-HEX(comment_content) LIKE '%C3A2E282ACE2809D%' OR
-HEX(comment_content) LIKE '%C3A2E282ACCB9C%' OR
-HEX(comment_content) LIKE '%C3A2E282ACE284A2%' OR
-HEX(comment_content) LIKE '%C3A2E282ACC593%' OR
-HEX(comment_content) LIKE '%C3A2E282ACC29D%' OR
-HEX(comment_content) LIKE '%C3A2E282ACC2A6%' OR
-HEX(comment_content) LIKE '%C3A5C28FC2B0C3%'
-LIMIT 10;
-
-UPDATE wp_comments SET comment_author = CONVERT(CAST(CONVERT(comment_author USING latin1) AS BINARY) USING utf8mb4)
-WHERE
-HEX(comment_author) LIKE '%C382C2A0%' OR
-HEX(comment_author) LIKE '%C382C2B4%' OR
-HEX(comment_author) LIKE '%C383C2A1%' OR
-HEX(comment_author) LIKE '%C383C2A7%' OR
-HEX(comment_author) LIKE '%C383C2B3%' OR
-HEX(comment_author) LIKE '%C383C2B6%' OR
-HEX(comment_author) LIKE '%C384C2BA%' OR
-HEX(comment_author) LIKE '%C3A2E282ACE2809C%' OR
-HEX(comment_author) LIKE '%C3A2E282ACE2809D%' OR
-HEX(comment_author) LIKE '%C3A2E282ACCB9C%' OR
-HEX(comment_author) LIKE '%C3A2E282ACE284A2%' OR
-HEX(comment_author) LIKE '%C3A2E282ACC593%' OR
-HEX(comment_author) LIKE '%C3A2E282ACC29D%' OR
-HEX(comment_author) LIKE '%C3A2E282ACC2A6%' OR
-HEX(comment_author) LIKE '%C3A5C28FC2B0C3%'
-LIMIT 10;
-
-UPDATE wp_posts SET post_content = CONVERT(CAST(CONVERT(post_content USING latin1) AS BINARY) USING utf8mb4) WHERE post_status='publish' AND (
-HEX(post_content) LIKE '%C382C2A0%' OR
-HEX(post_content) LIKE '%C382C2B4%' OR
-HEX(post_content) LIKE '%C383C2A1%' OR
-HEX(post_content) LIKE '%C383C2A7%' OR
-HEX(post_content) LIKE '%C383C2B3%' OR
-HEX(post_content) LIKE '%C383C2B6%' OR
-HEX(post_content) LIKE '%C384C2BA%' OR
-HEX(post_content) LIKE '%C3A2E282ACE2809C%' OR
-HEX(post_content) LIKE '%C3A2E282ACE2809D%' OR
-HEX(post_content) LIKE '%C3A2E282ACCB9C%' OR
-HEX(post_content) LIKE '%C3A2E282ACE284A2%' OR
-HEX(post_content) LIKE '%C3A2E282ACC593%' OR
-HEX(post_content) LIKE '%C3A2E282ACC29D%' OR
-HEX(post_content) LIKE '%C3A2E282ACC2A6%' OR
-HEX(post_content) LIKE '%C3A5C28FC2B0C3%'
-) LIMIT 1;
-```
-
 
 ## php-src development
 
@@ -534,7 +449,7 @@ $ watch --help
   -q, --equexit <cycles>  exit when output from command does not change
 ```
 
-Lop until the output is not "Already up to date".
+Loop until the output changes. For example, repeat "git pull" until the output is not "Already up to date".
 
 ```
 watch -g git pull

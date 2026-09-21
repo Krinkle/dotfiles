@@ -87,7 +87,11 @@ function _dotfiles-install {
 	#
 	# This worked fine on macOS 10.15, but on macOS 13+, pcre2 is either no longer
 	# installed by default, or (if it is) it's not linked properly?
-	ln -s /opt/homebrew/opt/pcre2/include/pcre2.h /opt/homebrew/opt/php@8.5/include/php/ext/pcre/
+	#
+	# Use "brew --prefix" instead of hardcoding /opt/homebrew/opt/php@X.Y
+	# because when we use the current latest version, php@X.Y is an alias for "php"
+	# and thus the versioned dir won't exist.
+	ln -s /opt/homebrew/opt/pcre2/include/pcre2.h "$(brew --prefix php@8.5)/include/php/ext/pcre/pcre2.h"
 	pecl install apcu ast excimer pcov
 
 	echo "... post-install: git"

@@ -23,7 +23,7 @@ git clone git@github.com:Krinkle/dotfiles.git ~/.krinkle.dotfiles \
 
 ### Naming tabs?
 
-See [**§ Terminal app (Mac)**](hosts/primary#terminal-app) for how to configure the naming of tabs.
+See [**§ Terminal app (Mac)**](https://github.com/Krinkle/dotfiles/tree/main/hosts/primary#terminal-app) for how to configure the naming of tabs.
 
 ### j-What?
 

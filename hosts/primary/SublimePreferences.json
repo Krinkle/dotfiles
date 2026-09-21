@@ -37,6 +37,7 @@
 		".nyc_output",
 		".sass-cache",
 		".svn",
+		".tox",
 		"CVS",
 		"coverage",
 		"doc/html",
